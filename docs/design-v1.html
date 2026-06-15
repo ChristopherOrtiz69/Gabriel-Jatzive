@@ -431,57 +431,6 @@
     }
 
     /* ════════════════════════════════
-       INVITE CARD (personalizada)
-    ════════════════════════════════ */
-    .invite-card {
-      background: #fff;
-      border: 1px solid #f0d5dc;
-      border-radius: 16px;
-      padding: 1.8rem 1.6rem;
-      max-width: 400px;
-      margin: 0 auto 2.5rem;
-      box-shadow: 0 6px 28px rgba(196,104,126,.12);
-      text-align: center;
-    }
-
-    .invite-card-icon { font-size: 1.8rem; margin-bottom: .6rem; }
-
-    .invite-card-label {
-      font-size: .68rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--deep-rose);
-      margin-bottom: .5rem;
-    }
-
-    .invite-card-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.75rem;
-      font-weight: 400;
-      color: var(--brown);
-      margin-bottom: 1.1rem;
-    }
-
-    .invite-card-seats {
-      background: linear-gradient(135deg, #fdeef3, #fdf6f0);
-      border-radius: 10px;
-      padding: .9rem 1rem;
-    }
-
-    .invite-card-icons {
-      font-size: 1.4rem;
-      letter-spacing: 3px;
-      display: block;
-      margin-bottom: .4rem;
-    }
-
-    .invite-card-seats-label {
-      font-size: .8rem;
-      color: var(--sage-dark);
-      letter-spacing: .5px;
-    }
-
-    /* ════════════════════════════════
        MOBILE — RESPONSIVE
     ════════════════════════════════ */
 
@@ -847,17 +796,6 @@
     <h2 class="s-title reveal">¿Nos <em>acompañas?</em></h2>
     <div class="floral-sep reveal">❀ ✿ ❀</div>
 
-    <!-- Tarjeta personalizada (se muestra solo si la URL trae ?nombre=X&cupos=N) -->
-    <div id="invite-card" class="invite-card reveal" style="display:none">
-      <p class="invite-card-icon">🌸</p>
-      <p class="invite-card-label">Tu invitación</p>
-      <h3 class="invite-card-name" id="invite-nombre"></h3>
-      <div class="invite-card-seats">
-        <span class="invite-card-icons" id="invite-icons"></span>
-        <p class="invite-card-seats-label" id="invite-seats-label"></p>
-      </div>
-    </div>
-
     <p class="rsvp-quote reveal">
       "Nuestro día más especial será aún más bello<br>
       con tu presencia a nuestro lado."
@@ -865,7 +803,9 @@
 
     <p class="rsvp-deadline reveal">Confirma tu asistencia antes del 20 de agosto de 2026</p>
 
-    <a href="#" target="_blank" rel="noopener" class="btn btn-rsvp reveal">
+    <a href="https://wa.me/521XXXXXXXXXX?text=Hola!%20Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Gabriel%20%26%20Jatzive%20%F0%9F%8C%B8"
+       target="_blank" rel="noopener"
+       class="btn reveal">
       Confirmar asistencia
     </a>
   </div>
@@ -881,47 +821,6 @@
 </footer>
 
 <script>
-  /* ── Invitación personalizada (URL params) ── */
-  (function () {
-    const p      = new URLSearchParams(window.location.search);
-    const nombre = (p.get('nombre') || '').trim();
-    const cupos  = Math.max(0, parseInt(p.get('cupos') || '0', 10));
-    const phone  = '525599192118';
-
-    // Armar mensaje de WhatsApp
-    let msg;
-    if (nombre && cupos > 0) {
-      const plural = cupos === 1 ? 'persona' : 'personas';
-      msg = `¡Hola! Somos ${nombre} y con mucho gusto confirmamos nuestra asistencia 🎊 Iremos ${cupos} ${plural}. ¡Nos vemos pronto! 💐`;
-    } else if (nombre) {
-      msg = `¡Hola! Soy ${nombre} y con mucho gusto confirmo mi asistencia a la boda de Gabriel & Jatzive 🌸 ¡Nos vemos pronto! 💐`;
-    } else {
-      msg = `¡Hola! Confirmo mi asistencia a la boda de Gabriel & Jatzive 🌸`;
-    }
-
-    // Actualizar botón
-    document.querySelectorAll('.btn-rsvp').forEach(function (a) {
-      a.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
-    });
-
-    // Mostrar tarjeta personalizada
-    if (nombre) {
-      document.getElementById('invite-nombre').textContent = nombre;
-
-      if (cupos > 0) {
-        document.getElementById('invite-icons').textContent = '🪑'.repeat(Math.min(cupos, 8));
-        document.getElementById('invite-seats-label').textContent =
-          cupos + ' lugar' + (cupos !== 1 ? 'es' : '') +
-          ' reservado' + (cupos !== 1 ? 's' : '') + ' para ti';
-      } else {
-        document.getElementById('invite-icons').textContent = '🌸';
-        document.getElementById('invite-seats-label').textContent = 'Te esperamos con gusto';
-      }
-
-      document.getElementById('invite-card').style.display = 'block';
-    }
-  })();
-
   /* ── Countdown ── */
   const target = new Date('2026-09-20T17:00:00');
 

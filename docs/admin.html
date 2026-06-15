@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin · Invitaciones Gabriel & Jatzive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:     #c4687e;
+      --rose-lt:  #f5d0d8;
+      --sage:     #4e7252;
+      --cream:    #fdf6f0;
+      --brown:    #4a3728;
+      --gold:     #c8a76c;
+      --white:    #ffffff;
+      --border:   #e8d0d8;
+      --gray:     #888;
+      --danger:   #c44;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--brown);
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
+    }
+
+    /* ── Header ── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--brown);
+      margin-bottom: .3rem;
+    }
+
+    .page-header p {
+      font-size: .78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--rose);
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 1.8rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 18px rgba(74,55,40,.06);
+      max-width: 680px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .card-title {
+      font-size: .72rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 1.2rem;
+    }
+
+    /* ── Form ── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: end;
+    }
+
+    @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 120px;
+      gap: .8rem;
+    }
+
+    @media (max-width: 480px) { .field-row { grid-template-columns: 1fr; } }
+
+    label {
+      display: block;
+      font-size: .7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: .4rem;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: .7rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: 'Raleway', sans-serif;
+      font-size: .95rem;
+      color: var(--brown);
+      background: var(--cream);
+      outline: none;
+      transition: border-color .2s;
+    }
+    input:focus { border-color: var(--rose); }
+
+    .btn-gen {
+      display: block;
+      width: 100%;
+      margin-top: 1rem;
+      padding: .85rem 1rem;
+      background: linear-gradient(135deg, var(--rose), #9e4e64);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 500;
+      font-size: .85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity .2s, transform .2s;
+    }
+    .btn-gen:hover { opacity: .9; transform: translateY(-1px); }
+
+    /* ── Result box ── */
+    .result-box {
+      display: none;
+      margin-top: 1.4rem;
+      padding: 1.2rem;
+      background: #fdf0f4;
+      border: 1px solid var(--rose-lt);
+      border-radius: 10px;
+    }
+
+    .result-label {
+      font-size: .65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: .5rem;
+    }
+
+    .result-url {
+      font-size: .82rem;
+      word-break: break-all;
+      color: var(--brown);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .6rem .8rem;
+      margin-bottom: .8rem;
+      font-family: monospace;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: .7rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      flex: 1;
+      min-width: 130px;
+      padding: .7rem 1rem;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      color: var(--brown);
+      font-family: 'Raleway', sans-serif;
+      font-size: .78rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background .2s, border-color .2s;
+    }
+    .btn-action:hover { background: var(--cream); border-color: var(--rose); }
+
+    .btn-action.wa {
+      background: #25d366;
+      color: #fff;
+      border-color: #25d366;
+    }
+    .btn-action.wa:hover { background: #1ebe5d; border-color: #1ebe5d; }
+
+    .copied-badge {
+      display: none;
+      font-size: .7rem;
+      color: var(--sage);
+      letter-spacing: 1px;
+      margin-top: .4rem;
+    }
+
+    /* ── Guest list ── */
+    .list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .list-count {
+      font-size: .7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .btn-clear {
+      font-size: .68rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--danger);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: .2rem .4rem;
+    }
+    .btn-clear:hover { text-decoration: underline; }
+
+    .guest-list { display: flex; flex-direction: column; gap: .7rem; }
+
+    .guest-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .9rem 1rem;
+      background: var(--cream);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .guest-info { flex: 1; min-width: 0; }
+
+    .guest-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      color: var(--brown);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .guest-meta {
+      font-size: .7rem;
+      color: var(--gray);
+      letter-spacing: .5px;
+      margin-top: .1rem;
+    }
+
+    .guest-actions { display: flex; gap: .5rem; flex-shrink: 0; }
+
+    .btn-sm {
+      padding: .4rem .8rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-family: 'Raleway', sans-serif;
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--brown);
+      transition: background .15s;
+    }
+    .btn-sm:hover { background: var(--cream); border-color: var(--rose); }
+    .btn-sm.wa-sm { background: #25d366; color: #fff; border-color: #25d366; }
+    .btn-sm.wa-sm:hover { background: #1ebe5d; }
+    .btn-sm.del { color: var(--danger); border-color: #e8b0b0; }
+    .btn-sm.del:hover { background: #fff0f0; }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--gray);
+      font-size: .88rem;
+      font-style: italic;
+    }
+
+    /* ── Totals ── */
+    .totals {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.2rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .total-chip {
+      flex: 1;
+      min-width: 100px;
+      text-align: center;
+      background: var(--cream);
+      border-radius: 10px;
+      padding: .8rem .6rem;
+      border: 1px solid var(--border);
+    }
+
+    .total-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--rose);
+      display: block;
+      line-height: 1;
+    }
+
+    .total-label {
+      font-size: .62rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-top: .3rem;
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>Gabriel &amp; Jatzive</h1>
+  <p>Administrador de invitaciones</p>
+</header>
+
+<!-- ── Generador ── -->
+<div class="card">
+  <p class="card-title">Generar nueva invitación</p>
+
+  <div class="field-row">
+    <div>
+      <label for="inp-nombre">Nombre del invitado / familia</label>
+      <input type="text" id="inp-nombre" placeholder="Ej: Familia García" autocomplete="off">
+    </div>
+    <div>
+      <label for="inp-cupos">Lugares</label>
+      <input type="number" id="inp-cupos" placeholder="2" min="1" max="20" value="2">
+    </div>
+  </div>
+
+  <button class="btn-gen" onclick="generarLink()">Generar invitación</button>
+
+  <!-- Resultado -->
+  <div class="result-box" id="result-box">
+    <p class="result-label">Link de invitación</p>
+    <div class="result-url" id="result-url"></div>
+    <div class="result-actions">
+      <button class="btn-action" onclick="copiarLink()">📋 Copiar link</button>
+      <a class="btn-action wa" id="btn-wa-send" href="#" target="_blank" rel="noopener">
+        ✉️ Enviar por WhatsApp
+      </a>
+    </div>
+    <p class="copied-badge" id="copied-badge">✓ Copiado al portapapeles</p>
+  </div>
+</div>
+
+<!-- ── Lista de invitados ── -->
+<div class="card">
+  <div class="list-header">
+    <p class="card-title" style="margin:0">Lista de invitados</p>
+    <div style="display:flex;align-items:center;gap:1rem">
+      <span class="list-count" id="list-count"></span>
+      <button class="btn-clear" onclick="borrarTodo()">Borrar todo</button>
+    </div>
+  </div>
+
+  <div class="guest-list" id="guest-list"></div>
+
+  <!-- Totales -->
+  <div class="totals" id="totals" style="display:none">
+    <div class="total-chip">
+      <span class="total-num" id="total-invitados">0</span>
+      <p class="total-label">Invitados</p>
+    </div>
+    <div class="total-chip">
+      <span class="total-num" id="total-lugares">0</span>
+      <p class="total-label">Lugares totales</p>
+    </div>
+    <div class="total-chip">
+      <span class="total-num" id="total-confirmados">0</span>
+      <p class="total-label">Confirmados</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ── Config ── */
+  const BASE_URL = 'https://christopherortiz69.github.io/Gabriel-Jatzive/';
+  const WA_PHONE = '525599192118';
+  const STORAGE_KEY = 'gj_invitados';
+
+  /* ── Helpers ── */
+  function getInvitados() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+    catch (_) { return []; }
+  }
+
+  function saveInvitados(list) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  }
+
+  function buildInviteUrl(nombre, cupos) {
+    return BASE_URL + '?nombre=' + encodeURIComponent(nombre) + '&cupos=' + cupos;
+  }
+
+  function buildWaMsg(nombre, cupos, url) {
+    const plural = cupos === 1 ? 'lugar' : 'lugares';
+    return '¡Hola ' + nombre + '! 🌸\n' +
+           'Con todo cariño, te invitamos a la boda de *Gabriel & Jatzive*.\n' +
+           'Te reservamos *' + cupos + ' ' + plural + '*. Aquí está tu invitación personalizada:\n' +
+           url + '\n\n' +
+           'Por favor confirma tu asistencia desde el link. ¡Los esperamos! 💐';
+  }
+
+  function formatDate(ts) {
+    const d = new Date(ts);
+    return d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  /* ── Generar ── */
+  function generarLink() {
+    const nombre = document.getElementById('inp-nombre').value.trim();
+    const cupos  = parseInt(document.getElementById('inp-cupos').value, 10) || 1;
+
+    if (!nombre) {
+      document.getElementById('inp-nombre').focus();
+      return;
+    }
+
+    const url = buildInviteUrl(nombre, cupos);
+    const msg = buildWaMsg(nombre, cupos, url);
+    const waHref = 'https://wa.me/' + WA_PHONE + '?text=' + encodeURIComponent(msg);
+
+    // Mostrar resultado
+    document.getElementById('result-url').textContent = url;
+    document.getElementById('btn-wa-send').href = waHref;
+    document.getElementById('result-box').style.display = 'block';
+    document.getElementById('copied-badge').style.display = 'none';
+
+    // Guardar en lista (solo si no existe ya con el mismo nombre+cupos)
+    const list = getInvitados();
+    const existe = list.find(function (i) { return i.nombre === nombre && i.cupos === cupos; });
+    if (!existe) {
+      list.unshift({ id: Date.now(), nombre: nombre, cupos: cupos, ts: Date.now(), confirmado: false });
+      saveInvitados(list);
+      renderLista();
+    }
+  }
+
+  /* ── Copiar ── */
+  function copiarLink() {
+    const url = document.getElementById('result-url').textContent;
+    navigator.clipboard.writeText(url).then(function () {
+      const badge = document.getElementById('copied-badge');
+      badge.style.display = 'block';
+      setTimeout(function () { badge.style.display = 'none'; }, 2000);
+    });
+  }
+
+  /* ── Marcar confirmado ── */
+  function toggleConfirmado(id) {
+    const list = getInvitados();
+    const item = list.find(function (i) { return i.id === id; });
+    if (item) { item.confirmado = !item.confirmado; saveInvitados(list); renderLista(); }
+  }
+
+  /* ── Borrar uno ── */
+  function borrarInvitado(id) {
+    const list = getInvitados().filter(function (i) { return i.id !== id; });
+    saveInvitados(list);
+    renderLista();
+  }
+
+  /* ── Borrar todo ── */
+  function borrarTodo() {
+    if (!confirm('¿Borrar toda la lista de invitados?')) return;
+    saveInvitados([]);
+    renderLista();
+  }
+
+  /* ── Enviar link de invitación por WhatsApp ── */
+  function enviarInvitacion(nombre, cupos) {
+    const url  = buildInviteUrl(nombre, cupos);
+    const msg  = buildWaMsg(nombre, cupos, url);
+    window.open('https://wa.me/' + WA_PHONE + '?text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  /* ── Render lista ── */
+  function renderLista() {
+    const list = getInvitados();
+    const container = document.getElementById('guest-list');
+    const countEl   = document.getElementById('list-count');
+    const totalsEl  = document.getElementById('totals');
+
+    countEl.textContent = list.length + ' invitado' + (list.length !== 1 ? 's' : '');
+
+    if (list.length === 0) {
+      container.innerHTML = '<p class="empty-state">Aún no has generado invitaciones</p>';
+      totalsEl.style.display = 'none';
+      return;
+    }
+
+    container.innerHTML = list.map(function (inv) {
+      const plural = inv.cupos === 1 ? 'lugar' : 'lugares';
+      const confirmIcon = inv.confirmado ? '✅' : '⬜';
+      return '<div class="guest-item">' +
+        '<div class="guest-info">' +
+          '<p class="guest-name">' + escHtml(inv.nombre) + '</p>' +
+          '<p class="guest-meta">' + inv.cupos + ' ' + plural + ' · ' + formatDate(inv.ts) + '</p>' +
+        '</div>' +
+        '<div class="guest-actions">' +
+          '<button class="btn-sm" title="Marcar como confirmado" onclick="toggleConfirmado(' + inv.id + ')">' + confirmIcon + '</button>' +
+          '<button class="btn-sm wa-sm" onclick="enviarInvitacion(\'' + escJs(inv.nombre) + '\',' + inv.cupos + ')">WA</button>' +
+          '<button class="btn-sm del" onclick="borrarInvitado(' + inv.id + ')">✕</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    // Totales
+    const totalLugares    = list.reduce(function (s, i) { return s + i.cupos; }, 0);
+    const totalConfirmados = list.filter(function (i) { return i.confirmado; }).length;
+    document.getElementById('total-invitados').textContent  = list.length;
+    document.getElementById('total-lugares').textContent    = totalLugares;
+    document.getElementById('total-confirmados').textContent = totalConfirmados;
+    totalsEl.style.display = 'flex';
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function escJs(s) {
+    return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  }
+
+  /* ── Enter para generar ── */
+  ['inp-nombre','inp-cupos'].forEach(function (id) {
+    document.getElementById(id).addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') generarLink();
+    });
+  });
+
+  /* ── Init ── */
+  renderLista();
+</script>
+</body>
+</html>
