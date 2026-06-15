@@ -65,78 +65,6 @@
       margin-bottom: 1.1rem;
     }
 
-    /* ── Setup banner ── */
-    .setup-banner {
-      background: #fffbf0;
-      border: 1px solid #e8d8a0;
-      border-radius: 10px;
-      padding: 1rem 1.2rem;
-      margin-bottom: 1.1rem;
-    }
-    .setup-banner.connected {
-      background: var(--green-lt);
-      border-color: #a0d8b8;
-    }
-    .setup-row {
-      display: flex;
-      align-items: center;
-      gap: .8rem;
-      flex-wrap: wrap;
-    }
-    .setup-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: #f0a030;
-      flex-shrink: 0;
-    }
-    .setup-dot.ok { background: var(--green); }
-    .setup-status { font-size: .82rem; flex: 1; }
-    .btn-setup-toggle {
-      font-size: .7rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--rose);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: .2rem;
-      white-space: nowrap;
-    }
-    .setup-form { margin-top: .9rem; display: none; }
-    .setup-form.open { display: block; }
-    .setup-input-row { display: flex; gap: .6rem; }
-    .setup-input-row input {
-      flex: 1;
-      padding: .6rem .9rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-family: 'Raleway', sans-serif;
-      font-size: .82rem;
-      color: var(--brown);
-      background: var(--cream);
-      outline: none;
-    }
-    .setup-input-row input:focus { border-color: var(--rose); }
-    .btn-save-url {
-      padding: .6rem 1.1rem;
-      background: var(--rose);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-family: 'Raleway', sans-serif;
-      font-size: .78rem;
-      font-weight: 500;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .setup-hint {
-      font-size: .72rem;
-      color: var(--gray);
-      margin-top: .5rem;
-      line-height: 1.5;
-    }
-    .setup-hint a { color: var(--rose); }
-
     /* ── Sync badge ── */
     .sync-badge {
       display: inline-block;
@@ -357,32 +285,6 @@
 </header>
 
 <!-- ══════════════════════════════
-     CONFIGURACIÓN GOOGLE SHEETS
-══════════════════════════════ -->
-<div class="card">
-  <p class="card-title">Conexión con Google Sheets</p>
-
-  <!-- Banner de estado -->
-  <div class="setup-banner" id="setup-banner">
-    <div class="setup-row">
-      <div class="setup-dot" id="setup-dot"></div>
-      <span class="setup-status" id="setup-status"></span>
-      <button class="btn-setup-toggle" onclick="toggleSetupForm()">Configurar ▾</button>
-    </div>
-    <div class="setup-form" id="setup-form">
-      <div class="setup-input-row" style="margin-top:.8rem">
-        <input type="text" id="inp-script-url" placeholder="https://script.google.com/macros/s/...">
-        <button class="btn-save-url" onclick="guardarScriptUrl()">Guardar</button>
-      </div>
-      <p class="setup-hint">
-        Pega aquí la URL de tu Google Apps Script web app.<br>
-        ¿No la tienes aún? <a href="#instrucciones" onclick="document.querySelector('details').open=true">Sigue las instrucciones</a> abajo.
-      </p>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════
      GENERADOR
 ══════════════════════════════ -->
 <div class="card">
@@ -474,56 +376,64 @@
         <div class="step-num">3</div>
         <div>
           <p>Borra todo el código que aparece y pega esto:</p>
-          <code>const HOJA = 'Invitados';
+          <code>function getSheet(ss, nombre, encabezados) {
+  var s = ss.getSheetByName(nombre);
+  if (!s) {
+    s = ss.insertSheet(nombre);
+    s.appendRow(encabezados);
+    s.getRange(1,1,1,encabezados.length).setFontWeight('bold');
+  }
+  return s;
+}
 
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
-    var ss    = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName(HOJA);
-
-    if (!sheet) {
-      sheet = ss.insertSheet(HOJA);
-      sheet.appendRow(['Nombre','Lugares','Confirmado','Fecha','ID']);
-      sheet.getRange(1,1,1,5).setFontWeight('bold');
-    }
+    var ss   = SpreadsheetApp.getActiveSpreadsheet();
+    var fecha = Utilities.formatDate(new Date(),'America/Mexico_City','dd/MM/yyyy HH:mm');
 
     if (data.action === 'add') {
-      sheet.appendRow([
-        data.nombre, data.cupos, 'No ⬜',
-        Utilities.formatDate(new Date(),'America/Mexico_City','dd/MM/yyyy HH:mm'),
-        data.id
-      ]);
+      var s = getSheet(ss,'Invitados',['Nombre','Lugares','Confirmado','Fecha','ID']);
+      s.appendRow([data.nombre, data.cupos, 'No ⬜', fecha, data.id]);
+
     } else if (data.action === 'confirm') {
-      var rows = sheet.getDataRange().getValues();
-      for (var i = 1; i < rows.length; i++) {
-        if (String(rows[i][4]) === String(data.id)) {
-          sheet.getRange(i+1, 3).setValue(data.confirmado ? 'Sí ✅' : 'No ⬜');
-          break;
+      var s = getSheet(ss,'Invitados',['Nombre','Lugares','Confirmado','Fecha','ID']);
+      var rows = s.getDataRange().getValues();
+      for (var i=1;i<rows.length;i++) {
+        if (String(rows[i][4])===String(data.id)) {
+          s.getRange(i+1,3).setValue(data.confirmado ? 'Sí ✅' : 'No ⬜'); break;
         }
       }
+
     } else if (data.action === 'delete') {
-      var rows = sheet.getDataRange().getValues();
-      for (var i = rows.length - 1; i >= 1; i--) {
-        if (String(rows[i][4]) === String(data.id)) {
-          sheet.deleteRow(i+1); break;
-        }
+      var s = getSheet(ss,'Invitados',['Nombre','Lugares','Confirmado','Fecha','ID']);
+      var rows = s.getDataRange().getValues();
+      for (var i=rows.length-1;i>=1;i--) {
+        if (String(rows[i][4])===String(data.id)) { s.deleteRow(i+1); break; }
       }
+
+    } else if (data.action === 'asistente') {
+      // Persona individual que confirma desde la invitación
+      var hoja = data.porConfirmar ? 'Por Confirmar' : 'Confirmados';
+      var s = getSheet(ss, hoja, ['Grupo','Nombre Completo','Estado','Fecha']);
+      s.appendRow([
+        data.grupo,
+        data.nombreCompleto,
+        data.porConfirmar ? 'Por confirmar ⏳' : 'Confirmado ✅',
+        fecha
+      ]);
     }
 
-    return ContentService
-      .createTextOutput(JSON.stringify({ok:true}))
+    return ContentService.createTextOutput(JSON.stringify({ok:true}))
       .setMimeType(ContentService.MimeType.JSON);
   } catch(err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ok:false,error:err.message}))
+    return ContentService.createTextOutput(JSON.stringify({ok:false,error:err.message}))
       .setMimeType(ContentService.MimeType.JSON);
   }
 }
 
 function doGet(e) {
-  return ContentService
-    .createTextOutput(JSON.stringify({ok:true}))
+  return ContentService.createTextOutput(JSON.stringify({ok:true}))
     .setMimeType(ContentService.MimeType.JSON);
 }</code>
         </div>
@@ -537,13 +447,6 @@ function doGet(e) {
           · Ejecutar como: <em>Yo</em><br>
           · Quién tiene acceso: <em>Cualquier persona</em><br>
           Haz clic en <strong>Implementar</strong> y copia la URL que aparece.</p>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="step-num">5</div>
-        <div>
-          <p>Pega esa URL en el campo <strong>"Conexión con Google Sheets"</strong> arriba y haz clic en <em>Guardar</em>. ¡Listo!</p>
         </div>
       </div>
 
@@ -564,39 +467,6 @@ function doGet(e) {
      SETUP — Google Sheets
   ══════════════════════════════ */
   function getScriptUrl() { return 'https://script.google.com/macros/s/AKfycbxuvcsiHGlek8ZdCD0VzmMQp0I_BiX08BICA6DynOvlGbkeLRmIQdThCICk86a4c3SQ/exec'; }
-
-  function updateSetupUI() {
-    const url  = getScriptUrl();
-    const dot  = document.getElementById('setup-dot');
-    const st   = document.getElementById('setup-status');
-    const ban  = document.getElementById('setup-banner');
-    if (url) {
-      dot.className = 'setup-dot ok';
-      st.textContent = 'Conectado con Google Sheets ✓';
-      ban.className = 'setup-banner connected';
-    } else {
-      dot.className = 'setup-dot';
-      st.textContent = 'Sin conectar — los invitados solo se guardan en este navegador';
-      ban.className = 'setup-banner';
-    }
-    document.getElementById('inp-script-url').value = url;
-  }
-
-  function toggleSetupForm() {
-    const f = document.getElementById('setup-form');
-    f.className = f.className.includes('open') ? 'setup-form' : 'setup-form open';
-  }
-
-  function guardarScriptUrl() {
-    const val = document.getElementById('inp-script-url').value.trim();
-    if (val) {
-      localStorage.setItem(SCRIPT_KEY, val);
-    } else {
-      localStorage.removeItem(SCRIPT_KEY);
-    }
-    document.getElementById('setup-form').className = 'setup-form';
-    updateSetupUI();
-  }
 
   /* ══════════════════════════════
      SYNC → Google Sheets
@@ -708,7 +578,8 @@ function doGet(e) {
     syncSheet('confirm', { id: id, confirmado: item.confirmado });
   }
 
-  function borrarInvitado(id) {
+  function borrarInvitado(id, nombre) {
+    if (!confirm('¿Eliminar la invitación de "' + nombre + '"?\nEsta acción no se puede deshacer.')) return;
     var list = getInvitados().filter(function(i){ return i.id !== id; });
     saveInvitados(list);
     renderLista();
@@ -755,7 +626,7 @@ function doGet(e) {
         '<div class="guest-actions">' +
           '<button class="btn-sm" title="Marcar confirmado" onclick="toggleConfirmado(' + inv.id + ')">' + icon + '</button>' +
           '<button class="btn-sm wa-sm" onclick="enviarInvitacion(\'' + escJs(inv.nombre) + '\',' + inv.cupos + ')">WA</button>' +
-          '<button class="btn-sm del" onclick="borrarInvitado(' + inv.id + ')">✕</button>' +
+          '<button class="btn-sm del" onclick="borrarInvitado(' + inv.id + ',\'' + escJs(inv.nombre) + '\')">✕</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -775,7 +646,6 @@ function doGet(e) {
   });
 
   /* ── Init ── */
-  updateSetupUI();
   renderLista();
 </script>
 </body>

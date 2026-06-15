@@ -551,6 +551,53 @@
 
     .rsvp-input::placeholder { color: #c4a8ae; }
 
+    .rsvp-uncertain-wrap {
+      margin-top: .45rem;
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      cursor: pointer;
+      width: fit-content;
+    }
+
+    .rsvp-uncertain-wrap input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid #c4a8ae;
+      border-radius: 4px;
+      background: #fdfaf8;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color .2s, background .2s;
+      position: relative;
+    }
+
+    .rsvp-uncertain-wrap input[type="checkbox"]:checked {
+      background: #f0a838;
+      border-color: #f0a838;
+    }
+
+    .rsvp-uncertain-wrap input[type="checkbox"]:checked::after {
+      content: '⏳';
+      font-size: .7rem;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+    }
+
+    .rsvp-uncertain-text {
+      font-size: .72rem;
+      color: #a08060;
+      letter-spacing: .5px;
+    }
+
+    .rsvp-uncertain-wrap:has(input:checked) .rsvp-uncertain-text {
+      color: #c08020;
+      font-weight: 500;
+    }
+
     .btn-wa-send {
       margin-top: 1.4rem;
       display: flex;
@@ -1019,7 +1066,11 @@
         '<div class="rsvp-inputs">' +
           '<input class="rsvp-input" type="text" placeholder="Nombre" data-idx="' + i + '" data-field="nombre" autocomplete="given-name" maxlength="40">' +
           '<input class="rsvp-input" type="text" placeholder="Apellido" data-idx="' + i + '" data-field="apellido" autocomplete="family-name" maxlength="40">' +
-        '</div>';
+        '</div>' +
+        '<label class="rsvp-uncertain-wrap">' +
+          '<input type="checkbox" data-idx="' + i + '" data-field="porconfirmar">' +
+          '<span class="rsvp-uncertain-text">Por confirmar (no está seguro/a aún)</span>' +
+        '</label>';
       rowsEl.appendChild(row);
     }
 
@@ -1039,9 +1090,11 @@
       }
     });
 
+    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuvcsiHGlek8ZdCD0VzmMQp0I_BiX08BICA6DynOvlGbkeLRmIQdThCICk86a4c3SQ/exec';
+
     // Enviar por WhatsApp al presionar el botón verde
     document.getElementById('btn-wa-send').addEventListener('click', function () {
-      // Validar que todos los campos estén llenos
+      // Validar que todos los campos de nombre y apellido estén llenos
       var inputs = formWrap.querySelectorAll('.rsvp-input');
       var todoLleno = true;
       inputs.forEach(function (inp) {
@@ -1053,30 +1106,45 @@
       });
 
       if (!todoLleno) {
-        // Scroll al primer campo vacío
         var primeroVacio = formWrap.querySelector('.rsvp-input[style*="e05c7a"]');
         if (primeroVacio) primeroVacio.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
 
-      // Recolectar nombres
+      // Recolectar personas con su estado
       var personas = [];
       for (var i = 1; i <= cupos; i++) {
         var n = formWrap.querySelector('[data-idx="' + i + '"][data-field="nombre"]').value.trim();
         var a = formWrap.querySelector('[data-idx="' + i + '"][data-field="apellido"]').value.trim();
-        personas.push([n, a].filter(Boolean).join(' '));
+        var porConfirmar = formWrap.querySelector('[data-idx="' + i + '"][data-field="porconfirmar"]').checked;
+        personas.push({ nombre: [n, a].filter(Boolean).join(' '), porConfirmar: porConfirmar });
       }
 
-      // Construir mensaje
-      var lista = personas.map(function (p, idx) { return (idx + 1) + '. ' + p; }).join(', ');
-      var msg;
-      if (nombre) {
-        msg = '¡Hola! Somos ' + nombre + ' y confirmamos nuestra asistencia a la boda de Gabriel & Jatzive 🎊\n' +
-              'Asistiremos: ' + lista + '.\n¡Nos vemos pronto! 💐';
-      } else {
-        msg = '¡Hola! Confirmamos nuestra asistencia a la boda de Gabriel & Jatzive 🎊\n' +
-              'Asistiremos: ' + lista + '.\n¡Nos vemos pronto! 💐';
-      }
+      // Construir mensaje de WhatsApp
+      var lineas = personas.map(function (p, idx) {
+        return (p.porConfirmar ? '⏳' : '✅') + ' ' + (idx + 1) + '. ' + p.nombre + (p.porConfirmar ? ' (por confirmar)' : '');
+      }).join('\n');
+
+      var intro = nombre
+        ? '¡Hola! Somos ' + nombre + ' y confirmamos nuestra asistencia a la boda de Gabriel & Jatzive 🎊\n'
+        : '¡Hola! Confirmamos nuestra asistencia a la boda de Gabriel & Jatzive 🎊\n';
+
+      var msg = intro + 'Asistiremos:\n' + lineas + '\n¡Nos vemos pronto! 💐';
+
+      // Enviar cada persona a Google Sheets
+      personas.forEach(function (p) {
+        fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            action: 'asistente',
+            grupo: nombre || 'Invitado',
+            nombreCompleto: p.nombre,
+            porConfirmar: p.porConfirmar
+          })
+        });
+      });
 
       window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
     });
