@@ -21,6 +21,8 @@
       --border:   #e8d0d8;
       --gray:     #888;
       --danger:   #c44;
+      --green:    #2d9e5f;
+      --green-lt: #e8f8ef;
     }
 
     body {
@@ -29,82 +31,140 @@
       font-family: 'Raleway', sans-serif;
       font-weight: 300;
       min-height: 100vh;
-      padding: 2rem 1rem 4rem;
+      padding: 2rem 1rem 5rem;
     }
 
-    /* ── Header ── */
     .page-header {
       text-align: center;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
       padding-bottom: 1.5rem;
       border-bottom: 1px solid var(--border);
     }
-
     .page-header h1 {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2rem;
       font-weight: 400;
-      color: var(--brown);
-      margin-bottom: .3rem;
     }
-
-    .page-header p {
-      font-size: .78rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--rose);
-    }
+    .page-header p { font-size: .75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--rose); margin-top: .2rem; }
 
     /* ── Card ── */
     .card {
       background: var(--white);
       border-radius: 14px;
-      padding: 1.8rem;
+      padding: 1.6rem;
       border: 1px solid var(--border);
       box-shadow: 0 4px 18px rgba(74,55,40,.06);
-      max-width: 680px;
-      margin: 0 auto 1.5rem;
+      max-width: 700px;
+      margin: 0 auto 1.4rem;
     }
-
     .card-title {
-      font-size: .72rem;
+      font-size: .7rem;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--rose);
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.1rem;
     }
+
+    /* ── Setup banner ── */
+    .setup-banner {
+      background: #fffbf0;
+      border: 1px solid #e8d8a0;
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.1rem;
+    }
+    .setup-banner.connected {
+      background: var(--green-lt);
+      border-color: #a0d8b8;
+    }
+    .setup-row {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      flex-wrap: wrap;
+    }
+    .setup-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #f0a030;
+      flex-shrink: 0;
+    }
+    .setup-dot.ok { background: var(--green); }
+    .setup-status { font-size: .82rem; flex: 1; }
+    .btn-setup-toggle {
+      font-size: .7rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--rose);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: .2rem;
+      white-space: nowrap;
+    }
+    .setup-form { margin-top: .9rem; display: none; }
+    .setup-form.open { display: block; }
+    .setup-input-row { display: flex; gap: .6rem; }
+    .setup-input-row input {
+      flex: 1;
+      padding: .6rem .9rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: 'Raleway', sans-serif;
+      font-size: .82rem;
+      color: var(--brown);
+      background: var(--cream);
+      outline: none;
+    }
+    .setup-input-row input:focus { border-color: var(--rose); }
+    .btn-save-url {
+      padding: .6rem 1.1rem;
+      background: var(--rose);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Raleway', sans-serif;
+      font-size: .78rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .setup-hint {
+      font-size: .72rem;
+      color: var(--gray);
+      margin-top: .5rem;
+      line-height: 1.5;
+    }
+    .setup-hint a { color: var(--rose); }
+
+    /* ── Sync badge ── */
+    .sync-badge {
+      display: inline-block;
+      font-size: .65rem;
+      letter-spacing: 1px;
+      padding: .2rem .6rem;
+      border-radius: 20px;
+      margin-left: .5rem;
+      vertical-align: middle;
+    }
+    .sync-badge.sending { background: #fff8e0; color: #a07010; }
+    .sync-badge.ok      { background: var(--green-lt); color: var(--green); }
+    .sync-badge.err     { background: #fff0f0; color: var(--danger); }
 
     /* ── Form ── */
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 1rem;
-      align-items: end;
-    }
-
-    @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
-
     .field-row {
       display: grid;
       grid-template-columns: 1fr 120px;
       gap: .8rem;
+      margin-bottom: 1rem;
     }
-
     @media (max-width: 480px) { .field-row { grid-template-columns: 1fr; } }
 
-    label {
-      display: block;
-      font-size: .7rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--sage);
-      margin-bottom: .4rem;
-    }
+    label { display: block; font-size: .68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--sage); margin-bottom: .4rem; }
 
-    input[type="text"],
-    input[type="number"] {
+    input[type="text"], input[type="number"] {
       width: 100%;
-      padding: .7rem 1rem;
+      padding: .68rem 1rem;
       border: 1px solid var(--border);
       border-radius: 8px;
       font-family: 'Raleway', sans-serif;
@@ -119,7 +179,6 @@
     .btn-gen {
       display: block;
       width: 100%;
-      margin-top: 1rem;
       padding: .85rem 1rem;
       background: linear-gradient(135deg, var(--rose), #9e4e64);
       color: #fff;
@@ -135,76 +194,50 @@
     }
     .btn-gen:hover { opacity: .9; transform: translateY(-1px); }
 
-    /* ── Result box ── */
+    /* ── Result ── */
     .result-box {
       display: none;
-      margin-top: 1.4rem;
-      padding: 1.2rem;
+      margin-top: 1.3rem;
+      padding: 1.1rem;
       background: #fdf0f4;
       border: 1px solid var(--rose-lt);
       border-radius: 10px;
     }
-
-    .result-label {
-      font-size: .65rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--sage);
-      margin-bottom: .5rem;
-    }
-
+    .result-label { font-size: .65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--sage); margin-bottom: .5rem; }
     .result-url {
-      font-size: .82rem;
+      font-size: .8rem;
       word-break: break-all;
-      color: var(--brown);
       background: #fff;
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: .6rem .8rem;
+      padding: .55rem .8rem;
       margin-bottom: .8rem;
       font-family: monospace;
+      color: var(--brown);
     }
-
-    .result-actions {
-      display: flex;
-      gap: .7rem;
-      flex-wrap: wrap;
-    }
-
+    .result-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
     .btn-action {
       flex: 1;
-      min-width: 130px;
-      padding: .7rem 1rem;
+      min-width: 120px;
+      padding: .68rem .8rem;
       border-radius: 8px;
       border: 1.5px solid var(--border);
       background: #fff;
       color: var(--brown);
       font-family: 'Raleway', sans-serif;
-      font-size: .78rem;
+      font-size: .75rem;
       font-weight: 500;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
       text-align: center;
       text-decoration: none;
-      transition: background .2s, border-color .2s;
+      transition: background .15s;
     }
     .btn-action:hover { background: var(--cream); border-color: var(--rose); }
-
-    .btn-action.wa {
-      background: #25d366;
-      color: #fff;
-      border-color: #25d366;
-    }
-    .btn-action.wa:hover { background: #1ebe5d; border-color: #1ebe5d; }
-
-    .copied-badge {
-      display: none;
-      font-size: .7rem;
-      color: var(--sage);
-      letter-spacing: 1px;
-      margin-top: .4rem;
-    }
+    .btn-action.wa { background: #25d366; color: #fff; border-color: #25d366; }
+    .btn-action.wa:hover { background: #1ebe5d; }
+    .copied-msg { display: none; font-size: .7rem; color: var(--sage); margin-top: .4rem; }
 
     /* ── Guest list ── */
     .list-header {
@@ -212,68 +245,46 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: .5rem;
     }
-
-    .list-count {
-      font-size: .7rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--gray);
-    }
-
-    .btn-clear {
-      font-size: .68rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--danger);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: .2rem .4rem;
-    }
+    .list-count { font-size: .68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
+    .btn-clear { font-size: .68rem; letter-spacing: 1px; text-transform: uppercase; color: var(--danger); background: none; border: none; cursor: pointer; }
     .btn-clear:hover { text-decoration: underline; }
 
-    .guest-list { display: flex; flex-direction: column; gap: .7rem; }
+    .guest-list { display: flex; flex-direction: column; gap: .65rem; }
 
     .guest-item {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: .9rem 1rem;
+      gap: .8rem;
+      padding: .85rem 1rem;
       background: var(--cream);
       border-radius: 10px;
       border: 1px solid var(--border);
       flex-wrap: wrap;
     }
+    .guest-item.confirmed { border-color: #a0d8b8; background: #f5fdf8; }
 
     .guest-info { flex: 1; min-width: 0; }
-
     .guest-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: var(--brown);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .guest-meta { font-size: .68rem; color: var(--gray); margin-top: .1rem; }
 
-    .guest-meta {
-      font-size: .7rem;
-      color: var(--gray);
-      letter-spacing: .5px;
-      margin-top: .1rem;
-    }
-
-    .guest-actions { display: flex; gap: .5rem; flex-shrink: 0; }
-
+    .guest-actions { display: flex; gap: .45rem; flex-shrink: 0; }
     .btn-sm {
-      padding: .4rem .8rem;
+      padding: .38rem .7rem;
       border-radius: 6px;
       border: 1px solid var(--border);
       background: #fff;
       font-family: 'Raleway', sans-serif;
-      font-size: .7rem;
+      font-size: .68rem;
       font-weight: 500;
       letter-spacing: 1px;
       text-transform: uppercase;
@@ -281,6 +292,7 @@
       text-decoration: none;
       color: var(--brown);
       transition: background .15s;
+      white-space: nowrap;
     }
     .btn-sm:hover { background: var(--cream); border-color: var(--rose); }
     .btn-sm.wa-sm { background: #25d366; color: #fff; border-color: #25d366; }
@@ -288,48 +300,52 @@
     .btn-sm.del { color: var(--danger); border-color: #e8b0b0; }
     .btn-sm.del:hover { background: #fff0f0; }
 
-    .empty-state {
-      text-align: center;
-      padding: 2rem;
-      color: var(--gray);
-      font-size: .88rem;
-      font-style: italic;
-    }
+    .empty-state { text-align: center; padding: 2rem; color: var(--gray); font-size: .88rem; font-style: italic; }
 
-    /* ── Totals ── */
-    .totals {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 1.2rem;
-      padding-top: 1.2rem;
-      border-top: 1px solid var(--border);
-    }
+    /* ── Totales ── */
+    .totals { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: 1.1rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
+    .total-chip { flex: 1; min-width: 80px; text-align: center; background: var(--cream); border-radius: 10px; padding: .8rem .5rem; border: 1px solid var(--border); }
+    .total-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--rose); display: block; line-height: 1; }
+    .total-label { font-size: .6rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-top: .3rem; }
 
-    .total-chip {
-      flex: 1;
-      min-width: 100px;
-      text-align: center;
-      background: var(--cream);
-      border-radius: 10px;
-      padding: .8rem .6rem;
-      border: 1px solid var(--border);
-    }
-
-    .total-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
-      color: var(--rose);
-      display: block;
-      line-height: 1;
-    }
-
-    .total-label {
-      font-size: .62rem;
+    /* ── Script instructions ── */
+    .instructions { max-width: 700px; margin: 0 auto 1.4rem; }
+    details summary {
+      cursor: pointer;
+      font-size: .75rem;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--gray);
-      margin-top: .3rem;
+      color: var(--rose);
+      padding: .5rem 0;
+      user-select: none;
+    }
+    .steps { padding: 1rem 0 0; }
+    .step { display: flex; gap: .8rem; margin-bottom: 1rem; }
+    .step-num {
+      width: 24px; height: 24px;
+      background: var(--rose);
+      color: #fff;
+      border-radius: 50%;
+      font-size: .72rem;
+      font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+    .step p { font-size: .85rem; line-height: 1.6; }
+    .step p a { color: var(--rose); }
+    .step code {
+      display: block;
+      background: #f8f0f4;
+      border: 1px solid var(--rose-lt);
+      border-radius: 6px;
+      padding: .7rem .9rem;
+      font-size: .75rem;
+      line-height: 1.5;
+      white-space: pre;
+      overflow-x: auto;
+      margin-top: .5rem;
+      font-family: monospace;
     }
   </style>
 </head>
@@ -340,7 +356,35 @@
   <p>Administrador de invitaciones</p>
 </header>
 
-<!-- ── Generador ── -->
+<!-- ══════════════════════════════
+     CONFIGURACIÓN GOOGLE SHEETS
+══════════════════════════════ -->
+<div class="card">
+  <p class="card-title">Conexión con Google Sheets</p>
+
+  <!-- Banner de estado -->
+  <div class="setup-banner" id="setup-banner">
+    <div class="setup-row">
+      <div class="setup-dot" id="setup-dot"></div>
+      <span class="setup-status" id="setup-status"></span>
+      <button class="btn-setup-toggle" onclick="toggleSetupForm()">Configurar ▾</button>
+    </div>
+    <div class="setup-form" id="setup-form">
+      <div class="setup-input-row" style="margin-top:.8rem">
+        <input type="text" id="inp-script-url" placeholder="https://script.google.com/macros/s/...">
+        <button class="btn-save-url" onclick="guardarScriptUrl()">Guardar</button>
+      </div>
+      <p class="setup-hint">
+        Pega aquí la URL de tu Google Apps Script web app.<br>
+        ¿No la tienes aún? <a href="#instrucciones" onclick="document.querySelector('details').open=true">Sigue las instrucciones</a> abajo.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     GENERADOR
+══════════════════════════════ -->
 <div class="card">
   <p class="card-title">Generar nueva invitación</p>
 
@@ -357,21 +401,22 @@
 
   <button class="btn-gen" onclick="generarLink()">Generar invitación</button>
 
-  <!-- Resultado -->
   <div class="result-box" id="result-box">
-    <p class="result-label">Link de invitación</p>
+    <p class="result-label">Link de invitación
+      <span class="sync-badge sending" id="sync-badge" style="display:none">sincronizando…</span>
+    </p>
     <div class="result-url" id="result-url"></div>
     <div class="result-actions">
       <button class="btn-action" onclick="copiarLink()">📋 Copiar link</button>
-      <a class="btn-action wa" id="btn-wa-send" href="#" target="_blank" rel="noopener">
-        ✉️ Enviar por WhatsApp
-      </a>
+      <a class="btn-action wa" id="btn-wa-send" href="#" target="_blank" rel="noopener">✉️ Enviar por WhatsApp</a>
     </div>
-    <p class="copied-badge" id="copied-badge">✓ Copiado al portapapeles</p>
+    <p class="copied-msg" id="copied-msg">✓ Copiado al portapapeles</p>
   </div>
 </div>
 
-<!-- ── Lista de invitados ── -->
+<!-- ══════════════════════════════
+     LISTA DE INVITADOS
+══════════════════════════════ -->
 <div class="card">
   <div class="list-header">
     <p class="card-title" style="margin:0">Lista de invitados</p>
@@ -383,7 +428,6 @@
 
   <div class="guest-list" id="guest-list"></div>
 
-  <!-- Totales -->
   <div class="totals" id="totals" style="display:none">
     <div class="total-chip">
       <span class="total-num" id="total-invitados">0</span>
@@ -391,37 +435,206 @@
     </div>
     <div class="total-chip">
       <span class="total-num" id="total-lugares">0</span>
-      <p class="total-label">Lugares totales</p>
+      <p class="total-label">Lugares</p>
     </div>
     <div class="total-chip">
       <span class="total-num" id="total-confirmados">0</span>
-      <p class="total-label">Confirmados</p>
+      <p class="total-label">Confirmados ✅</p>
+    </div>
+    <div class="total-chip">
+      <span class="total-num" id="total-pendientes">0</span>
+      <p class="total-label">Pendientes ⬜</p>
     </div>
   </div>
 </div>
 
-<script>
-  /* ── Config ── */
-  const BASE_URL = 'https://christopherortiz69.github.io/Gabriel-Jatzive/';
-  const WA_PHONE = '525599192118';
-  const STORAGE_KEY = 'gj_invitados';
+<!-- ══════════════════════════════
+     INSTRUCCIONES APPS SCRIPT
+══════════════════════════════ -->
+<div class="instructions" id="instrucciones">
+  <details>
+    <summary>📋 Instrucciones: conectar con Google Sheets</summary>
+    <div class="steps">
 
-  /* ── Helpers ── */
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <p>Abre <a href="https://sheets.google.com" target="_blank" rel="noopener">sheets.google.com</a> y crea una hoja nueva. Nómbrala como quieras (ej: <em>Invitados Boda</em>).</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <p>En el menú de la hoja: <strong>Extensiones → Apps Script</strong>. Se abre el editor de código.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <p>Borra todo el código que aparece y pega esto:</p>
+          <code>const HOJA = 'Invitados';
+
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var ss    = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName(HOJA);
+
+    if (!sheet) {
+      sheet = ss.insertSheet(HOJA);
+      sheet.appendRow(['Nombre','Lugares','Confirmado','Fecha','ID']);
+      sheet.getRange(1,1,1,5).setFontWeight('bold');
+    }
+
+    if (data.action === 'add') {
+      sheet.appendRow([
+        data.nombre, data.cupos, 'No ⬜',
+        Utilities.formatDate(new Date(),'America/Mexico_City','dd/MM/yyyy HH:mm'),
+        data.id
+      ]);
+    } else if (data.action === 'confirm') {
+      var rows = sheet.getDataRange().getValues();
+      for (var i = 1; i < rows.length; i++) {
+        if (String(rows[i][4]) === String(data.id)) {
+          sheet.getRange(i+1, 3).setValue(data.confirmado ? 'Sí ✅' : 'No ⬜');
+          break;
+        }
+      }
+    } else if (data.action === 'delete') {
+      var rows = sheet.getDataRange().getValues();
+      for (var i = rows.length - 1; i >= 1; i--) {
+        if (String(rows[i][4]) === String(data.id)) {
+          sheet.deleteRow(i+1); break;
+        }
+      }
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ok:true}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ok:false,error:err.message}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  return ContentService
+    .createTextOutput(JSON.stringify({ok:true}))
+    .setMimeType(ContentService.MimeType.JSON);
+}</code>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <p>Haz clic en <strong>Implementar → Nueva implementación</strong>.<br>
+          · Tipo: <em>Aplicación web</em><br>
+          · Ejecutar como: <em>Yo</em><br>
+          · Quién tiene acceso: <em>Cualquier persona</em><br>
+          Haz clic en <strong>Implementar</strong> y copia la URL que aparece.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <p>Pega esa URL en el campo <strong>"Conexión con Google Sheets"</strong> arriba y haz clic en <em>Guardar</em>. ¡Listo!</p>
+        </div>
+      </div>
+
+    </div>
+  </details>
+</div>
+
+<script>
+  /* ══════════════════════════════
+     CONFIG
+  ══════════════════════════════ */
+  const BASE_URL    = 'https://christopherortiz69.github.io/Gabriel-Jatzive/';
+  const WA_PHONE    = '525599192118';
+  const STORAGE_KEY = 'gj_invitados';
+  const SCRIPT_KEY  = 'gj_script_url';
+
+  /* ══════════════════════════════
+     SETUP — Google Sheets
+  ══════════════════════════════ */
+  function getScriptUrl() { return localStorage.getItem(SCRIPT_KEY) || ''; }
+
+  function updateSetupUI() {
+    const url  = getScriptUrl();
+    const dot  = document.getElementById('setup-dot');
+    const st   = document.getElementById('setup-status');
+    const ban  = document.getElementById('setup-banner');
+    if (url) {
+      dot.className = 'setup-dot ok';
+      st.textContent = 'Conectado con Google Sheets ✓';
+      ban.className = 'setup-banner connected';
+    } else {
+      dot.className = 'setup-dot';
+      st.textContent = 'Sin conectar — los invitados solo se guardan en este navegador';
+      ban.className = 'setup-banner';
+    }
+    document.getElementById('inp-script-url').value = url;
+  }
+
+  function toggleSetupForm() {
+    const f = document.getElementById('setup-form');
+    f.className = f.className.includes('open') ? 'setup-form' : 'setup-form open';
+  }
+
+  function guardarScriptUrl() {
+    const val = document.getElementById('inp-script-url').value.trim();
+    if (val) {
+      localStorage.setItem(SCRIPT_KEY, val);
+    } else {
+      localStorage.removeItem(SCRIPT_KEY);
+    }
+    document.getElementById('setup-form').className = 'setup-form';
+    updateSetupUI();
+  }
+
+  /* ══════════════════════════════
+     SYNC → Google Sheets
+  ══════════════════════════════ */
+  function syncSheet(action, data) {
+    var url = getScriptUrl();
+    if (!url) return;
+
+    var badge = document.getElementById('sync-badge');
+    if (badge) { badge.style.display = 'inline-block'; badge.className = 'sync-badge sending'; badge.textContent = 'sincronizando…'; }
+
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(Object.assign({ action: action }, data))
+    }).then(function () {
+      if (badge) { badge.className = 'sync-badge ok'; badge.textContent = '✓ guardado en Sheets'; setTimeout(function(){ badge.style.display='none'; }, 3000); }
+    }).catch(function () {
+      if (badge) { badge.className = 'sync-badge err'; badge.textContent = '✕ error de red'; setTimeout(function(){ badge.style.display='none'; }, 4000); }
+    });
+  }
+
+  /* ══════════════════════════════
+     HELPERS
+  ══════════════════════════════ */
   function getInvitados() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
     catch (_) { return []; }
   }
-
-  function saveInvitados(list) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-  }
+  function saveInvitados(list) { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
 
   function buildInviteUrl(nombre, cupos) {
     return BASE_URL + '?nombre=' + encodeURIComponent(nombre) + '&cupos=' + cupos;
   }
 
   function buildWaMsg(nombre, cupos, url) {
-    const plural = cupos === 1 ? 'lugar' : 'lugares';
+    var plural = cupos === 1 ? 'lugar' : 'lugares';
     return '¡Hola ' + nombre + '! 🌸\n' +
            'Con todo cariño, te invitamos a la boda de *Gabriel & Jatzive*.\n' +
            'Te reservamos *' + cupos + ' ' + plural + '*. Aquí está tu invitación personalizada:\n' +
@@ -430,84 +643,98 @@
   }
 
   function formatDate(ts) {
-    const d = new Date(ts);
-    return d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
+    return new Date(ts).toLocaleDateString('es-MX', { day:'2-digit', month:'short', year:'numeric' });
   }
 
-  /* ── Generar ── */
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function escJs(s) {
+    return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  }
+
+  /* ══════════════════════════════
+     GENERAR
+  ══════════════════════════════ */
   function generarLink() {
-    const nombre = document.getElementById('inp-nombre').value.trim();
-    const cupos  = parseInt(document.getElementById('inp-cupos').value, 10) || 1;
+    var nombre = document.getElementById('inp-nombre').value.trim();
+    var cupos  = Math.max(1, parseInt(document.getElementById('inp-cupos').value, 10) || 1);
 
-    if (!nombre) {
-      document.getElementById('inp-nombre').focus();
-      return;
-    }
+    if (!nombre) { document.getElementById('inp-nombre').focus(); return; }
 
-    const url = buildInviteUrl(nombre, cupos);
-    const msg = buildWaMsg(nombre, cupos, url);
-    const waHref = 'https://wa.me/' + WA_PHONE + '?text=' + encodeURIComponent(msg);
+    var url    = buildInviteUrl(nombre, cupos);
+    var msg    = buildWaMsg(nombre, cupos, url);
+    var waHref = 'https://wa.me/' + WA_PHONE + '?text=' + encodeURIComponent(msg);
 
-    // Mostrar resultado
     document.getElementById('result-url').textContent = url;
     document.getElementById('btn-wa-send').href = waHref;
     document.getElementById('result-box').style.display = 'block';
-    document.getElementById('copied-badge').style.display = 'none';
+    document.getElementById('copied-msg').style.display = 'none';
 
-    // Guardar en lista (solo si no existe ya con el mismo nombre+cupos)
-    const list = getInvitados();
-    const existe = list.find(function (i) { return i.nombre === nombre && i.cupos === cupos; });
+    /* Guardar localmente */
+    var list  = getInvitados();
+    var existe = list.find(function(i){ return i.nombre === nombre && i.cupos === cupos; });
     if (!existe) {
-      list.unshift({ id: Date.now(), nombre: nombre, cupos: cupos, ts: Date.now(), confirmado: false });
+      var inv = { id: Date.now(), nombre: nombre, cupos: cupos, ts: Date.now(), confirmado: false };
+      list.unshift(inv);
       saveInvitados(list);
       renderLista();
+      syncSheet('add', { id: inv.id, nombre: inv.nombre, cupos: inv.cupos });
     }
   }
 
-  /* ── Copiar ── */
+  /* ══════════════════════════════
+     COPIAR
+  ══════════════════════════════ */
   function copiarLink() {
-    const url = document.getElementById('result-url').textContent;
+    var url = document.getElementById('result-url').textContent;
     navigator.clipboard.writeText(url).then(function () {
-      const badge = document.getElementById('copied-badge');
-      badge.style.display = 'block';
-      setTimeout(function () { badge.style.display = 'none'; }, 2000);
+      var m = document.getElementById('copied-msg');
+      m.style.display = 'block';
+      setTimeout(function(){ m.style.display='none'; }, 2000);
     });
   }
 
-  /* ── Marcar confirmado ── */
+  /* ══════════════════════════════
+     CONFIRMAR / BORRAR
+  ══════════════════════════════ */
   function toggleConfirmado(id) {
-    const list = getInvitados();
-    const item = list.find(function (i) { return i.id === id; });
-    if (item) { item.confirmado = !item.confirmado; saveInvitados(list); renderLista(); }
-  }
-
-  /* ── Borrar uno ── */
-  function borrarInvitado(id) {
-    const list = getInvitados().filter(function (i) { return i.id !== id; });
+    var list = getInvitados();
+    var item = list.find(function(i){ return i.id === id; });
+    if (!item) return;
+    item.confirmado = !item.confirmado;
     saveInvitados(list);
     renderLista();
+    syncSheet('confirm', { id: id, confirmado: item.confirmado });
   }
 
-  /* ── Borrar todo ── */
+  function borrarInvitado(id) {
+    var list = getInvitados().filter(function(i){ return i.id !== id; });
+    saveInvitados(list);
+    renderLista();
+    syncSheet('delete', { id: id });
+  }
+
   function borrarTodo() {
-    if (!confirm('¿Borrar toda la lista de invitados?')) return;
+    if (!confirm('¿Borrar toda la lista de invitados?\nEsto no borra los datos en Google Sheets.')) return;
     saveInvitados([]);
     renderLista();
   }
 
-  /* ── Enviar link de invitación por WhatsApp ── */
   function enviarInvitacion(nombre, cupos) {
-    const url  = buildInviteUrl(nombre, cupos);
-    const msg  = buildWaMsg(nombre, cupos, url);
+    var url  = buildInviteUrl(nombre, cupos);
+    var msg  = buildWaMsg(nombre, cupos, url);
     window.open('https://wa.me/' + WA_PHONE + '?text=' + encodeURIComponent(msg), '_blank');
   }
 
-  /* ── Render lista ── */
+  /* ══════════════════════════════
+     RENDER LISTA
+  ══════════════════════════════ */
   function renderLista() {
-    const list = getInvitados();
-    const container = document.getElementById('guest-list');
-    const countEl   = document.getElementById('list-count');
-    const totalsEl  = document.getElementById('totals');
+    var list      = getInvitados();
+    var container = document.getElementById('guest-list');
+    var countEl   = document.getElementById('list-count');
+    var totalsEl  = document.getElementById('totals');
 
     countEl.textContent = list.length + ' invitado' + (list.length !== 1 ? 's' : '');
 
@@ -517,47 +744,38 @@
       return;
     }
 
-    container.innerHTML = list.map(function (inv) {
-      const plural = inv.cupos === 1 ? 'lugar' : 'lugares';
-      const confirmIcon = inv.confirmado ? '✅' : '⬜';
-      return '<div class="guest-item">' +
+    container.innerHTML = list.map(function(inv) {
+      var plural = inv.cupos === 1 ? 'lugar' : 'lugares';
+      var icon   = inv.confirmado ? '✅' : '⬜';
+      return '<div class="guest-item' + (inv.confirmado ? ' confirmed' : '') + '">' +
         '<div class="guest-info">' +
           '<p class="guest-name">' + escHtml(inv.nombre) + '</p>' +
           '<p class="guest-meta">' + inv.cupos + ' ' + plural + ' · ' + formatDate(inv.ts) + '</p>' +
         '</div>' +
         '<div class="guest-actions">' +
-          '<button class="btn-sm" title="Marcar como confirmado" onclick="toggleConfirmado(' + inv.id + ')">' + confirmIcon + '</button>' +
+          '<button class="btn-sm" title="Marcar confirmado" onclick="toggleConfirmado(' + inv.id + ')">' + icon + '</button>' +
           '<button class="btn-sm wa-sm" onclick="enviarInvitacion(\'' + escJs(inv.nombre) + '\',' + inv.cupos + ')">WA</button>' +
           '<button class="btn-sm del" onclick="borrarInvitado(' + inv.id + ')">✕</button>' +
         '</div>' +
       '</div>';
     }).join('');
 
-    // Totales
-    const totalLugares    = list.reduce(function (s, i) { return s + i.cupos; }, 0);
-    const totalConfirmados = list.filter(function (i) { return i.confirmado; }).length;
+    var totalLugares     = list.reduce(function(s,i){ return s + i.cupos; }, 0);
+    var totalConfirmados = list.filter(function(i){ return i.confirmado; }).length;
     document.getElementById('total-invitados').textContent  = list.length;
     document.getElementById('total-lugares').textContent    = totalLugares;
     document.getElementById('total-confirmados').textContent = totalConfirmados;
+    document.getElementById('total-pendientes').textContent = list.length - totalConfirmados;
     totalsEl.style.display = 'flex';
   }
 
-  function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  function escJs(s) {
-    return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  }
-
   /* ── Enter para generar ── */
-  ['inp-nombre','inp-cupos'].forEach(function (id) {
-    document.getElementById(id).addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') generarLink();
-    });
+  ['inp-nombre','inp-cupos'].forEach(function(id) {
+    document.getElementById(id).addEventListener('keydown', function(e){ if (e.key === 'Enter') generarLink(); });
   });
 
   /* ── Init ── */
+  updateSetupUI();
   renderLista();
 </script>
 </body>
