@@ -47,6 +47,16 @@ function doPost(e) {
           break;
         }
       }
+      if (data.nombre) {
+        ['Confirmados', 'Por Confirmar'].forEach(function(hojaName) {
+          var h = ss.getSheetByName(hojaName);
+          if (!h) return;
+          var hRows = h.getDataRange().getValues();
+          for (var i = hRows.length - 1; i >= 1; i--) {
+            if (String(hRows[i][0]) === String(data.nombre)) h.deleteRow(i + 1);
+          }
+        });
+      }
 
     } else if (data.action === 'asistente') {
       var hoja = data.porConfirmar ? 'Por Confirmar' : 'Confirmados';

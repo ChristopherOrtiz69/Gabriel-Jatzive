@@ -620,6 +620,66 @@
 
     .btn-wa-send:active { transform: scale(.97); background: #1ebe5c; }
 
+    /* ── Estado: asistencia ya confirmada ── */
+    .rsvp-confirmed-box {
+      background: linear-gradient(135deg, #f0fdf6, #fdf0f4);
+      border: 1px solid #a0d8b8;
+      border-radius: 16px;
+      padding: 1.8rem 1.4rem;
+      text-align: center;
+      max-width: 420px;
+      margin: 1.4rem auto 0;
+      animation: slideDown .35s ease both;
+    }
+
+    .rsvp-confirmed-icon { font-size: 2.2rem; margin-bottom: .5rem; }
+
+    .rsvp-confirmed-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: #2d9e5f;
+      margin-bottom: .35rem;
+    }
+
+    .rsvp-confirmed-sub {
+      font-size: .8rem;
+      color: var(--sage-dark);
+      margin-bottom: 1.3rem;
+      letter-spacing: .5px;
+    }
+
+    .rsvp-names-list {
+      list-style: none;
+      text-align: left;
+      background: #fff;
+      border-radius: 10px;
+      padding: .6rem .9rem;
+      border: 1px solid #d8eee4;
+    }
+
+    .rsvp-names-list li {
+      padding: .45rem 0;
+      font-size: .88rem;
+      color: #4a3728;
+      border-bottom: 1px solid #eef6f1;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .rsvp-names-list li:last-child { border-bottom: none; }
+
+    .rsvp-name-badge {
+      font-size: .68rem;
+      background: #fff8e8;
+      color: #a07020;
+      border-radius: 20px;
+      padding: .15rem .5rem;
+      letter-spacing: .5px;
+      flex-shrink: 0;
+    }
+
     /* ════════════════════════════════
        MOBILE — RESPONSIVE
     ════════════════════════════════ */
@@ -1010,6 +1070,9 @@
       Confirmar asistencia
     </button>
 
+    <!-- Estado: asistencia ya confirmada (se muestra si ya confirmó antes) -->
+    <div id="rsvp-confirmed" style="display:none"></div>
+
     <!-- Formulario inline (aparece al presionar el botón) -->
     <div id="rsvp-form-wrap" style="display:none">
       <div class="rsvp-form-box">
@@ -1090,11 +1153,52 @@
       }
     });
 
-    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuvcsiHGlek8ZdCD0VzmMQp0I_BiX08BICA6DynOvlGbkeLRmIQdThCICk86a4c3SQ/exec';
+    var SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycbxuvcsiHGlek8ZdCD0VzmMQp0I_BiX08BICA6DynOvlGbkeLRmIQdThCICk86a4c3SQ/exec';
+    var CONFIRMED_KEY = nombre ? 'gj_rsvp_' + nombre : null;
+
+    // Función: mostrar estado "ya confirmado"
+    function mostrarConfirmado(personas) {
+      document.getElementById('btn-rsvp-toggle').style.display = 'none';
+      document.getElementById('rsvp-form-wrap').style.display  = 'none';
+
+      var box = document.getElementById('rsvp-confirmed');
+      box.className = 'rsvp-confirmed-box';
+
+      var ul = document.createElement('ul');
+      ul.className = 'rsvp-names-list';
+      personas.forEach(function (p) {
+        var li   = document.createElement('li');
+        var icon = document.createTextNode(p.porConfirmar ? '⏳' : '✅');
+        var txt  = document.createTextNode(' ' + p.nombre);
+        li.appendChild(icon);
+        li.appendChild(txt);
+        if (p.porConfirmar) {
+          var badge = document.createElement('span');
+          badge.className     = 'rsvp-name-badge';
+          badge.textContent   = 'por confirmar';
+          li.appendChild(badge);
+        }
+        ul.appendChild(li);
+      });
+
+      box.innerHTML =
+        '<p class="rsvp-confirmed-icon">🎊</p>' +
+        '<p class="rsvp-confirmed-title">¡Asistencia confirmada!</p>' +
+        '<p class="rsvp-confirmed-sub">Te esperamos el 20 de septiembre 💐</p>';
+      box.appendChild(ul);
+      box.style.display = 'block';
+    }
+
+    // Si ya confirmó antes, mostrar resumen directamente
+    if (CONFIRMED_KEY && localStorage.getItem(CONFIRMED_KEY)) {
+      try {
+        var saved = JSON.parse(localStorage.getItem(CONFIRMED_KEY));
+        mostrarConfirmado(saved);
+      } catch (_) {}
+    }
 
     // Enviar por WhatsApp al presionar el botón verde
     document.getElementById('btn-wa-send').addEventListener('click', function () {
-      // Validar que todos los campos de nombre y apellido estén llenos
       var inputs = formWrap.querySelectorAll('.rsvp-input');
       var todoLleno = true;
       inputs.forEach(function (inp) {
@@ -1131,6 +1235,11 @@
 
       var msg = intro + 'Asistiremos:\n' + lineas + '\n¡Nos vemos pronto! 💐';
 
+      // Guardar en localStorage para bloquear futuros intentos
+      if (CONFIRMED_KEY) {
+        localStorage.setItem(CONFIRMED_KEY, JSON.stringify(personas));
+      }
+
       // Enviar cada persona a Google Sheets
       personas.forEach(function (p) {
         fetch(SCRIPT_URL, {
@@ -1146,6 +1255,8 @@
         });
       });
 
+      // Mostrar estado confirmado y abrir WhatsApp
+      mostrarConfirmado(personas);
       window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
     });
 

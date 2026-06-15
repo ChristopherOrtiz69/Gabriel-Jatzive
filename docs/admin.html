@@ -411,6 +411,16 @@ function doPost(e) {
       for (var i=rows.length-1;i>=1;i--) {
         if (String(rows[i][4])===String(data.id)) { s.deleteRow(i+1); break; }
       }
+      if (data.nombre) {
+        ['Confirmados','Por Confirmar'].forEach(function(hojaName) {
+          var h = ss.getSheetByName(hojaName);
+          if (!h) return;
+          var hRows = h.getDataRange().getValues();
+          for (var i=hRows.length-1;i>=1;i--) {
+            if (String(hRows[i][0])===String(data.nombre)) h.deleteRow(i+1);
+          }
+        });
+      }
 
     } else if (data.action === 'asistente') {
       // Persona individual que confirma desde la invitación
@@ -583,7 +593,7 @@ function doGet(e) {
     var list = getInvitados().filter(function(i){ return i.id !== id; });
     saveInvitados(list);
     renderLista();
-    syncSheet('delete', { id: id });
+    syncSheet('delete', { id: id, nombre: nombre });
   }
 
   function borrarTodo() {
