@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Invitación de boda — Gabriel & Jatzive · 20 de Septiembre 2026">
-  <meta name="theme-color" content="#fdeef3">
+  <meta name="theme-color" content="#eef2e6">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>Gabriel & Jatzive · Nuestra Boda</title>
@@ -17,14 +17,29 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --blush:     #f5c6d0;
-      --rose:      #e8a0b0;
-      --deep-rose: #c4687e;
-      --sage:      #7a9e7e;
-      --sage-dark: #4e7252;
-      --cream:     #fdf6f0;
-      --warm:      #fef9f5;
-      --brown:     #4a3728;
+      /* ── Paleta oficial de la boda ── */
+      --shadow:       #7a8771;  /* Shadow       — verde salvia oscuro */
+      --sage-green:   #a8bd9f;  /* Sage green   — salvia suave        */
+      --champagne:    #e2d6bf;  /* Champagne    — beige cálido        */
+      --ivory:        #f5efdf;  /* Ivory        — marfil              */
+      --silver-peony: #e7c6c2;  /* Silver Peony — rosa empolvado      */
+      --bridal-rose:  #d18e98;  /* Bridal Rose  — rosa nupcial        */
+
+      /* ── Tonos derivados (contraste y acentos) ── */
+      --shadow-deep:  #5c6b54;  /* salvia profunda — etiquetas / texto pequeño */
+      --rose-deep:    #b56b78;  /* rosa intenso    — acentos / botones         */
+      --ink:          #3b4a35;  /* verde bosque    — texto principal           */
+
+      /* ── Alias semánticos (conservan la arquitectura actual) ── */
+      --blush:     var(--silver-peony);
+      --rose:      var(--bridal-rose);
+      --deep-rose: var(--rose-deep);
+      --rose-dark: var(--rose-deep);
+      --sage:      var(--sage-green);
+      --sage-dark: var(--shadow-deep);
+      --cream:     var(--ivory);
+      --warm:      #faf6ec;
+      --brown:     var(--ink);
       --gold:      #c8a76c;
     }
 
@@ -74,7 +89,7 @@
       text-align: center;
       padding: 5rem 2rem 4rem;
       position: relative;
-      background: linear-gradient(155deg, #fdeef3 0%, #fdf6f0 50%, #eef5ef 100%);
+      background: linear-gradient(155deg, #eef2e6 0%, #f7f1e3 50%, #f3e7e4 100%);
       overflow: hidden;
     }
 
@@ -198,9 +213,9 @@
        COUNTDOWN
     ════════════════════════════════ */
     .s-countdown {
-      background: linear-gradient(135deg, #fdeef3, #fdf6f0, #eef5ef);
-      border-top: 1px solid #f0d5dc;
-      border-bottom: 1px solid #f0d5dc;
+      background: linear-gradient(135deg, #eef2e6, #f7f1e3, #f3e7e4);
+      border-top: 1px solid #e3d8c6;
+      border-bottom: 1px solid #e3d8c6;
     }
 
     .countdown-grid {
@@ -218,8 +233,8 @@
       border-radius: 14px;
       padding: 1.6rem 1rem;
       text-align: center;
-      box-shadow: 0 4px 22px rgba(196,104,126,.1);
-      border: 1px solid #f5d5dc;
+      box-shadow: 0 4px 22px rgba(122,135,113,.14);
+      border: 1px solid #e7dac9;
     }
 
     .cd-num {
@@ -253,8 +268,8 @@
       border-radius: 18px;
       padding: 2.8rem 2.2rem;
       text-align: center;
-      box-shadow: 0 8px 32px rgba(74,55,40,.07);
-      border: 1px solid #f0e0e5;
+      box-shadow: 0 8px 32px rgba(59,74,53,.09);
+      border: 1px solid #e7ddcf;
       position: relative;
       overflow: hidden;
     }
@@ -320,7 +335,7 @@
     /* ════════════════════════════════
        DRESSCODE
     ════════════════════════════════ */
-    .s-dresscode { background: #f9f1f4; }
+    .s-dresscode { background: #f1ede1; }
 
     .dresscode-note {
       text-align: center;
@@ -344,7 +359,7 @@
       height: 58px;
       border-radius: 50%;
       border: 3px solid #fff;
-      box-shadow: 0 2px 12px rgba(0,0,0,.12);
+      box-shadow: 0 0 0 1px var(--gold), 0 2px 12px rgba(0,0,0,.12);
     }
 
     .sw-name {
@@ -359,7 +374,7 @@
        RSVP
     ════════════════════════════════ */
     .s-rsvp {
-      background: linear-gradient(160deg, #fdeef3 0%, #fdf6f0 100%);
+      background: linear-gradient(160deg, #f3e7e4 0%, #f7f1e3 100%);
       text-align: center;
     }
 
@@ -384,7 +399,7 @@
 
     .btn {
       display: inline-block;
-      background: linear-gradient(135deg, var(--deep-rose), #9e4e64);
+      background: linear-gradient(135deg, var(--deep-rose), #9c5560);
       color: #fff;
       padding: 1.05rem 3.2rem;
       border-radius: 50px;
@@ -395,9 +410,9 @@
       text-transform: uppercase;
       font-size: .82rem;
       transition: transform .3s, box-shadow .3s;
-      box-shadow: 0 8px 28px rgba(196,104,126,.35);
+      box-shadow: 0 8px 28px rgba(157,85,96,.32);
     }
-    .btn:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(196,104,126,.45); }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(157,85,96,.42); }
 
     /* ════════════════════════════════
        FOOTER
@@ -435,12 +450,12 @@
     ════════════════════════════════ */
     .invite-card {
       background: #fff;
-      border: 1px solid #f0d5dc;
+      border: 1px solid #ead9d4;
       border-radius: 16px;
       padding: 1.8rem 1.6rem;
       max-width: 400px;
       margin: 0 auto 2.5rem;
-      box-shadow: 0 6px 28px rgba(196,104,126,.12);
+      box-shadow: 0 6px 28px rgba(181,107,120,.14);
       text-align: center;
     }
 
@@ -463,7 +478,7 @@
     }
 
     .invite-card-seats {
-      background: linear-gradient(135deg, #fdeef3, #fdf6f0);
+      background: linear-gradient(135deg, #f3e7e4, #f7f1e3);
       border-radius: 10px;
       padding: .9rem 1rem;
     }
@@ -496,7 +511,7 @@
 
     .rsvp-form-box {
       background: #fff;
-      border: 1px solid #f0d5dc;
+      border: 1px solid #ead9d4;
       border-radius: 16px;
       padding: 1.6rem 1.4rem 1.8rem;
       text-align: left;
@@ -531,7 +546,7 @@
     }
 
     .rsvp-input {
-      border: 1px solid #e8c8d0;
+      border: 1px solid #ddc9c4;
       border-radius: 8px;
       padding: .65rem .8rem;
       font-family: 'Raleway', sans-serif;
@@ -1012,28 +1027,28 @@
 
     <div class="swatches reveal">
       <div class="swatch">
-        <div class="sw-color" style="background:#f0c8d0;"></div>
-        <span class="sw-name">Blush</span>
+        <div class="sw-color" style="background:#7a8771;"></div>
+        <span class="sw-name">Shadow</span>
       </div>
       <div class="swatch">
-        <div class="sw-color" style="background:#a8c4a0;"></div>
-        <span class="sw-name">Sage</span>
+        <div class="sw-color" style="background:#a8bd9f;"></div>
+        <span class="sw-name">Sage green</span>
       </div>
       <div class="swatch">
-        <div class="sw-color" style="background:#e8d8b0;"></div>
+        <div class="sw-color" style="background:#e2d6bf;"></div>
         <span class="sw-name">Champagne</span>
       </div>
       <div class="swatch">
-        <div class="sw-color" style="background:#c8a0b8;"></div>
-        <span class="sw-name">Lavanda</span>
+        <div class="sw-color" style="background:#f5efdf;"></div>
+        <span class="sw-name">Ivory</span>
       </div>
       <div class="swatch">
-        <div class="sw-color" style="background:#b0c8d8;"></div>
-        <span class="sw-name">Azul polvo</span>
+        <div class="sw-color" style="background:#e7c6c2;"></div>
+        <span class="sw-name">Silver Peony</span>
       </div>
       <div class="swatch">
-        <div class="sw-color" style="background:#c8b090;"></div>
-        <span class="sw-name">Arena</span>
+        <div class="sw-color" style="background:#d18e98;"></div>
+        <span class="sw-name">Bridal Rose</span>
       </div>
     </div>
   </div>
