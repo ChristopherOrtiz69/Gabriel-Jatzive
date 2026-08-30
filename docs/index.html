@@ -521,8 +521,14 @@
       background: var(--sage);
     }
 
-    /* Hora aún sin definir */
-    .hora-pendiente { color: #9a7530; font-style: italic; }
+    /* La boda no lleva hora: es el título del día, y los dos eventos
+       que cuelgan debajo son los que la tienen. Va con más peso para
+       que se lea como el centro del fin de semana. */
+    .ag-destacado {
+      font-weight: 600;
+      color: var(--deep-rose);
+      letter-spacing: .01em;
+    }
 
     /* ── Sede: una línea al pie de la agenda, no una tarjeta ── */
     .venue-line {
@@ -1408,8 +1414,8 @@
 ══════════════════════════════════ -->
 <nav class="pager" id="pager" aria-label="Secciones de la invitación">
   <a href="#inicio"     data-label="Inicio"           aria-label="Ir a Inicio"></a>
-  <a href="#countdown"  data-label="Cuenta regresiva" aria-label="Ir a Cuenta regresiva"></a>
   <a href="#nosotros"   data-label="Nosotros"         aria-label="Ir a Nosotros"></a>
+  <a href="#countdown"  data-label="Cuenta regresiva" aria-label="Ir a Cuenta regresiva"></a>
   <a href="#itinerario" data-label="Itinerario"       aria-label="Ir a Itinerario"></a>
   <a href="#hospedaje"  data-label="Hospedaje"        aria-label="Ir a Hospedaje"></a>
   <a href="#vestimenta" data-label="Vestimenta"       aria-label="Ir a Vestimenta"></a>
@@ -1727,7 +1733,7 @@
     <p class="hero-location">Cuernavaca, Morelos</p>
   </div>
 
-  <a href="#countdown" class="scroll-hint fade-in delay-4" aria-label="Desplazar hacia abajo">
+  <a href="#nosotros" class="scroll-hint fade-in delay-4" aria-label="Desplazar hacia abajo">
     <span>Descubre más</span>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="6 9 12 15 18 9"/>
@@ -1736,10 +1742,39 @@
 </section>
 
 <!-- ══════════════════════════════════
+     NOSOTROS — fotos
+══════════════════════════════════ -->
+<section class="s-fotos" id="nosotros">
+  <svg class="deco bl" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
+  <div class="inner">
+    <span class="s-tag reveal">Nosotros</span>
+    <h2 class="s-title reveal">Hemos vivido muchas <em>aventuras juntos</em></h2>
+    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
+
+    <div class="photo-grid reveal">
+      <figure class="photo-frame">
+        <img src="img/pareja-flores.jpg" width="900" height="1200"
+             loading="lazy" decoding="async"
+             alt="Gabriel y Jatzive bajo un arco de buganvilias, en una casa blanca">
+      </figure>
+      <figure class="photo-frame offset">
+        <img src="img/pareja-beso.jpg" width="900" height="1200"
+             loading="lazy" decoding="async"
+             alt="Gabriel y Jatzive dándose un beso al atardecer, con un pueblo blanco al fondo">
+      </figure>
+    </div>
+
+    <p class="photo-note reveal">
+      Está a punto de comenzar.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
      COUNTDOWN
 ══════════════════════════════════ -->
 <section class="s-countdown" id="countdown">
-  <svg class="deco bl" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
+  <svg class="deco tr sm" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
   <div class="inner">
     <span class="s-tag reveal">La cuenta regresiva</span>
     <h2 class="s-title reveal">Faltan <em>tan pocos días…</em></h2>
@@ -1767,43 +1802,13 @@
 </section>
 
 <!-- ══════════════════════════════════
-     NOSOTROS — fotos
-══════════════════════════════════ -->
-<section class="s-fotos" id="nosotros">
-  <svg class="deco tr sm" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
-  <div class="inner">
-    <span class="s-tag reveal">Nosotros</span>
-    <h2 class="s-title reveal">Así llegamos <em>hasta aquí</em></h2>
-    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
-
-    <div class="photo-grid reveal">
-      <figure class="photo-frame">
-        <img src="img/pareja-flores.jpg" width="900" height="1200"
-             loading="lazy" decoding="async"
-             alt="Gabriel y Jatzive bajo un arco de buganvilias, en una casa blanca">
-      </figure>
-      <figure class="photo-frame offset">
-        <img src="img/pareja-beso.jpg" width="900" height="1200"
-             loading="lazy" decoding="async"
-             alt="Gabriel y Jatzive dándose un beso al atardecer, con un pueblo blanco al fondo">
-      </figure>
-    </div>
-
-    <p class="photo-note reveal">
-      De todos los viajes juntos, el que más ilusión nos hace
-      empieza en marzo de 2027.
-    </p>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════
      ITINERARIO — 3 días
      Los bloques con data-dia se muestran según ?tipo= (ver script)
 ══════════════════════════════════ -->
 <section id="itinerario">
   <svg class="deco br" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
   <div class="inner">
-    <span class="s-tag reveal">El gran fin de semana</span>
+    <span class="s-tag reveal">Un fin de semana inolvidable</span>
     <h2 class="s-title reveal">Nuestro <em>itinerario</em></h2>
     <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
 
@@ -1811,23 +1816,28 @@
     <ol class="agenda reveal">
       <li data-dia="brunch">
         <span class="ag-when"><b>Vie 12</b><i>Marzo</i></span>
-        <span class="ag-what">Brunch de bienvenida</span>
-        <span class="ag-time hora-pendiente">Por confirmar</span>
+        <span class="ag-what">Rompe hielo</span>
+        <span class="ag-time">5:00 PM</span>
       </li>
       <li data-dia="boda">
         <span class="ag-when"><b>Sáb 13</b><i>Marzo</i></span>
-        <span class="ag-what">Ceremonia religiosa</span>
-        <span class="ag-time">5:00 PM</span>
+        <span class="ag-what ag-destacado">¡La boda!</span>
+        <span class="ag-time"></span>
       </li>
       <li class="ag-sub" data-dia="boda">
         <span class="ag-when"></span>
         <span class="ag-what">Recepción</span>
-        <span class="ag-time">7:30 PM</span>
+        <span class="ag-time">2:00 PM</span>
+      </li>
+      <li class="ag-sub" data-dia="boda">
+        <span class="ag-when"></span>
+        <span class="ag-what">Ceremonia civil</span>
+        <span class="ag-time">3:00 PM</span>
       </li>
       <li data-dia="post">
         <span class="ag-when"><b>Dom 14</b><i>Marzo</i></span>
-        <span class="ag-what">Postcelebración</span>
-        <span class="ag-time hora-pendiente">Por confirmar</span>
+        <span class="ag-what">Torna boda</span>
+        <span class="ag-time">11:00 AM</span>
       </li>
     </ol>
 
@@ -1866,11 +1876,10 @@
   <svg class="deco bl" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
   <div class="inner">
     <span class="s-tag reveal">Vestimenta</span>
-    <h2 class="s-title reveal">Etiqueta <em>Formal</em></h2>
+    <h2 class="s-title reveal">Dress <em>code</em></h2>
     <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
 
     <p class="dresscode-note reveal">
-      Te pedimos asistir en <strong>etiqueta formal</strong>.<br>
       Por favor evita el blanco total para que juntos creemos
       un ambiente lleno de color, elegancia y amor.
     </p>
@@ -1891,14 +1900,6 @@
       <div class="swatch">
         <div class="sw-color" style="background:#f5efdf;"></div>
         <span class="sw-name">Ivory</span>
-      </div>
-      <div class="swatch">
-        <div class="sw-color" style="background:#e7c6c2;"></div>
-        <span class="sw-name">Silver Peony</span>
-      </div>
-      <div class="swatch">
-        <div class="sw-color" style="background:#d18e98;"></div>
-        <span class="sw-name">Bridal Rose</span>
       </div>
     </div>
   </div>
@@ -1997,9 +1998,9 @@
     const tipo = p.get('tipo') === '2' ? 2 : 1;
 
     const DIAS = {
-      brunch: { emoji: '🥐', chip: 'Vie 12', corto: '12 mar', largo: 'Viernes 12 · Brunch' },
-      boda:   { emoji: '💍', chip: 'Sáb 13', corto: '13 mar', largo: 'Sábado 13 · Boda' },
-      post:   { emoji: '🌤️', chip: 'Dom 14', corto: '14 mar', largo: 'Domingo 14 · Postcelebración' }
+      brunch: { emoji: '🥂', chip: 'Vie 12', corto: '12 mar', largo: 'Viernes 12 · Rompe hielo' },
+      boda:   { emoji: '💍', chip: 'Sáb 13', corto: '13 mar', largo: 'Sábado 13 · La boda' },
+      post:   { emoji: '🌤️', chip: 'Dom 14', corto: '14 mar', largo: 'Domingo 14 · Torna boda' }
     };
     const DIAS_POR_TIPO = {
       1: ['brunch', 'boda', 'post'],
@@ -2007,7 +2008,7 @@
     };
     const ETIQUETA_TIPO = {
       1: 'Completa (12, 13 y 14 de marzo)',
-      2: 'Boda y postcelebración (13 y 14 de marzo)'
+      2: 'Boda y torna boda (13 y 14 de marzo)'
     };
     const incluidos = DIAS_POR_TIPO[tipo];
 
@@ -2453,12 +2454,13 @@
   })();
 
   /* ── Countdown ── */
-  /* Sábado 13 de marzo de 2027, 5:00 PM — hora de la ceremonia.
+  /* Sábado 13 de marzo de 2027, 2:00 PM — cuando se recibe a los
+     invitados, que es el primer momento del día para quien viene.
      El offset -06:00 es obligatorio: sin él la fecha se interpreta en la
      hora LOCAL del visitante y un invitado fuera de México vería una
      cuenta regresiva distinta. México no aplica horario de verano
      desde 2022, así que en marzo de 2027 sigue en UTC-6. */
-  const target = new Date('2027-03-13T17:00:00-06:00');
+  const target = new Date('2027-03-13T14:00:00-06:00');
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
