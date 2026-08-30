@@ -1,2 +1,13 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Audio: nunca normalizar saltos de línea (corrompería el archivo)
+*.mp3 binary
+*.m4a binary
+*.ogg binary
+
+# Imágenes: mismo motivo — con "* text=auto" arriba, más vale ser explícito
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.webp binary

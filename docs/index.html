@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Invitación de boda — Gabriel & Jatzive · 20 de Septiembre 2026">
+  <meta name="description" content="Invitación de boda — Gabriel & Jatzive · 20 de Marzo 2027 · Quinta Santa María, Cuernavaca">
   <meta name="theme-color" content="#eef2e6">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -333,6 +333,231 @@
     .d-link:hover { background: var(--blush); transform: translateY(-1px); }
 
     /* ════════════════════════════════
+       ITINERARIO — 3 días
+    ════════════════════════════════ */
+    .itin-note {
+      max-width: 560px;
+      margin: 0 auto 3rem;
+      text-align: center;
+      font-size: .88rem;
+      line-height: 1.8;
+      color: var(--brown);
+      background: #fff;
+      border: 1px solid #e7ddcf;
+      border-left: 3px solid var(--rose);
+      border-radius: 12px;
+      padding: 1rem 1.3rem;
+    }
+    .itin-note strong { color: var(--deep-rose); font-weight: 600; }
+
+    .day-block { margin-bottom: 3.2rem; }
+    .day-block:last-child { margin-bottom: 0; }
+
+    .day-head {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e3d8c6;
+    }
+
+    .day-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--sage);
+      flex-shrink: 0;
+      min-width: 2.4rem;
+      text-align: center;
+    }
+
+    .day-date {
+      font-size: .68rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--deep-rose);
+      margin-bottom: .25rem;
+    }
+
+    .day-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--brown);
+      line-height: 1.2;
+    }
+
+    /* ── Sede única (los tres días en el mismo lugar) ── */
+    .venue-card {
+      background: #fff;
+      border: 1px solid #e7ddcf;
+      border-radius: 18px;
+      padding: 2.2rem 2rem;
+      text-align: center;
+      max-width: 520px;
+      margin: 0 auto 3.2rem;
+      box-shadow: 0 8px 32px rgba(59,74,53,.09);
+      position: relative;
+      overflow: hidden;
+    }
+    .venue-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(to right, var(--blush), var(--sage));
+    }
+
+    .venue-label {
+      font-size: .66rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--deep-rose);
+      margin-bottom: .7rem;
+    }
+
+    .venue-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem;
+      font-weight: 400;
+      color: var(--brown);
+      line-height: 1.2;
+      margin-bottom: .8rem;
+    }
+
+    .venue-address {
+      font-size: .86rem;
+      line-height: 1.8;
+      color: var(--brown);
+      opacity: .8;
+    }
+
+    /* Hora aún sin definir, dentro de una tarjeta de evento */
+    .hora-pendiente {
+      color: #9a7530;
+      font-style: italic;
+    }
+
+    /* ── Hospedaje ──
+       Tono salvia para separarlo de la sección de vestimenta, que va
+       justo debajo con un beige plano muy parecido. */
+    .s-hospedaje {
+      background: linear-gradient(135deg, #eef2e6, #f7f1e3);
+      border-top: 1px solid #e3d8c6;
+      border-bottom: 1px solid #e3d8c6;
+    }
+
+    .lodging-card {
+      background: #fff;
+      border: 1px solid #e7ddcf;
+      border-radius: 18px;
+      padding: 2.6rem 2rem;
+      text-align: center;
+      max-width: 520px;
+      margin: 0 auto;
+      box-shadow: 0 8px 32px rgba(59,74,53,.09);
+    }
+
+    .lodging-note {
+      font-size: .88rem;
+      line-height: 1.9;
+      color: var(--brown);
+      opacity: .82;
+      margin-bottom: 1.8rem;
+    }
+
+    /* Sugerencias de búsqueda, dentro de la tarjeta de hospedaje.
+       Alineadas a la izquierda aunque la tarjeta esté centrada: son
+       instrucciones y se leen mejor en bandera. */
+    .lodging-tips {
+      list-style: none;
+      max-width: 400px;
+      margin: 0 auto;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: .95rem;
+    }
+
+    .lodging-tips li {
+      display: grid;
+      grid-template-columns: 1.5rem 1fr;
+      gap: .7rem;
+      align-items: start;
+      font-size: .85rem;
+      line-height: 1.7;
+      color: var(--brown);
+      opacity: .85;
+    }
+
+    .lodging-tips .tip-ic { font-size: 1.05rem; line-height: 1.45; }
+
+    /* Días incluidos, dentro de la tarjeta personalizada */
+    .invite-card-days {
+      font-size: .74rem;
+      color: var(--sage-dark);
+      letter-spacing: .5px;
+      margin-top: .8rem;
+      line-height: 1.7;
+    }
+
+    /* ════════════════════════════════
+       NOSOTROS — fotos
+    ════════════════════════════════ */
+    .s-fotos {
+      background: var(--warm);
+      border-bottom: 1px solid #e3d8c6;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.8rem;
+      max-width: 720px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    /* Marco blanco: la foto se lee como impresa y pegada al álbum,
+       no como una imagen suelta encima del fondo. */
+    .photo-frame {
+      margin: 0;
+      background: #fff;
+      padding: .55rem;
+      border: 1px solid #e7ddcf;
+      border-radius: 16px;
+      box-shadow: 0 10px 32px rgba(59,74,53,.12);
+    }
+
+    /* La segunda baja un poco para romper la simetría */
+    .photo-frame.offset { margin-top: 2.4rem; }
+
+    /* aspect-ratio fijo: reserva el espacio antes de que cargue
+       la imagen y evita que el texto brinque. */
+    .photo-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 11px;
+    }
+
+    .photo-note {
+      text-align: center;
+      max-width: 460px;
+      margin: 2.6rem auto 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.02rem, 2.6vw, 1.3rem);
+      line-height: 1.7;
+      color: var(--brown);
+      opacity: .82;
+    }
+
+    /* ════════════════════════════════
        DRESSCODE
     ════════════════════════════════ */
     .s-dresscode { background: #f1ede1; }
@@ -566,6 +791,10 @@
 
     .rsvp-input::placeholder { color: #c4a8ae; }
 
+    /* Campo obligatorio vacío. Con clase y no con style inline: el navegador
+       normaliza el hex a rgb() y el selector [style*="..."] nunca coincidía. */
+    .rsvp-input.error { border-color: #e05c7a; background: #fffafb; }
+
     .rsvp-uncertain-wrap {
       margin-top: .45rem;
       display: flex;
@@ -611,6 +840,82 @@
     .rsvp-uncertain-wrap:has(input:checked) .rsvp-uncertain-text {
       color: #c08020;
       font-weight: 500;
+    }
+
+    /* ── Selección de días por persona ── */
+    .rsvp-dias-label {
+      display: block;
+      font-size: .62rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin: .75rem 0 .45rem;
+      opacity: .85;
+    }
+
+    .rsvp-dias { display: flex; gap: .4rem; flex-wrap: wrap; }
+
+    .rsvp-dia {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .55rem .85rem;
+      min-height: 42px;
+      border: 1.5px solid #ddc9c4;
+      border-radius: 20px;
+      background: #fdfaf8;
+      font-size: .74rem;
+      color: #a08a92;
+      cursor: pointer;
+      user-select: none;
+      transition: background .18s, border-color .18s, color .18s;
+    }
+    .rsvp-dia input { position: absolute; opacity: 0; pointer-events: none; }
+
+    .rsvp-dia::before {
+      content: '○';
+      font-size: .8rem;
+      color: #c4a8ae;
+    }
+
+    .rsvp-dia:has(input:checked) {
+      background: #eef5ef;
+      border-color: var(--sage);
+      color: var(--shadow-deep);
+      font-weight: 500;
+    }
+    .rsvp-dia:has(input:checked)::before {
+      content: '✓';
+      color: var(--shadow-deep);
+      font-weight: 700;
+    }
+
+    /* Persona marcada como "por confirmar": los días pierden peso visual */
+    .rsvp-person-row:has([data-field="porconfirmar"]:checked) .rsvp-dias { opacity: .45; }
+
+    .rsvp-dias-error {
+      display: none;
+      font-size: .68rem;
+      color: #e05c7a;
+      margin-top: .4rem;
+    }
+    .rsvp-dias-error.show { display: block; }
+
+    /* Separador entre personas, ahora que cada fila es más alta */
+    .rsvp-person-row + .rsvp-person-row {
+      border-top: 1px solid #f2e6e2;
+      padding-top: .95rem;
+    }
+
+    /* Días dentro del resumen de confirmación
+       (el layout en columna de <li> vive en .rsvp-names-list li, más abajo) */
+    .rsvp-name-top { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+    .rsvp-name-dias {
+      font-size: .72rem;
+      color: var(--sage-dark);
+      opacity: .85;
+      padding-left: 1.35rem;
     }
 
     .btn-wa-send {
@@ -674,13 +979,14 @@
     }
 
     .rsvp-names-list li {
-      padding: .45rem 0;
+      padding: .5rem 0;
       font-size: .88rem;
       color: #4a3728;
       border-bottom: 1px solid #eef6f1;
       display: flex;
-      align-items: center;
-      gap: .5rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: .25rem;
     }
 
     .rsvp-names-list li:last-child { border-bottom: none; }
@@ -693,6 +999,60 @@
       padding: .15rem .5rem;
       letter-spacing: .5px;
       flex-shrink: 0;
+    }
+
+    /* ════════════════════════════════
+       MÚSICA DE FONDO
+    ════════════════════════════════ */
+    @keyframes spin      { to { transform: rotate(360deg); } }
+    @keyframes musicPulse {
+      0%, 100% { box-shadow: 0 6px 22px rgba(122,135,113,.28), 0 0 0 0   rgba(181,107,120,.35); }
+      50%      { box-shadow: 0 6px 22px rgba(122,135,113,.28), 0 0 0 12px rgba(181,107,120,0);   }
+    }
+
+    .music-btn {
+      position: fixed;
+      right: 1.2rem;
+      bottom: 1.2rem;
+      bottom: max(1.2rem, calc(.8rem + env(safe-area-inset-bottom)));
+      z-index: 60;
+      width: 52px;
+      height: 52px;
+      border: 1px solid #e3d3ce;
+      border-radius: 50%;
+      background: rgba(255,255,255,.92);
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+      color: var(--deep-rose);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 22px rgba(122,135,113,.28);
+      transition: transform .2s, background .2s;
+    }
+    .music-btn:active { transform: scale(.92); }
+    .music-btn svg    { width: 22px; height: 22px; }
+
+    /* Ícono de disco: gira solo mientras suena */
+    .music-btn .m-disc { transform-origin: 12px 12px; }
+    .music-btn.playing .m-disc { animation: spin 4.5s linear infinite; }
+
+    /* Aro pulsante para invitar al primer toque (solo si aún no suena) */
+    .music-btn.hint { animation: musicPulse 2.4s ease-out infinite; }
+
+    /* Ícono de "silenciado": la barra diagonal solo se ve en pausa */
+    .music-btn .m-slash { opacity: 1; transition: opacity .2s; }
+    .music-btn.playing .m-slash { opacity: 0; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .music-btn.playing .m-disc,
+      .music-btn.hint { animation: none; }
+    }
+
+    @media (max-width: 600px) {
+      .music-btn { width: 46px; height: 46px; right: 1rem; }
+      .music-btn svg { width: 20px; height: 20px; }
     }
 
     /* ════════════════════════════════
@@ -745,6 +1105,21 @@
       .details-grid { gap: 1.2rem; }
       .d-card       { padding: 2rem 1.4rem; border-radius: 14px; }
       .d-title      { font-size: 1.5rem; }
+
+      /* Itinerario */
+      .itin-note  { font-size: .82rem; margin-bottom: 2.2rem; padding: .9rem 1rem; }
+      .day-block  { margin-bottom: 2.4rem; }
+      .day-head   { gap: .7rem; margin-bottom: 1.1rem; padding-bottom: .8rem; }
+      .day-num    { font-size: 1.9rem; min-width: 1.9rem; }
+      .day-date   { font-size: .62rem; letter-spacing: 2px; }
+      .day-name   { font-size: 1.25rem; }
+
+      /* Sede y hospedaje */
+      .venue-card   { padding: 1.8rem 1.4rem; border-radius: 14px; margin-bottom: 2.4rem; }
+      .venue-name   { font-size: 1.6rem; }
+      .venue-address { font-size: .82rem; }
+      .lodging-card { padding: 2rem 1.4rem; border-radius: 14px; }
+      .lodging-tips li { font-size: .82rem; }
       /* Botón de mapa: área de toque generosa */
       .d-link {
         display: block;
@@ -753,6 +1128,12 @@
         min-height: 44px;
         line-height: 1.5;
       }
+
+      /* Fotos — apiladas: en 2 columnas las caras quedan diminutas */
+      .photo-grid  { grid-template-columns: 1fr; gap: 1.4rem; max-width: 380px; }
+      .photo-frame { padding: .45rem; border-radius: 14px; }
+      .photo-frame.offset { margin-top: 0; }
+      .photo-note  { margin-top: 2rem; }
 
       /* Dresscode swatches */
       .swatches  { gap: 1rem; }
@@ -792,10 +1173,34 @@
       .dresscode-note { font-size: .85rem; line-height: 1.75; }
       /* Formulario: apilar nombre y apellido en móviles muy pequeños */
       .rsvp-inputs { grid-template-columns: 1fr; }
+      /* Chips de día a ancho completo para que no se aprieten */
+      .rsvp-dia { flex: 1 1 100%; justify-content: center; }
     }
   </style>
 </head>
 <body>
+
+<!-- ══════════════════════════════════
+     MÚSICA DE FONDO
+══════════════════════════════════ -->
+<!-- Carlos Rivera — Que Lo Nuestro Se Quede Nuestro (versión acústica)
+     AAC 129 kbps · 3:45 · contenedor MP4, por eso .m4a y no .mp3 -->
+<audio id="bg-music" loop preload="auto" playsinline>
+  <source src="audio/cancion.m4a" type="audio/mp4">
+</audio>
+
+<button id="music-btn" class="music-btn" type="button"
+        aria-label="Activar música" aria-pressed="false" style="display:none">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <g class="m-disc">
+      <path d="M9 18V5l10-2v13"/>
+      <circle cx="6" cy="18" r="3"/>
+      <circle cx="16" cy="16" r="3"/>
+    </g>
+    <line class="m-slash" x1="3" y1="21" x2="21" y2="3" stroke-width="1.8"/>
+  </svg>
+</button>
 
 <!-- ══════════════════════════════════
      HERO
@@ -923,8 +1328,8 @@
   </div>
 
   <div class="fade-in delay-3">
-    <p class="hero-date">20 · Septiembre · 2026</p>
-    <p class="hero-location">Ciudad de México</p>
+    <p class="hero-date">20 · Marzo · 2027</p>
+    <p class="hero-location">Cuernavaca, Morelos</p>
   </div>
 
   <a href="#countdown" class="scroll-hint fade-in delay-4" aria-label="Desplazar hacia abajo">
@@ -966,46 +1371,177 @@
 </section>
 
 <!-- ══════════════════════════════════
-     DETAILS
+     NOSOTROS — fotos
 ══════════════════════════════════ -->
-<section id="detalles">
+<section class="s-fotos" id="nosotros">
   <div class="inner">
-    <span class="s-tag reveal">El gran día</span>
-    <h2 class="s-title reveal">Detalles del <em>evento</em></h2>
+    <span class="s-tag reveal">Nosotros</span>
+    <h2 class="s-title reveal">Así llegamos <em>hasta aquí</em></h2>
     <div class="floral-sep reveal">❀ ✿ ❀</div>
 
-    <div class="details-grid">
-      <div class="d-card reveal">
-        <div class="d-icon">💒</div>
-        <p class="d-type">Ceremonia religiosa</p>
-        <h3 class="d-title">Parroquia<br>San Juan Bautista</h3>
-        <div class="d-info">
-          <strong>Hora</strong>
-          5:00 PM
-          <strong>Dirección</strong>
-          Plaza Hidalgo s/n, Coyoacán<br>Ciudad de México
-        </div>
-        <a href="https://maps.google.com/?q=Parroquia+San+Juan+Bautista+Coyoacan+CDMX"
-           target="_blank" rel="noopener" class="d-link">
-          📍 Ver en mapa
-        </a>
-      </div>
+    <div class="photo-grid reveal">
+      <figure class="photo-frame">
+        <img src="img/pareja-flores.jpg" width="900" height="1200"
+             loading="lazy" decoding="async"
+             alt="Gabriel y Jatzive bajo un arco de buganvilias, en una casa blanca">
+      </figure>
+      <figure class="photo-frame offset">
+        <img src="img/pareja-beso.jpg" width="900" height="1200"
+             loading="lazy" decoding="async"
+             alt="Gabriel y Jatzive dándose un beso al atardecer, con un pueblo blanco al fondo">
+      </figure>
+    </div>
 
-      <div class="d-card reveal">
-        <div class="d-icon">🥂</div>
-        <p class="d-type">Recepción</p>
-        <h3 class="d-title">Jardines<br>del Edén</h3>
-        <div class="d-info">
-          <strong>Hora</strong>
-          7:30 PM
-          <strong>Dirección</strong>
-          Av. Insurgentes Sur 1234<br>Ciudad de México
+    <p class="photo-note reveal">
+      De todos los viajes juntos, el que más ilusión nos hace
+      empieza el 20 de marzo.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     ITINERARIO — 3 días
+     Los bloques con data-dia se muestran según ?tipo= (ver script)
+══════════════════════════════════ -->
+<section id="itinerario">
+  <div class="inner">
+    <span class="s-tag reveal">El gran fin de semana</span>
+    <h2 class="s-title reveal">Nuestro <em>itinerario</em></h2>
+    <div class="floral-sep reveal">❀ ✿ ❀</div>
+
+    <p class="itin-note reveal" id="itin-note"></p>
+
+    <!-- ── Sede única: los tres días en el mismo lugar ── -->
+    <div class="venue-card reveal">
+      <p class="venue-label">Una sola sede, todo el fin de semana</p>
+      <h3 class="venue-name">Quinta Santa María</h3>
+      <p class="venue-address">
+        Cam. al Monasterio 9, Santa María Ahuacatitlán<br>
+        62100 Cuernavaca, Morelos
+      </p>
+      <a href="https://maps.google.com/?q=Quinta+Santa+Maria+Camino+al+Monasterio+9+Santa+Maria+Ahuacatitlan+62100+Cuernavaca+Morelos"
+         target="_blank" rel="noopener" class="d-link">
+        📍 Ver en mapa
+      </a>
+    </div>
+
+    <!-- ── Brunch · viernes 19 (solo invitaciones Tipo 1) ── -->
+    <div class="day-block reveal" data-dia="brunch">
+      <div class="day-head">
+        <span class="day-num"></span>
+        <div>
+          <p class="day-date">Viernes 19 de marzo</p>
+          <h3 class="day-name">Brunch de bienvenida</h3>
         </div>
-        <a href="https://maps.google.com/?q=Jardines+del+Eden+Insurgentes+CDMX"
-           target="_blank" rel="noopener" class="d-link">
-          📍 Ver en mapa
-        </a>
       </div>
+      <div class="details-grid">
+        <div class="d-card">
+          <div class="d-icon">🥐</div>
+          <p class="d-type">Brunch</p>
+          <h3 class="d-title">Para abrir<br>el fin de semana</h3>
+          <div class="d-info">
+            Un desayuno tardío para reencontrarnos con calma
+            antes de que empiece todo.
+            <strong>Hora</strong>
+            <span class="hora-pendiente">Por confirmar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Boda · sábado 20 ── -->
+    <div class="day-block reveal" data-dia="boda">
+      <div class="day-head">
+        <span class="day-num"></span>
+        <div>
+          <p class="day-date">Sábado 20 de marzo</p>
+          <h3 class="day-name">El día de la boda</h3>
+        </div>
+      </div>
+      <div class="details-grid">
+        <div class="d-card">
+          <div class="d-icon">💒</div>
+          <p class="d-type">Ceremonia religiosa</p>
+          <h3 class="d-title">El momento<br>que nos une</h3>
+          <div class="d-info">
+            <strong>Hora</strong>
+            5:00 PM
+          </div>
+        </div>
+
+        <div class="d-card">
+          <div class="d-icon">🥂</div>
+          <p class="d-type">Recepción</p>
+          <h3 class="d-title">A celebrar<br>toda la noche</h3>
+          <div class="d-info">
+            <strong>Hora</strong>
+            7:30 PM
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Postcelebración · domingo 21 ── -->
+    <div class="day-block reveal" data-dia="post">
+      <div class="day-head">
+        <span class="day-num"></span>
+        <div>
+          <p class="day-date">Domingo 21 de marzo</p>
+          <h3 class="day-name">Postcelebración</h3>
+        </div>
+      </div>
+      <div class="details-grid">
+        <div class="d-card">
+          <div class="d-icon">🌤️</div>
+          <p class="d-type">Postcelebración</p>
+          <h3 class="d-title">El cierre<br>del fin de semana</h3>
+          <div class="d-info">
+            Un último momento juntos, sin prisa,
+            para despedirnos como se debe.
+            <strong>Hora</strong>
+            <span class="hora-pendiente">Por confirmar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     HOSPEDAJE
+══════════════════════════════════ -->
+<section class="s-hospedaje" id="hospedaje">
+  <div class="inner">
+    <span class="s-tag reveal">Dónde quedarte</span>
+    <h2 class="s-title reveal">Hospedaje en <em>Cuernavaca</em></h2>
+    <div class="floral-sep reveal">❀ ✿ ❀</div>
+
+    <div class="lodging-card reveal">
+      <div class="d-icon">🏡</div>
+      <p class="d-type">Recomendación</p>
+      <h3 class="d-title">Quédate cerca,<br>quédate todo el fin</h3>
+      <p class="lodging-note">
+        Como la celebración son tres días, lo más cómodo es dormir cerca
+        de la sede y no regresar manejando cada noche. Te recomendamos
+        buscar un <strong>Airbnb por la zona de Santa María Ahuacatitlán</strong>,
+        a unos minutos de la Quinta.
+      </p>
+      <ul class="lodging-tips">
+        <li>
+          <span class="tip-ic" aria-hidden="true">🔎</span>
+          <span>Busca <em>“Santa María Ahuacatitlán, Cuernavaca”</em> y filtra
+                por las noches del 19 al 21 de marzo.</span>
+        </li>
+        <li>
+          <span class="tip-ic" aria-hidden="true">👪</span>
+          <span>Si vienen varios, una casa completa suele salir mejor
+                que cuartos por separado.</span>
+        </li>
+        <li>
+          <span class="tip-ic" aria-hidden="true">📅</span>
+          <span>Reserva con tiempo: es fin de semana y la zona se llena.</span>
+        </li>
+      </ul>
     </div>
   </div>
 </section>
@@ -1072,6 +1608,7 @@
         <span class="invite-card-icons" id="invite-icons"></span>
         <p class="invite-card-seats-label" id="invite-seats-label"></p>
       </div>
+      <p class="invite-card-days" id="invite-days"></p>
     </div>
 
     <p class="rsvp-quote reveal">
@@ -1079,7 +1616,7 @@
       con tu presencia a nuestro lado."
     </p>
 
-    <p class="rsvp-deadline reveal">Confirma tu asistencia antes del 20 de agosto de 2026</p>
+    <p class="rsvp-deadline reveal">Confirma tu asistencia antes del 20 de febrero de 2027</p>
 
     <button id="btn-rsvp-toggle" class="btn btn-rsvp reveal">
       Confirmar asistencia
@@ -1107,7 +1644,7 @@
 ══════════════════════════════════ -->
 <footer>
   <p class="footer-names">Gabriel &amp; Jatzive</p>
-  <p class="footer-sub">20 · Septiembre · 2026 · Ciudad de México</p>
+  <p class="footer-sub">20 · Marzo · 2027 · Cuernavaca, Morelos</p>
   <p class="footer-love">Con amor, los esperamos</p>
 </footer>
 
@@ -1116,8 +1653,58 @@
   (function () {
     const p      = new URLSearchParams(window.location.search);
     const nombre = (p.get('nombre') || '').trim();
-    const cupos  = Math.max(1, parseInt(p.get('cupos') || '1', 10));
+    /* Math.max(1, NaN) devuelve NaN, así que un ?cupos=abc dejaba el
+       formulario sin filas y sin forma de confirmar. Se acota a 1–20. */
+    const cuposRaw = parseInt(p.get('cupos'), 10);
+    const cupos    = Math.min(20, Math.max(1, isNaN(cuposRaw) ? 1 : cuposRaw));
     const phone  = '525599192118';
+
+    /* ── Tipo de invitación ──
+       Tipo 1 → viernes 19, sábado 20 y domingo 21
+       Tipo 2 → solo sábado 20 y domingo 21
+       Sin parámetro se asume Tipo 1 (vista completa). ── */
+    const tipo = p.get('tipo') === '2' ? 2 : 1;
+
+    const DIAS = {
+      brunch: { emoji: '🥐', chip: 'Vie 19', corto: '19 mar', largo: 'Viernes 19 · Brunch' },
+      boda:   { emoji: '💍', chip: 'Sáb 20', corto: '20 mar', largo: 'Sábado 20 · Boda' },
+      post:   { emoji: '🌤️', chip: 'Dom 21', corto: '21 mar', largo: 'Domingo 21 · Postcelebración' }
+    };
+    const DIAS_POR_TIPO = {
+      1: ['brunch', 'boda', 'post'],
+      2: ['boda', 'post']
+    };
+    const ETIQUETA_TIPO = {
+      1: 'Completa (19, 20 y 21 de marzo)',
+      2: 'Boda y postcelebración (20 y 21 de marzo)'
+    };
+    const incluidos = DIAS_POR_TIPO[tipo];
+
+    function chipsDe(ids) {
+      return ids.map(function (d) { return DIAS[d].emoji + ' ' + DIAS[d].chip; }).join(' · ');
+    }
+    function cortosDe(ids) {
+      return ids.map(function (d) { return DIAS[d].corto; }).join(' · ');
+    }
+
+    // Quitar del DOM los días a los que no está invitado y renumerar los demás
+    var numDia = 0;
+    document.querySelectorAll('.day-block').forEach(function (bloque) {
+      if (incluidos.indexOf(bloque.getAttribute('data-dia')) === -1) {
+        bloque.remove();
+        return;
+      }
+      numDia++;
+      bloque.querySelector('.day-num').textContent = ('0' + numDia).slice(-2);
+    });
+
+    // Nota de encabezado del itinerario
+    document.getElementById('itin-note').innerHTML = tipo === 2
+      ? 'Te esperamos el <strong>sábado 20</strong> y el <strong>domingo 21 de marzo</strong>.'
+      : 'Te esperamos los <strong>tres días</strong>: viernes 19, sábado 20 y domingo 21 de marzo.';
+
+    // Días incluidos, dentro de la tarjeta personalizada
+    document.getElementById('invite-days').textContent = chipsDe(incluidos);
 
     // Mostrar tarjeta personalizada
     if (nombre) {
@@ -1137,6 +1724,15 @@
     // Generar filas del formulario (una por cupo)
     var rowsEl = document.getElementById('rsvp-rows');
     for (var i = 1; i <= cupos; i++) {
+      // Chips de día, solo los que incluye esta invitación. Vienen marcados:
+      // lo normal es que asistan a todo y solo desmarquen lo que no podrán.
+      var chips = incluidos.map(function (d) {
+        return '<label class="rsvp-dia">' +
+                 '<input type="checkbox" data-idx="' + i + '" data-dia="' + d + '" checked>' +
+                 DIAS[d].emoji + ' ' + DIAS[d].chip +
+               '</label>';
+      }).join('');
+
       var row = document.createElement('div');
       row.className = 'rsvp-person-row';
       row.innerHTML =
@@ -1145,6 +1741,9 @@
           '<input class="rsvp-input" type="text" placeholder="Nombre" data-idx="' + i + '" data-field="nombre" autocomplete="given-name" maxlength="40">' +
           '<input class="rsvp-input" type="text" placeholder="Apellido" data-idx="' + i + '" data-field="apellido" autocomplete="family-name" maxlength="40">' +
         '</div>' +
+        '<span class="rsvp-dias-label">¿Qué días nos acompaña?</span>' +
+        '<div class="rsvp-dias">' + chips + '</div>' +
+        '<p class="rsvp-dias-error" data-idx="' + i + '">Marca al menos un día, o indica que está por confirmar.</p>' +
         '<label class="rsvp-uncertain-wrap">' +
           '<input type="checkbox" data-idx="' + i + '" data-field="porconfirmar">' +
           '<span class="rsvp-uncertain-text">Por confirmar (no está seguro/a aún)</span>' +
@@ -1182,24 +1781,34 @@
       var ul = document.createElement('ul');
       ul.className = 'rsvp-names-list';
       personas.forEach(function (p) {
-        var li   = document.createElement('li');
-        var icon = document.createTextNode(p.porConfirmar ? '⏳' : '✅');
-        var txt  = document.createTextNode(' ' + p.nombre);
-        li.appendChild(icon);
-        li.appendChild(txt);
+        var li  = document.createElement('li');
+
+        var top = document.createElement('div');
+        top.className = 'rsvp-name-top';
+        top.appendChild(document.createTextNode((p.porConfirmar ? '⏳' : '✅') + ' ' + p.nombre));
         if (p.porConfirmar) {
           var badge = document.createElement('span');
-          badge.className     = 'rsvp-name-badge';
-          badge.textContent   = 'por confirmar';
-          li.appendChild(badge);
+          badge.className   = 'rsvp-name-badge';
+          badge.textContent = 'por confirmar';
+          top.appendChild(badge);
         }
+        li.appendChild(top);
+
+        // Días confirmados (las confirmaciones viejas no traen el campo)
+        if (!p.porConfirmar && p.dias && p.dias.length) {
+          var dias = document.createElement('div');
+          dias.className   = 'rsvp-name-dias';
+          dias.textContent = chipsDe(p.dias);
+          li.appendChild(dias);
+        }
+
         ul.appendChild(li);
       });
 
       box.innerHTML =
         '<p class="rsvp-confirmed-icon">🎊</p>' +
         '<p class="rsvp-confirmed-title">¡Asistencia confirmada!</p>' +
-        '<p class="rsvp-confirmed-sub">Te esperamos el 20 de septiembre 💐</p>';
+        '<p class="rsvp-confirmed-sub">Te esperamos el 20 de marzo 💐</p>';
       box.appendChild(ul);
       box.style.display = 'block';
     }
@@ -1217,38 +1826,72 @@
       var inputs = formWrap.querySelectorAll('.rsvp-input');
       var todoLleno = true;
       inputs.forEach(function (inp) {
-        inp.style.borderColor = '';
+        inp.classList.remove('error');
         if (!inp.value.trim()) {
-          inp.style.borderColor = '#e05c7a';
+          inp.classList.add('error');
           todoLleno = false;
         }
       });
 
       if (!todoLleno) {
-        var primeroVacio = formWrap.querySelector('.rsvp-input[style*="e05c7a"]');
-        if (primeroVacio) primeroVacio.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        var primeroVacio = formWrap.querySelector('.rsvp-input.error');
+        if (primeroVacio) {
+          primeroVacio.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          primeroVacio.focus({ preventScroll: true });
+        }
         return;
       }
 
-      // Recolectar personas con su estado
+      // Cada persona debe marcar al menos un día, salvo que esté "por confirmar"
+      var faltaDia = null;
+      for (var i = 1; i <= cupos; i++) {
+        var err  = formWrap.querySelector('.rsvp-dias-error[data-idx="' + i + '"]');
+        var duda = formWrap.querySelector('[data-idx="' + i + '"][data-field="porconfirmar"]').checked;
+        var marcados = formWrap.querySelectorAll('[data-idx="' + i + '"][data-dia]:checked').length;
+        err.classList.remove('show');
+        if (!duda && marcados === 0) {
+          err.classList.add('show');
+          if (!faltaDia) faltaDia = err;
+        }
+      }
+      if (faltaDia) {
+        faltaDia.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // Recolectar personas con su estado y sus días
       var personas = [];
       for (var i = 1; i <= cupos; i++) {
         var n = formWrap.querySelector('[data-idx="' + i + '"][data-field="nombre"]').value.trim();
         var a = formWrap.querySelector('[data-idx="' + i + '"][data-field="apellido"]').value.trim();
         var porConfirmar = formWrap.querySelector('[data-idx="' + i + '"][data-field="porconfirmar"]').checked;
-        personas.push({ nombre: [n, a].filter(Boolean).join(' '), porConfirmar: porConfirmar });
+
+        var dias = [];
+        formWrap.querySelectorAll('[data-idx="' + i + '"][data-dia]:checked').forEach(function (chk) {
+          dias.push(chk.getAttribute('data-dia'));
+        });
+
+        personas.push({
+          nombre: [n, a].filter(Boolean).join(' '),
+          porConfirmar: porConfirmar,
+          dias: dias
+        });
       }
 
       // Construir mensaje de WhatsApp
       var lineas = personas.map(function (p, idx) {
-        return (p.porConfirmar ? '⏳' : '✅') + ' ' + (idx + 1) + '. ' + p.nombre + (p.porConfirmar ? ' (por confirmar)' : '');
+        var base = (p.porConfirmar ? '⏳' : '✅') + ' ' + (idx + 1) + '. ' + p.nombre;
+        if (p.porConfirmar) return base + ' (por confirmar)';
+        return base + '\n     ' + chipsDe(p.dias);
       }).join('\n');
 
       var intro = nombre
         ? '¡Hola! Somos ' + nombre + ' y confirmamos nuestra asistencia a la boda de Gabriel & Jatzive 🎊\n'
         : '¡Hola! Confirmamos nuestra asistencia a la boda de Gabriel & Jatzive 🎊\n';
 
-      var msg = intro + 'Asistiremos:\n' + lineas + '\n¡Nos vemos pronto! 💐';
+      var msg = intro + 'Asistiremos:\n' + lineas +
+                '\n\nInvitación: ' + ETIQUETA_TIPO[tipo] +
+                '\n¡Nos vemos pronto! 💐';
 
       // Guardar en localStorage para bloquear futuros intentos
       if (CONFIRMED_KEY) {
@@ -1265,7 +1908,10 @@
             action: 'asistente',
             grupo: nombre || 'Invitado',
             nombreCompleto: p.nombre,
-            porConfirmar: p.porConfirmar
+            porConfirmar: p.porConfirmar,
+            tipoEtiqueta: 'Tipo ' + tipo,
+            // Los días que ESTA persona confirmó, no los de la invitación
+            dias: p.dias.length ? cortosDe(p.dias) : 'sin definir'
           })
         });
       });
@@ -1278,13 +1924,137 @@
     // Quitar el borde rojo al empezar a escribir
     formWrap.addEventListener('input', function (e) {
       if (e.target.classList.contains('rsvp-input')) {
-        e.target.style.borderColor = '';
+        e.target.classList.remove('error');
+      }
+    });
+
+    // Quitar el aviso de días al marcar uno (o al marcar "por confirmar")
+    formWrap.addEventListener('change', function (e) {
+      var t = e.target;
+      if (!t.hasAttribute('data-dia') && t.getAttribute('data-field') !== 'porconfirmar') return;
+      var idx = t.getAttribute('data-idx');
+      var err = formWrap.querySelector('.rsvp-dias-error[data-idx="' + idx + '"]');
+      if (err) err.classList.remove('show');
+    });
+  })();
+
+  /* ══════════════════════════════════════════════════════════════
+     MÚSICA DE FONDO — audio/cancion.m4a
+
+     La canción SIEMPRE suena con audio: nunca se reproduce en silencio.
+
+     Ojo: ningún navegador permite el autoplay con sonido si el visitante no
+     ha interactuado antes con la página. Por eso intentamos reproducir de
+     inmediato y, si el navegador lo bloquea, la canción arranca — desde el
+     principio y con sonido — en el primer toque / scroll del invitado.
+
+     Si el archivo no existe, el botón no aparece y la invitación funciona igual.
+     ══════════════════════════════════════════════════════════════ */
+  (function () {
+    var VOL_MAX = 0.35;             // volumen final — suave, de fondo
+
+    var audio = document.getElementById('bg-music');
+    var btn   = document.getElementById('music-btn');
+    var pausadoPorUsuario = false;
+    var fadeTimer = null;
+
+    // Si el archivo no existe o el formato no es soportado, ocultamos el botón
+    audio.addEventListener('error', function () {
+      btn.style.display = 'none';
+      clearInterval(fadeTimer);
+    }, true);
+
+    audio.muted  = false;           // nunca silenciado: si suena, suena de verdad
+    audio.volume = VOL_MAX;
+
+    function marcarEstado(sonando) {
+      btn.classList.toggle('playing', sonando);
+      btn.classList.toggle('hint', !sonando && !pausadoPorUsuario);
+      btn.setAttribute('aria-pressed', sonando ? 'true' : 'false');
+      btn.setAttribute('aria-label', sonando ? 'Silenciar música' : 'Activar música');
+    }
+
+    function fadeIn() {
+      clearInterval(fadeTimer);
+      audio.volume = 0;
+      fadeTimer = setInterval(function () {
+        var v = Math.min(VOL_MAX, audio.volume + VOL_MAX / 25);
+        audio.volume = v;
+        if (v >= VOL_MAX) clearInterval(fadeTimer);
+      }, 60);
+    }
+
+    // Reproduce siempre con sonido. Devuelve true si el navegador lo permitió.
+    function reproducir() {
+      audio.muted = false;
+      var p = audio.play();
+      if (p && p.then) {
+        return p.then(function () { fadeIn(); return true; })
+                .catch(function () { return false; });
+      }
+      fadeIn();
+      return Promise.resolve(true);
+    }
+
+    audio.addEventListener('play',  function () { marcarEstado(true);  });
+    audio.addEventListener('pause', function () { marcarEstado(false); });
+    marcarEstado(false);
+    btn.style.display = 'flex';
+
+    var eventos = ['pointerdown', 'touchstart', 'keydown', 'scroll'];
+
+    function armarGesto() {
+      eventos.forEach(function (ev) {
+        window.addEventListener(ev, primerGesto, { passive: true });
+      });
+    }
+    function desarmarGesto() {
+      eventos.forEach(function (ev) { window.removeEventListener(ev, primerGesto); });
+    }
+    function primerGesto(e) {
+      // El botón tiene su propio manejador: no lo pisamos desde aquí
+      if (e && e.target && e.target.closest && e.target.closest('#music-btn')) return;
+      desarmarGesto();
+      if (pausadoPorUsuario || !audio.paused) return;
+      reproducir();
+    }
+
+    // 1) Intento inmediato CON sonido
+    reproducir().then(function (sono) {
+      // 2) Si el navegador lo bloqueó, esperamos el primer gesto del invitado
+      if (!sono) armarGesto();
+    });
+
+    // 3) Control manual — siempre gana sobre el arranque automático
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (audio.paused) {
+        pausadoPorUsuario = false;
+        reproducir();
+      } else {
+        pausadoPorUsuario = true;
+        clearInterval(fadeTimer);
+        audio.pause();
+      }
+    });
+
+    // 4) Pausar al cambiar de pestaña o minimizar; retomar al volver
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        if (!audio.paused) audio.pause();
+      } else if (!pausadoPorUsuario) {
+        reproducir();
       }
     });
   })();
 
   /* ── Countdown ── */
-  const target = new Date('2026-09-20T17:00:00');
+  /* Sábado 20 de marzo de 2027, 5:00 PM — hora de la ceremonia.
+     El offset -06:00 es obligatorio: sin él la fecha se interpreta en la
+     hora LOCAL del visitante y un invitado fuera de México vería una
+     cuenta regresiva distinta. México no aplica horario de verano
+     desde 2022, así que en marzo de 2027 sigue en UTC-6. */
+  const target = new Date('2027-03-20T17:00:00-06:00');
 
   function pad(n) { return String(n).padStart(2, '0'); }
 

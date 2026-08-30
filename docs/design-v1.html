@@ -318,6 +318,115 @@
     .d-link:hover { background: var(--blush); transform: translateY(-1px); }
 
     /* ════════════════════════════════
+       NOSOTROS — fotos
+    ════════════════════════════════ */
+    .s-fotos {
+      background: var(--warm);
+      border-top: 1px solid #f0d5dc;
+      border-bottom: 1px solid #f0d5dc;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.8rem;
+      max-width: 720px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    /* Marco blanco: la foto se lee como impresa y pegada al álbum,
+       no como una imagen suelta encima del fondo. */
+    .photo-frame {
+      margin: 0;
+      background: #fff;
+      padding: .55rem;
+      border: 1px solid #f0e0e5;
+      border-radius: 16px;
+      box-shadow: 0 10px 32px rgba(74,55,40,.12);
+    }
+
+    /* La segunda baja un poco para romper la simetría */
+    .photo-frame.offset { margin-top: 2.4rem; }
+
+    /* aspect-ratio fijo: reserva el espacio antes de que cargue
+       la imagen y evita que el texto brinque. */
+    .photo-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 11px;
+    }
+
+    .photo-note {
+      text-align: center;
+      max-width: 460px;
+      margin: 2.6rem auto 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.02rem, 2.6vw, 1.3rem);
+      line-height: 1.7;
+      color: var(--brown);
+      opacity: .82;
+    }
+
+    /* ════════════════════════════════
+       HOSPEDAJE
+    ════════════════════════════════ */
+    .s-hospedaje {
+      background: linear-gradient(135deg, #fdeef3, #fdf6f0);
+      border-top: 1px solid #f0d5dc;
+      border-bottom: 1px solid #f0d5dc;
+    }
+
+    .lodging-card {
+      background: #fff;
+      border: 1px solid #f0e0e5;
+      border-radius: 18px;
+      padding: 2.6rem 2rem;
+      text-align: center;
+      max-width: 520px;
+      margin: 0 auto;
+      box-shadow: 0 8px 32px rgba(74,55,40,.07);
+    }
+
+    .lodging-note {
+      font-size: .88rem;
+      line-height: 1.9;
+      color: var(--brown);
+      opacity: .82;
+      margin-bottom: 1.8rem;
+    }
+
+    /* Sugerencias de búsqueda, dentro de la tarjeta de hospedaje.
+       Alineadas a la izquierda aunque la tarjeta esté centrada: son
+       instrucciones y se leen mejor en bandera. */
+    .lodging-tips {
+      list-style: none;
+      max-width: 400px;
+      margin: 0 auto;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: .95rem;
+    }
+
+    .lodging-tips li {
+      display: grid;
+      grid-template-columns: 1.5rem 1fr;
+      gap: .7rem;
+      align-items: start;
+      font-size: .85rem;
+      line-height: 1.7;
+      color: var(--brown);
+      opacity: .85;
+    }
+
+    .lodging-tips .tip-ic { font-size: 1.05rem; line-height: 1.45; }
+
+    /* ════════════════════════════════
        DRESSCODE
     ════════════════════════════════ */
     .s-dresscode { background: #f9f1f4; }
@@ -488,6 +597,16 @@
         min-height: 44px;
         line-height: 1.5;
       }
+
+      /* Fotos — apiladas: en 2 columnas las caras quedan diminutas */
+      .photo-grid  { grid-template-columns: 1fr; gap: 1.4rem; max-width: 380px; }
+      .photo-frame { padding: .45rem; border-radius: 14px; }
+      .photo-frame.offset { margin-top: 0; }
+      .photo-note  { margin-top: 2rem; }
+
+      /* Hospedaje */
+      .lodging-card    { padding: 2rem 1.4rem; border-radius: 14px; }
+      .lodging-tips li { font-size: .82rem; }
 
       /* Dresscode swatches */
       .swatches  { gap: 1rem; }
@@ -699,6 +818,35 @@
 </section>
 
 <!-- ══════════════════════════════════
+     NOSOTROS — fotos
+══════════════════════════════════ -->
+<section class="s-fotos" id="nosotros">
+  <div class="inner">
+    <span class="s-tag reveal">Nosotros</span>
+    <h2 class="s-title reveal">Así llegamos <em>hasta aquí</em></h2>
+    <div class="floral-sep reveal">❀ ✿ ❀</div>
+
+    <div class="photo-grid reveal">
+      <figure class="photo-frame">
+        <img src="img/pareja-flores.jpg" width="900" height="1200"
+             loading="lazy" decoding="async"
+             alt="Gabriel y Jatzive bajo un arco de buganvilias, en una casa blanca">
+      </figure>
+      <figure class="photo-frame offset">
+        <img src="img/pareja-beso.jpg" width="900" height="1200"
+             loading="lazy" decoding="async"
+             alt="Gabriel y Jatzive dándose un beso al atardecer, con un pueblo blanco al fondo">
+      </figure>
+    </div>
+
+    <p class="photo-note reveal">
+      De todos los viajes juntos, el que más ilusión nos hace
+      empieza el 20 de septiembre.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
      DETAILS
 ══════════════════════════════════ -->
 <section id="detalles">
@@ -739,6 +887,44 @@
           📍 Ver en mapa
         </a>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     HOSPEDAJE
+══════════════════════════════════ -->
+<section class="s-hospedaje" id="hospedaje">
+  <div class="inner">
+    <span class="s-tag reveal">Dónde quedarte</span>
+    <h2 class="s-title reveal">Hospedaje en <em>la ciudad</em></h2>
+    <div class="floral-sep reveal">❀ ✿ ❀</div>
+
+    <div class="lodging-card reveal">
+      <div class="d-icon">🏡</div>
+      <p class="d-type">Recomendación</p>
+      <h3 class="d-title">Quédate cerca<br>del evento</h3>
+      <p class="lodging-note">
+        Si vienes de fuera o prefieres no manejar de regreso esa noche,
+        te recomendamos buscar un <strong>Airbnb cerca de la zona del
+        evento</strong>, por el rumbo de Coyoacán y el sur de la ciudad.
+      </p>
+      <ul class="lodging-tips">
+        <li>
+          <span class="tip-ic" aria-hidden="true">🔎</span>
+          <span>Busca <em>“Coyoacán, Ciudad de México”</em> y filtra
+                por la noche del 20 de septiembre.</span>
+        </li>
+        <li>
+          <span class="tip-ic" aria-hidden="true">👪</span>
+          <span>Si vienen varios, una casa completa suele salir mejor
+                que cuartos por separado.</span>
+        </li>
+        <li>
+          <span class="tip-ic" aria-hidden="true">📅</span>
+          <span>Reserva con tiempo: es fin de semana y la zona se llena.</span>
+        </li>
+      </ul>
     </div>
   </div>
 </section>
