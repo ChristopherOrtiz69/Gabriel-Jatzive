@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Invitación de boda — Gabriel & Jatzive · 20 de Marzo 2027 · Quinta Santa María, Cuernavaca">
+  <meta name="description" content="Invitación de boda — Gabriel & Jatzive · 13 de Marzo 2027 · Quinta Santa María, Cuernavaca">
   <meta name="theme-color" content="#eef2e6">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -43,7 +43,17 @@
       --gold:      #c8a76c;
     }
 
-    html { scroll-behavior: smooth; }
+    /* ════════════════════════════════
+       PAGINADO — cada sección es una diapositiva
+       El scroll es nativo: no se secuestra la rueda ni el touch, solo
+       se le dan puntos de anclaje. Así siguen funcionando el teclado,
+       la barra de scroll y los lectores de pantalla.
+    ════════════════════════════════ */
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+      overflow-x: hidden;
+    }
 
     body {
       background: var(--cream);
@@ -52,6 +62,27 @@
       font-weight: 300;
       overflow-x: hidden;
     }
+
+    section, footer {
+      scroll-snap-align: start;
+      min-height: 100vh;
+      min-height: 100svh;
+    }
+
+    /* Válvulas de escape: si la página no cabe, el enganche estorba.
+       — .no-snap lo apaga desde JS (formulario de RSVP abierto)
+       — pantallas bajas (móvil en horizontal) nunca enganchan
+       — quien pidió menos movimiento tampoco lo quiere */
+    html.no-snap { scroll-snap-type: none; }
+    @media (max-height: 620px) { html { scroll-snap-type: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-snap-type: none; scroll-behavior: auto; }
+    }
+
+    /* Sprite de flores: se dibujan una vez y se reutilizan con <use>.
+       Ancho y alto en 0 para que no ocupe, pero sin display:none
+       (con display:none el navegador no resuelve las referencias). */
+    .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 
     /* ── Animations ── */
     @keyframes fadeInUp {
@@ -103,6 +134,10 @@
     .floral-corner.tl { top: -20px; left: -20px; }
     .floral-corner.br { bottom: -20px; right: -20px; transform: rotate(180deg); }
 
+    /* El contenido del hero, por encima de la capa de hojas.
+       En el resto de secciones de esto se encarga .inner. */
+    .hero > .fade-in:not(.scroll-hint) { position: relative; z-index: 1; }
+
     /* reservado — ver bloque MOBILE al final */
 
     .hero-tagline {
@@ -113,9 +148,12 @@
       margin-bottom: 1.6rem;
     }
 
+    /* El 15vh es lo que mantiene al hero dentro de una diapositiva:
+       sin él, en una ventana baja los nombres crecen por ancho y la
+       portada se desborda. */
     .hero-name {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(4rem, 13vw, 8.5rem);
+      font-size: clamp(4rem, min(13vw, 15vh), 8.5rem);
       color: var(--brown);
       line-height: 1;
     }
@@ -168,6 +206,7 @@
       opacity: .55;
       color: var(--brown);
       text-decoration: none;
+      z-index: 1;
     }
     .scroll-hint span { font-size: .65rem; letter-spacing: 2px; text-transform: uppercase; }
     .scroll-hint svg  { width: 18px; height: 18px; }
@@ -175,12 +214,132 @@
     /* ════════════════════════════════
        SHARED SECTION STYLES
     ════════════════════════════════ */
-    section { padding: 5.5rem 1.5rem; }
+    /* Cada sección centra su contenido: al ser una pantalla completa,
+       el bloque queda ópticamente al medio en cualquier alto.
+       position + overflow son para el rincón floral: se ancla a la
+       sección y se recorta en el borde. */
+    section {
+      padding: 4.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
 
     .inner {
+      width: 100%;
       max-width: 940px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
+
+    /* ── Rincón floral de cada diapositiva ──
+       Uno solo por página, alternando esquina, detrás del contenido y
+       a media opacidad: es atmósfera, no información. Va en posición
+       absoluta, así que no suma al alto de la diapositiva ni apaga el
+       enganche del scroll — la sección lo recorta en el borde. */
+    .deco {
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      opacity: .72;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .deco.sm { width: 192px; height: 192px; }
+
+    .deco.tl { top: -24px;    left:  -24px; }
+    .deco.tr { top: -24px;    right: -24px; transform: rotate(90deg); }
+    .deco.br { bottom: -24px; right: -24px; transform: rotate(180deg); }
+    .deco.bl { bottom: -24px; left:  -24px; transform: rotate(270deg); }
+
+    /* ════════════════════════════════
+       MOVIMIENTO — brisa y hojas al viento
+       Solo transform y opacity: lo resuelve el compositor y no
+       provoca repintados ni reflow, así que no toca el alto de las
+       diapositivas ni el enganche del scroll. Se apaga entero con
+       prefers-reduced-motion (bloque MÓVIL / accesibilidad).
+    ════════════════════════════════ */
+    @keyframes brisa {
+      0%, 100% { transform: rotate(-2deg) translateY(0); }
+      50%      { transform: rotate(2deg)  translateY(-3px); }
+    }
+
+    /* La ramita del separador es diminuta: con 2° no se le nota nada,
+       necesita más giro para leer el mismo gesto. */
+    @keyframes brisa-corta {
+      0%, 100% { transform: rotate(-3.5deg) translateY(0); }
+      50%      { transform: rotate(3.5deg)  translateY(-1px); }
+    }
+
+    /* La animación va en el <use>, no en el <svg>: el svg ya usa
+       transform para colocarse en su esquina y una animación encima
+       lo desplazaría. Además el pivote queda en la base del tallo
+       —esquina inferior izquierda del viewBox— y no en el centro:
+       así se mece desde donde nace en vez de flotar. */
+    .floral-corner use,
+    .deco use {
+      transform-box: view-box;
+      transform-origin: 0% 100%;
+      animation: brisa 9.5s ease-in-out infinite;
+    }
+
+    /* Duraciones y desfases distintos: en sincronía se ve mecánico.
+       El delay negativo además arranca a media animación. */
+    .floral-corner.br use { animation-duration: 11.5s; animation-delay: -3s; }
+    .deco.tl use { animation-duration: 12s; animation-delay: -1s; }
+    .deco.tr use { animation-duration: 13s; animation-delay: -4s; }
+    .deco.br use { animation-duration: 11s; animation-delay: -7s; }
+    .deco.bl use { animation-duration: 14s; animation-delay: -9s; }
+
+    /* La ramita del separador pivota en su base central */
+    .floral-sep use {
+      transform-box: view-box;
+      transform-origin: 50% 100%;
+      animation: brisa-corta 6.5s ease-in-out infinite;
+    }
+
+    /* ── Hojas que caen ──
+       Una sola capa fija para toda la invitación: caen sobre la
+       diapositiva que estés viendo, sin repetirse por sección. */
+    .hojas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hoja {
+      position: absolute;
+      top: 0;
+      height: auto;
+      opacity: 0;
+      will-change: transform, opacity;
+      animation: caer linear infinite;
+    }
+
+    /* El vaivén lateral y el giro son lo que la vuelven una hoja
+       cayendo y no una gota. Los tiempos son largos a propósito:
+       se cruza una cada tantos segundos, no una lluvia. */
+    @keyframes caer {
+      0%   { transform: translate3d(0, -14vh, 0) rotate(0deg);      opacity: 0; }
+      6%   { opacity: var(--op, .45); }
+      25%  { transform: translate3d(26px, 16vh, 0) rotate(46deg); }
+      50%  { transform: translate3d(-16px, 46vh, 0) rotate(-28deg); }
+      75%  { transform: translate3d(30px, 76vh, 0) rotate(62deg); }
+      94%  { opacity: var(--op, .45); }
+      100% { transform: translate3d(2px, 114vh, 0) rotate(24deg);   opacity: 0; }
+    }
+
+    .hoja.h1 { left:  8%; width: 24px; animation-duration: 23s; animation-delay:  -2s; --op: .6;  }
+    .hoja.h2 { left: 26%; width: 18px; animation-duration: 31s; animation-delay: -14s; --op: .48; }
+    .hoja.h3 { left: 47%; width: 28px; animation-duration: 26s; animation-delay:  -7s; --op: .58; }
+    .hoja.h4 { left: 68%; width: 20px; animation-duration: 34s; animation-delay: -21s; --op: .44; }
+    .hoja.h5 { left: 84%; width: 25px; animation-duration: 28s; animation-delay: -11s; --op: .55; }
+    .hoja.h6 { left: 58%; width: 16px; animation-duration: 38s; animation-delay: -28s; --op: .4;  }
 
     .s-tag {
       display: block;
@@ -201,13 +360,13 @@
     }
     .s-title em { font-style: italic; color: var(--deep-rose); }
 
+    /* Ramita de eucalipto con una peonía al centro */
     .floral-sep {
-      text-align: center;
-      color: var(--rose);
-      font-size: 1.1rem;
-      letter-spacing: 10px;
-      margin: 1.5rem 0 3rem;
+      display: flex;
+      justify-content: center;
+      margin: 1.3rem 0 2.4rem;
     }
+    .floral-sep svg { width: 132px; height: 26px; }
 
     /* ════════════════════════════════
        COUNTDOWN
@@ -254,70 +413,8 @@
       margin-top: .5rem;
     }
 
-    /* ════════════════════════════════
-       DETAIL CARDS
-    ════════════════════════════════ */
-    .details-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-    }
-
-    .d-card {
-      background: #fff;
-      border-radius: 18px;
-      padding: 2.8rem 2.2rem;
-      text-align: center;
-      box-shadow: 0 8px 32px rgba(59,74,53,.09);
-      border: 1px solid #e7ddcf;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .d-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(to right, var(--blush), var(--sage));
-    }
-
-    .d-icon { font-size: 2.2rem; margin-bottom: 1.1rem; }
-
-    .d-type {
-      font-size: .68rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--deep-rose);
-      margin-bottom: .9rem;
-    }
-
-    .d-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.7rem;
-      font-weight: 400;
-      color: var(--brown);
-      margin-bottom: 1.1rem;
-      line-height: 1.3;
-    }
-
-    .d-info {
-      font-size: .88rem;
-      line-height: 1.9;
-      color: var(--brown);
-      opacity: .8;
-    }
-
-    .d-info strong {
-      font-weight: 600;
-      font-size: .72rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--sage-dark);
-      display: block;
-      margin-top: .8rem;
-    }
-
+    /* Botón discreto (mapa). Las tarjetas .d-card se retiraron al
+       compactar el itinerario: ya no había quién las usara. */
     .d-link {
       display: inline-block;
       margin-top: 1.8rem;
@@ -333,112 +430,96 @@
     .d-link:hover { background: var(--blush); transform: translateY(-1px); }
 
     /* ════════════════════════════════
-       ITINERARIO — 3 días
+       ITINERARIO — agenda de una sola lectura
+       Antes eran tres tarjetas apiladas. Como todo pasa en la misma
+       sede y a la misma hora para todos, una tabla de tres columnas
+       (cuándo · qué · a qué hora) dice lo mismo en un tercio del alto.
     ════════════════════════════════ */
-    .itin-note {
-      max-width: 560px;
-      margin: 0 auto 3rem;
-      text-align: center;
-      font-size: .88rem;
-      line-height: 1.8;
-      color: var(--brown);
-      background: #fff;
-      border: 1px solid #e7ddcf;
-      border-left: 3px solid var(--rose);
-      border-radius: 12px;
-      padding: 1rem 1.3rem;
+    .agenda {
+      list-style: none;
+      max-width: 620px;
+      margin: 0 auto;
+      border-top: 1px solid #e3d8c6;
     }
-    .itin-note strong { color: var(--deep-rose); font-weight: 600; }
 
-    .day-block { margin-bottom: 3.2rem; }
-    .day-block:last-child { margin-bottom: 0; }
-
-    .day-head {
-      display: flex;
-      align-items: center;
+    .agenda li {
+      display: grid;
+      grid-template-columns: 5.2rem 1fr auto;
       gap: 1rem;
-      margin-bottom: 1.4rem;
-      padding-bottom: 1rem;
+      align-items: baseline;
+      padding: 1.05rem .25rem;
       border-bottom: 1px solid #e3d8c6;
     }
 
-    .day-num {
+    .ag-when b {
+      display: block;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.4rem;
-      font-weight: 300;
+      font-size: 1.4rem;
+      font-weight: 500;
       line-height: 1;
-      color: var(--sage);
-      flex-shrink: 0;
-      min-width: 2.4rem;
-      text-align: center;
-    }
-
-    .day-date {
-      font-size: .68rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
       color: var(--deep-rose);
-      margin-bottom: .25rem;
+    }
+    .ag-when i {
+      display: block;
+      font-style: normal;
+      font-size: .58rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-top: .3rem;
     }
 
-    .day-name {
+    .ag-what {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      font-weight: 400;
+      font-size: 1.3rem;
+      line-height: 1.25;
       color: var(--brown);
-      line-height: 1.2;
     }
 
-    /* ── Sede única (los tres días en el mismo lugar) ── */
-    .venue-card {
-      background: #fff;
-      border: 1px solid #e7ddcf;
-      border-radius: 18px;
-      padding: 2.2rem 2rem;
-      text-align: center;
-      max-width: 520px;
-      margin: 0 auto 3.2rem;
-      box-shadow: 0 8px 32px rgba(59,74,53,.09);
-      position: relative;
-      overflow: hidden;
+    .ag-time {
+      font-size: .78rem;
+      letter-spacing: 1.5px;
+      color: var(--sage-dark);
+      white-space: nowrap;
     }
-    .venue-card::before {
+
+    /* Segundo evento del mismo día: sin fecha, sangrado para que se
+       lea como hijo de la fila de arriba. */
+    .agenda li.ag-sub { padding-top: 0; border-top: none; }
+    .ag-sub .ag-what { padding-left: 1.1rem; position: relative; }
+    .ag-sub .ag-what::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(to right, var(--blush), var(--sage));
+      left: 0; top: .68em;
+      width: .55rem; height: 1px;
+      background: var(--sage);
     }
 
-    .venue-label {
-      font-size: .66rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--deep-rose);
-      margin-bottom: .7rem;
-    }
+    /* Hora aún sin definir */
+    .hora-pendiente { color: #9a7530; font-style: italic; }
 
-    .venue-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.9rem;
-      font-weight: 400;
-      color: var(--brown);
-      line-height: 1.2;
-      margin-bottom: .8rem;
-    }
-
-    .venue-address {
+    /* ── Sede: una línea al pie de la agenda, no una tarjeta ── */
+    .venue-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem 1.2rem;
+      max-width: 620px;
+      margin: 1.8rem auto 0;
+      text-align: center;
       font-size: .86rem;
-      line-height: 1.8;
+      line-height: 1.7;
       color: var(--brown);
-      opacity: .8;
+      opacity: .85;
     }
-
-    /* Hora aún sin definir, dentro de una tarjeta de evento */
-    .hora-pendiente {
-      color: #9a7530;
-      font-style: italic;
+    .venue-line strong {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--brown);
     }
+    .venue-line .d-link { margin-top: 0; }
 
     /* ── Hospedaje ──
        Tono salvia para separarlo de la sección de vestimenta, que va
@@ -449,50 +530,28 @@
       border-bottom: 1px solid #e3d8c6;
     }
 
-    .lodging-card {
-      background: #fff;
-      border: 1px solid #e7ddcf;
-      border-radius: 18px;
-      padding: 2.6rem 2rem;
-      text-align: center;
-      max-width: 520px;
-      margin: 0 auto;
-      box-shadow: 0 8px 32px rgba(59,74,53,.09);
-    }
-
+    /* Un párrafo centrado: la recomendación cabe en dos frases y no
+       necesita tarjeta ni lista de viñetas. */
     .lodging-note {
-      font-size: .88rem;
-      line-height: 1.9;
-      color: var(--brown);
-      opacity: .82;
-      margin-bottom: 1.8rem;
-    }
-
-    /* Sugerencias de búsqueda, dentro de la tarjeta de hospedaje.
-       Alineadas a la izquierda aunque la tarjeta esté centrada: son
-       instrucciones y se leen mejor en bandera. */
-    .lodging-tips {
-      list-style: none;
-      max-width: 400px;
+      max-width: 480px;
       margin: 0 auto;
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      gap: .95rem;
-    }
-
-    .lodging-tips li {
-      display: grid;
-      grid-template-columns: 1.5rem 1fr;
-      gap: .7rem;
-      align-items: start;
-      font-size: .85rem;
-      line-height: 1.7;
+      text-align: center;
+      font-size: 1rem;
+      line-height: 1.9;
       color: var(--brown);
       opacity: .85;
     }
+    .lodging-note strong { color: var(--sage-dark); font-weight: 600; }
 
-    .lodging-tips .tip-ic { font-size: 1.05rem; line-height: 1.45; }
+    .lodging-hint {
+      margin-top: 1.4rem;
+      text-align: center;
+      font-size: .74rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      opacity: .8;
+    }
 
     /* Días incluidos, dentro de la tarjeta personalizada */
     .invite-card-days {
@@ -535,12 +594,15 @@
     .photo-frame.offset { margin-top: 2.4rem; }
 
     /* aspect-ratio fijo: reserva el espacio antes de que cargue
-       la imagen y evita que el texto brinque. */
+       la imagen y evita que el texto brinque.
+       max-height: la sección es una diapositiva, así que la foto no
+       puede crecer más que la pantalla — si topa, recorta (cover). */
     .photo-frame img {
       display: block;
       width: 100%;
       height: auto;
       aspect-ratio: 3 / 4;
+      max-height: 42svh;
       object-fit: cover;
       border-radius: 11px;
     }
@@ -642,12 +704,23 @@
     /* ════════════════════════════════
        FOOTER
     ════════════════════════════════ */
+    /* Última diapositiva: el cierre en verde, con todo al centro */
     footer {
       background: var(--brown);
       color: rgba(255,255,255,.65);
       text-align: center;
       padding: 3.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
     }
+    footer p { position: relative; z-index: 1; }
+
+    /* Sobre el verde oscuro las flores se apagan solas: menos velo */
+    footer .deco { opacity: .5; }
 
     .footer-names {
       font-family: 'Great Vibes', cursive;
@@ -1056,6 +1129,70 @@
     }
 
     /* ════════════════════════════════
+       PAGINADOR — en qué diapositiva voy
+       Solo en pantallas anchas: en el teléfono el pulgar ya sabe
+       que se desliza, y unos puntos flotando solo estorban.
+    ════════════════════════════════ */
+    .pager {
+      position: fixed;
+      right: 1.4rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 55;
+      display: none;
+      flex-direction: column;
+      gap: .85rem;
+    }
+
+    .pager a {
+      position: relative;
+      display: block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--sage);
+      opacity: .38;
+      transition: opacity .25s, transform .25s, background .25s;
+    }
+    .pager a:hover { opacity: .75; transform: scale(1.25); }
+    .pager a.is-active {
+      opacity: 1;
+      background: var(--deep-rose);
+      transform: scale(1.35);
+    }
+    .pager a:focus-visible {
+      outline: 2px solid var(--deep-rose);
+      outline-offset: 3px;
+    }
+
+    /* Etiqueta al pasar el cursor */
+    .pager a::after {
+      content: attr(data-label);
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: .3rem .65rem;
+      border-radius: 20px;
+      background: rgba(255,255,255,.94);
+      border: 1px solid #e3d8c6;
+      color: var(--brown);
+      font-size: .66rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+    .pager a:hover::after,
+    .pager a:focus-visible::after { opacity: 1; }
+
+    @media (min-width: 900px) and (min-height: 640px) {
+      .pager { display: flex; }
+    }
+
+    /* ════════════════════════════════
        MOBILE — RESPONSIVE
     ════════════════════════════════ */
 
@@ -1068,11 +1205,23 @@
       footer  { padding-bottom: max(3.5rem, calc(2.5rem + env(safe-area-inset-bottom))); }
     }
 
+    /* ── Pantallas bajas ──
+       Portátiles chicos, ventana a media altura, teléfono con la barra
+       del navegador desplegada. Se aprieta lo decorativo para que la
+       diapositiva siga cabiendo entera y el enganche no se apague. ── */
+    @media (max-height: 780px) {
+      section { padding: 3rem 1.5rem; }
+      .floral-sep { margin: .9rem 0 1.6rem; }
+      .photo-frame img { max-height: 38svh; }
+      .photo-frame.offset { margin-top: 1.4rem; }
+      .photo-note { margin-top: 1.5rem; }
+      .agenda li { padding: .85rem .25rem; }
+    }
+
     /* ── Tablet / pantallas medianas ── */
     @media (max-width: 768px) {
       section { padding: 4.2rem 1.4rem; }
       .floral-corner { width: 240px; height: 240px; }
-      .d-card { padding: 2.4rem 1.8rem; }
       .btn { padding: 1rem 2.4rem; }
     }
 
@@ -1089,7 +1238,20 @@
       /* Secciones generales */
       section { padding: 3.5rem 1.2rem; }
       .s-tag  { letter-spacing: 3px; font-size: .68rem; }
-      .floral-sep { letter-spacing: 5px; margin: 1.1rem 0 2rem; font-size: 1rem; }
+      .floral-sep { margin: 1rem 0 1.8rem; }
+      .floral-sep svg { width: 108px; height: 21px; }
+
+      /* Rincones más chicos y más tenues: en el teléfono el contenido
+         pasa cerca de las esquinas y no debe competir con él. */
+      .deco    { width: 152px; height: 152px; opacity: .55; }
+      .deco.sm { width: 126px; height: 126px; }
+
+      /* Menos hojas y más chicas: en una pantalla de teléfono seis
+         cruzando se sienten multitud, no detalle. */
+      .hoja    { width: 17px; }
+      .hoja.h3 { width: 21px; }
+      .hoja.h4,
+      .hoja.h6 { display: none; }
 
       /* Countdown — 2 × 2 */
       .countdown-grid {
@@ -1101,39 +1263,33 @@
       .cd-num  { font-size: 2.8rem; }
       .cd-label { font-size: .6rem; letter-spacing: 2px; }
 
-      /* Tarjetas de detalle */
-      .details-grid { gap: 1.2rem; }
-      .d-card       { padding: 2rem 1.4rem; border-radius: 14px; }
-      .d-title      { font-size: 1.5rem; }
-
       /* Itinerario */
-      .itin-note  { font-size: .82rem; margin-bottom: 2.2rem; padding: .9rem 1rem; }
-      .day-block  { margin-bottom: 2.4rem; }
-      .day-head   { gap: .7rem; margin-bottom: 1.1rem; padding-bottom: .8rem; }
-      .day-num    { font-size: 1.9rem; min-width: 1.9rem; }
-      .day-date   { font-size: .62rem; letter-spacing: 2px; }
-      .day-name   { font-size: 1.25rem; }
+      .agenda li  { grid-template-columns: 4.3rem 1fr auto; gap: .7rem; padding: .9rem .1rem; }
+      .ag-when b  { font-size: 1.2rem; }
+      .ag-what    { font-size: 1.12rem; }
+      .ag-time    { font-size: .72rem; letter-spacing: 1px; }
+      .venue-line { font-size: .82rem; margin-top: 1.4rem; }
 
-      /* Sede y hospedaje */
-      .venue-card   { padding: 1.8rem 1.4rem; border-radius: 14px; margin-bottom: 2.4rem; }
-      .venue-name   { font-size: 1.6rem; }
-      .venue-address { font-size: .82rem; }
-      .lodging-card { padding: 2rem 1.4rem; border-radius: 14px; }
-      .lodging-tips li { font-size: .82rem; }
+      /* Hospedaje */
+      .lodging-note { font-size: .92rem; line-height: 1.85; }
+
       /* Botón de mapa: área de toque generosa */
       .d-link {
         display: block;
-        padding: .85rem 1rem;
-        margin-top: 1.4rem;
+        padding: .8rem 1rem;
+        margin-top: 1rem;
         min-height: 44px;
         line-height: 1.5;
       }
+      .venue-line .d-link { width: 100%; }
 
-      /* Fotos — apiladas: en 2 columnas las caras quedan diminutas */
-      .photo-grid  { grid-template-columns: 1fr; gap: 1.4rem; max-width: 380px; }
-      .photo-frame { padding: .45rem; border-radius: 14px; }
-      .photo-frame.offset { margin-top: 0; }
-      .photo-note  { margin-top: 2rem; }
+      /* Fotos — se quedan en dos columnas: apiladas ya no caben en
+         una sola pantalla, y el par se lee como un díptico. */
+      .photo-grid  { gap: .8rem; max-width: 400px; }
+      .photo-frame { padding: .4rem; border-radius: 13px; }
+      .photo-frame.offset { margin-top: 1.2rem; }
+      .photo-frame img { max-height: 38svh; }
+      .photo-note  { margin-top: 1.6rem; font-size: 1rem; }
 
       /* Dresscode swatches */
       .swatches  { gap: 1rem; }
@@ -1176,6 +1332,25 @@
       /* Chips de día a ancho completo para que no se aprieten */
       .rsvp-dia { flex: 1 1 100%; justify-content: center; }
     }
+
+    /* ════════════════════════════════
+       MOVIMIENTO REDUCIDO — al final a propósito
+       Va después de todo lo que anima. Puesto arriba, junto a las
+       reglas de scroll, las declaraciones posteriores lo pisaban por
+       orden de cascada y las flores seguían meciéndose.
+    ════════════════════════════════ */
+    @media (prefers-reduced-motion: reduce) {
+      .hojas { display: none; }
+      .floral-corner use,
+      .deco use,
+      .floral-sep use,
+      .scroll-hint,
+      .music-btn.playing .m-disc,
+      .music-btn.hint { animation: none; }
+      .reveal { transition: none; }
+      /* La entrada del hero también desplaza: se queda en su sitio */
+      .fade-in { animation: none; opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -1203,113 +1378,203 @@
 </button>
 
 <!-- ══════════════════════════════════
+     PAGINADOR — un punto por diapositiva
+══════════════════════════════════ -->
+<nav class="pager" id="pager" aria-label="Secciones de la invitación">
+  <a href="#inicio"     data-label="Inicio"           aria-label="Ir a Inicio"></a>
+  <a href="#countdown"  data-label="Cuenta regresiva" aria-label="Ir a Cuenta regresiva"></a>
+  <a href="#nosotros"   data-label="Nosotros"         aria-label="Ir a Nosotros"></a>
+  <a href="#itinerario" data-label="Itinerario"       aria-label="Ir a Itinerario"></a>
+  <a href="#hospedaje"  data-label="Hospedaje"        aria-label="Ir a Hospedaje"></a>
+  <a href="#vestimenta" data-label="Vestimenta"       aria-label="Ir a Vestimenta"></a>
+  <a href="#rsvp"       data-label="Confirmar"        aria-label="Ir a Confirmar asistencia"></a>
+</nav>
+
+<!-- ══════════════════════════════════
+     FLORES — peonía, eucalipto y hortensia
+     Se dibujan una sola vez aquí; las esquinas del hero y los
+     separadores de cada sección las reutilizan con <use>. Antes el
+     ramo iba escrito completo dos veces: ahora hay un solo lugar
+     que tocar si se quiere cambiar una flor.
+══════════════════════════════════ -->
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <defs>
+
+    <!-- ── Florecilla de hortensia: cuatro pétalos y centro dorado ── -->
+    <g id="floret">
+      <ellipse cx="0"    cy="-5.2" rx="5"   ry="4.2" fill="#eddcd9"/>
+      <ellipse cx="5.2"  cy="0"    rx="4.2" ry="5"   fill="#e8d2ce"/>
+      <ellipse cx="0"    cy="5.2"  rx="5"   ry="4.2" fill="#e4cbc7"/>
+      <ellipse cx="-5.2" cy="0"    rx="4.2" ry="5"   fill="#eddcd9"/>
+      <circle r="1.6" fill="#c8a76c"/>
+    </g>
+
+    <!-- ── Hortensia: el racimo de florecillas ── -->
+    <g id="hortensia">
+      <use href="#floret" transform="translate(0,-19)"/>
+      <use href="#floret" transform="translate(17,-11) rotate(20)"/>
+      <use href="#floret" transform="translate(20,6) rotate(-15)"/>
+      <use href="#floret" transform="translate(8,21) rotate(30)"/>
+      <use href="#floret" transform="translate(-10,19) rotate(-25)"/>
+      <use href="#floret" transform="translate(-21,4) rotate(15)"/>
+      <use href="#floret" transform="translate(-15,-14) rotate(-20)"/>
+      <use href="#floret" transform="translate(1,1) rotate(45)"/>
+      <use href="#floret" transform="translate(10,-5) rotate(-40)"/>
+      <use href="#floret" transform="translate(-7,8) rotate(60)"/>
+    </g>
+
+    <!-- ── Peonía: tres coronas de pétalos, aclarando hacia afuera ── -->
+    <g id="peonia">
+      <ellipse cx="0" cy="-17" rx="13.5" ry="11" fill="#f0d9d6"/>
+      <ellipse cx="0" cy="-17" rx="13.5" ry="11" fill="#f0d9d6" transform="rotate(45)"/>
+      <ellipse cx="0" cy="-17" rx="13.5" ry="11" fill="#ecd0cd" transform="rotate(90)"/>
+      <ellipse cx="0" cy="-17" rx="13.5" ry="11" fill="#ecd0cd" transform="rotate(135)"/>
+      <ellipse cx="0" cy="-17" rx="13.5" ry="11" fill="#e7c6c2" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-17" rx="13.5" ry="11" fill="#e7c6c2" transform="rotate(225)"/>
+      <ellipse cx="0" cy="-17" rx="13.5" ry="11" fill="#f0d9d6" transform="rotate(270)"/>
+      <ellipse cx="0" cy="-17" rx="13.5" ry="11" fill="#f0d9d6" transform="rotate(315)"/>
+      <ellipse cx="0" cy="-10" rx="10" ry="8.5" fill="#e3bcb9" transform="rotate(22)"/>
+      <ellipse cx="0" cy="-10" rx="10" ry="8.5" fill="#e3bcb9" transform="rotate(82)"/>
+      <ellipse cx="0" cy="-10" rx="10" ry="8.5" fill="#ddb0ae" transform="rotate(142)"/>
+      <ellipse cx="0" cy="-10" rx="10" ry="8.5" fill="#ddb0ae" transform="rotate(202)"/>
+      <ellipse cx="0" cy="-10" rx="10" ry="8.5" fill="#e3bcb9" transform="rotate(262)"/>
+      <ellipse cx="0" cy="-10" rx="10" ry="8.5" fill="#e3bcb9" transform="rotate(322)"/>
+      <ellipse cx="0" cy="-5.5" rx="6" ry="5" fill="#d5989e" transform="rotate(12)"/>
+      <ellipse cx="0" cy="-5.5" rx="6" ry="5" fill="#d5989e" transform="rotate(84)"/>
+      <ellipse cx="0" cy="-5.5" rx="6" ry="5" fill="#cf8e95" transform="rotate(156)"/>
+      <ellipse cx="0" cy="-5.5" rx="6" ry="5" fill="#cf8e95" transform="rotate(228)"/>
+      <ellipse cx="0" cy="-5.5" rx="6" ry="5" fill="#d5989e" transform="rotate(300)"/>
+      <circle r="3.4" fill="#c07d87"/>
+    </g>
+
+    <!-- ── Capullo de peonía, todavía cerrado ── -->
+    <g id="capullo">
+      <path d="M0 10 v10" stroke="#8ba382" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+      <ellipse cx="0"    cy="0" rx="7.5" ry="11" fill="#e7c6c2"/>
+      <ellipse cx="-2.4" cy="1" rx="4.6" ry="9"  fill="#f0d9d6"/>
+    </g>
+
+    <!-- ── Ramo de esquina: eucalipto de base, peonías y hortensia ──
+         Cada hoja está puesta sobre un punto real de la curva del tallo
+         y desplazada en perpendicular, en pares opuestos: así crece el
+         eucalipto. Colocadas "a ojo" quedaban flotando junto al tallo. -->
+    <g id="ramo">
+      <!-- Tallos -->
+      <path d="M8 348 Q78 250 152 168 Q224 96 348 12" stroke="#8ba382" fill="none" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M8 250 Q62 214 108 162"   stroke="#a8bd9f" fill="none" stroke-width="1.7" stroke-linecap="round"/>
+      <path d="M70 348 Q118 300 150 240" stroke="#a8bd9f" fill="none" stroke-width="1.7" stroke-linecap="round"/>
+
+      <!-- Tallo principal, tramo bajo -->
+      <ellipse cx="39"  cy="327" rx="15.5" ry="13"   fill="#a8bd9f" transform="rotate(38 39 327)"  opacity=".95"/>
+      <ellipse cx="19"  cy="311" rx="14.5" ry="12"   fill="#93a98b" transform="rotate(38 19 311)"  opacity=".9"/>
+      <ellipse cx="68"  cy="289" rx="16"   ry="13.5" fill="#a8bd9f" transform="rotate(38 68 289)"  opacity=".95"/>
+      <ellipse cx="48"  cy="273" rx="14.5" ry="12"   fill="#8ba382" transform="rotate(38 48 273)"  opacity=".88"/>
+      <ellipse cx="96"  cy="253" rx="16"   ry="13.5" fill="#93a98b" transform="rotate(38 96 253)"  opacity=".92"/>
+      <ellipse cx="76"  cy="237" rx="14.5" ry="12"   fill="#a8bd9f" transform="rotate(38 76 237)"  opacity=".9"/>
+      <ellipse cx="125" cy="218" rx="15.5" ry="13"   fill="#a8bd9f" transform="rotate(38 125 218)" opacity=".95"/>
+      <ellipse cx="105" cy="202" rx="14"   ry="11.5" fill="#8ba382" transform="rotate(38 105 202)" opacity=".88"/>
+      <ellipse cx="150" cy="189" rx="15"   ry="12.5" fill="#93a98b" transform="rotate(38 150 189)" opacity=".92"/>
+      <ellipse cx="130" cy="173" rx="13.5" ry="11"   fill="#a8bd9f" transform="rotate(38 130 173)" opacity=".88"/>
+
+      <!-- Tallo principal, tramo alto -->
+      <ellipse cx="183" cy="156" rx="15"   ry="12.5" fill="#a8bd9f" transform="rotate(52 183 156)" opacity=".93"/>
+      <ellipse cx="167" cy="136" rx="13.5" ry="11"   fill="#93a98b" transform="rotate(52 167 136)" opacity=".88"/>
+      <ellipse cx="217" cy="126" rx="14.5" ry="12"   fill="#93a98b" transform="rotate(52 217 126)" opacity=".9"/>
+      <ellipse cx="201" cy="106" rx="13"   ry="10.5" fill="#a8bd9f" transform="rotate(52 201 106)" opacity=".88"/>
+      <ellipse cx="255" cy="95"  rx="14"   ry="11.5" fill="#a8bd9f" transform="rotate(52 255 95)"  opacity=".9"/>
+      <ellipse cx="239" cy="75"  rx="12.5" ry="10"   fill="#8ba382" transform="rotate(52 239 75)"  opacity=".85"/>
+      <ellipse cx="297" cy="63"  rx="13"   ry="10.5" fill="#93a98b" transform="rotate(52 297 63)"  opacity=".88"/>
+      <ellipse cx="281" cy="43"  rx="11.5" ry="9.5"  fill="#a8bd9f" transform="rotate(52 281 43)"  opacity=".84"/>
+      <ellipse cx="336" cy="35"  rx="11"   ry="9"    fill="#a8bd9f" transform="rotate(52 336 35)"  opacity=".8"/>
+      <ellipse cx="320" cy="15"  rx="10"   ry="8"    fill="#93a98b" transform="rotate(52 320 15)"  opacity=".76"/>
+
+      <!-- Tallos secundarios -->
+      <ellipse cx="48"  cy="237" rx="13"   ry="10.5" fill="#93a98b" transform="rotate(52 48 237)"  opacity=".85"/>
+      <ellipse cx="32"  cy="217" rx="12"   ry="10"   fill="#a8bd9f" transform="rotate(52 32 217)"  opacity=".82"/>
+      <ellipse cx="83"  cy="206" rx="13"   ry="10.5" fill="#a8bd9f" transform="rotate(52 83 206)"  opacity=".85"/>
+      <ellipse cx="67"  cy="186" rx="11.5" ry="9.5"  fill="#8ba382" transform="rotate(52 67 186)"  opacity=".8"/>
+      <ellipse cx="116" cy="316" rx="13.5" ry="11"   fill="#a8bd9f" transform="rotate(38 116 316)" opacity=".88"/>
+      <ellipse cx="96"  cy="300" rx="12.5" ry="10"   fill="#93a98b" transform="rotate(38 96 300)"  opacity=".84"/>
+      <ellipse cx="143" cy="277" rx="13"   ry="10.5" fill="#93a98b" transform="rotate(38 143 277)" opacity=".85"/>
+      <ellipse cx="123" cy="261" rx="11.5" ry="9.5"  fill="#a8bd9f" transform="rotate(38 123 261)" opacity=".82"/>
+
+      <use href="#capullo" transform="translate(196,116) rotate(-24)"/>
+      <use href="#capullo" transform="translate(40,306) rotate(14) scale(.85)"/>
+
+      <g transform="translate(252,60)"><use href="#hortensia"/></g>
+
+      <!-- Las peonías van al final: son el foco y van encima de todo -->
+      <use href="#peonia" transform="translate(126,160) scale(1.35)"/>
+      <use href="#peonia" transform="translate(72,296) scale(.95) rotate(18)"/>
+    </g>
+
+    <!-- ── Hoja suelta de eucalipto: la que cae con el viento ── -->
+    <g id="hoja">
+      <ellipse cx="15" cy="12" rx="14" ry="10.5" fill="#9db594"/>
+      <path d="M2 12 Q15 8.6 28 12" stroke="#7f9877" fill="none" stroke-width="1" opacity=".5"/>
+    </g>
+
+    <!-- ── Rincón: la versión ligera del ramo, para las demás páginas ──
+         Mismo vocabulario que el hero (eucalipto de base, una peonía de
+         foco, una hortensia) pero con menos masa: en el hero acompaña a
+         los nombres, aquí no puede competir con el contenido. -->
+    <g id="rincon">
+      <path d="M2 206 Q44 152 92 100 Q132 58 210 4" stroke="#8ba382" fill="none" stroke-width="2" stroke-linecap="round"/>
+      <path d="M4 150 Q40 122 74 84" stroke="#a8bd9f" fill="none" stroke-width="1.5" stroke-linecap="round"/>
+
+      <ellipse cx="31"  cy="186" rx="13"   ry="10.8" fill="#a8bd9f" transform="rotate(41 31 186)"  opacity=".95"/>
+      <ellipse cx="15"  cy="172" rx="12"   ry="10"   fill="#93a98b" transform="rotate(41 15 172)"  opacity=".9"/>
+      <ellipse cx="63"  cy="149" rx="13.5" ry="11.2" fill="#a8bd9f" transform="rotate(41 63 149)"  opacity=".95"/>
+      <ellipse cx="47"  cy="135" rx="12"   ry="10"   fill="#8ba382" transform="rotate(41 47 135)"  opacity=".88"/>
+      <ellipse cx="91"  cy="117" rx="12.5" ry="10.4" fill="#93a98b" transform="rotate(41 91 117)"  opacity=".92"/>
+      <ellipse cx="75"  cy="103" rx="11.5" ry="9.5"  fill="#a8bd9f" transform="rotate(41 75 103)"  opacity=".9"/>
+      <ellipse cx="125" cy="82"  rx="12.5" ry="10.4" fill="#a8bd9f" transform="rotate(52 125 82)"  opacity=".92"/>
+      <ellipse cx="113" cy="66"  rx="11"   ry="9.2"  fill="#93a98b" transform="rotate(52 113 66)"  opacity=".88"/>
+      <ellipse cx="166" cy="48"  rx="11.5" ry="9.5"  fill="#93a98b" transform="rotate(52 166 48)"  opacity=".88"/>
+      <ellipse cx="154" cy="32"  rx="10.5" ry="8.8"  fill="#a8bd9f" transform="rotate(52 154 32)"  opacity=".85"/>
+      <ellipse cx="204" cy="21"  rx="10"   ry="8.4"  fill="#a8bd9f" transform="rotate(52 204 21)"  opacity=".8"/>
+      <ellipse cx="192" cy="5"   rx="9"    ry="7.5"  fill="#93a98b" transform="rotate(52 192 5)"   opacity=".76"/>
+
+      <ellipse cx="36"  cy="136" rx="11"   ry="9.2"  fill="#93a98b" transform="rotate(47 36 136)"  opacity=".85"/>
+      <ellipse cx="22"  cy="122" rx="10"   ry="8.4"  fill="#a8bd9f" transform="rotate(47 22 122)"  opacity=".8"/>
+      <ellipse cx="67"  cy="106" rx="11"   ry="9.2"  fill="#a8bd9f" transform="rotate(47 67 106)"  opacity=".85"/>
+      <ellipse cx="53"  cy="92"  rx="9.5"  ry="8"    fill="#8ba382" transform="rotate(47 53 92)"   opacity=".8"/>
+
+      <use href="#capullo" transform="translate(30,172) rotate(-20) scale(.8)"/>
+      <g transform="translate(162,42) scale(.72)"><use href="#hortensia"/></g>
+      <use href="#peonia" transform="translate(80,112) scale(.9)"/>
+    </g>
+
+    <!-- ── Ramita separadora: eucalipto con una peonía al centro ── -->
+    <g id="sprig">
+      <path d="M13 13 H107" stroke="#a8bd9f" fill="none" stroke-width="1.2" stroke-linecap="round" opacity=".75"/>
+      <ellipse cx="25" cy="8"  rx="7.2" ry="4.8" fill="#a8bd9f" transform="rotate(-18 25 8)"  opacity=".9"/>
+      <ellipse cx="25" cy="18" rx="7.2" ry="4.8" fill="#93a98b" transform="rotate(18 25 18)"  opacity=".82"/>
+      <ellipse cx="40" cy="7"  rx="6.4" ry="4.2" fill="#93a98b" transform="rotate(-14 40 7)"  opacity=".82"/>
+      <ellipse cx="40" cy="19" rx="6.4" ry="4.2" fill="#a8bd9f" transform="rotate(14 40 19)"  opacity=".78"/>
+      <ellipse cx="80" cy="7"  rx="6.4" ry="4.2" fill="#93a98b" transform="rotate(14 80 7)"   opacity=".82"/>
+      <ellipse cx="80" cy="19" rx="6.4" ry="4.2" fill="#a8bd9f" transform="rotate(-14 80 19)" opacity=".78"/>
+      <ellipse cx="95" cy="8"  rx="7.2" ry="4.8" fill="#a8bd9f" transform="rotate(18 95 8)"   opacity=".9"/>
+      <ellipse cx="95" cy="18" rx="7.2" ry="4.8" fill="#93a98b" transform="rotate(-18 95 18)" opacity=".82"/>
+      <use href="#peonia" transform="translate(60,13) scale(.42)"/>
+    </g>
+
+  </defs>
+</svg>
+
+<!-- ══════════════════════════════════
      HERO
 ══════════════════════════════════ -->
 <section class="hero" id="inicio">
 
-  <!-- Floral corner — top left -->
+  <!-- Ramo de la esquina superior izquierda -->
   <svg class="floral-corner tl" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <!-- Main branch -->
-    <path d="M10,345 Q70,240 150,160 Q220,90 345,15" stroke="#7a9e7e" fill="none" stroke-width="2.2" stroke-linecap="round"/>
-    <!-- Side branches -->
-    <path d="M10,245 Q60,210 105,160" stroke="#9ab89e" fill="none" stroke-width="1.6" stroke-linecap="round"/>
-    <path d="M72,345 Q118,298 148,240" stroke="#9ab89e" fill="none" stroke-width="1.6" stroke-linecap="round"/>
-    <path d="M195,110 Q225,80 268,50" stroke="#9ab89e" fill="none" stroke-width="1.4" stroke-linecap="round"/>
-    <!-- Leaves -->
-    <ellipse cx="102" cy="208" rx="24" ry="11" fill="#7a9e7e" transform="rotate(-42 102 208)" opacity=".82"/>
-    <ellipse cx="138" cy="170" rx="26" ry="11" fill="#6b9070" transform="rotate(-58 138 170)" opacity=".8"/>
-    <ellipse cx="68"  cy="268" rx="20" ry="9"  fill="#8aae8e" transform="rotate(-18 68  268)" opacity=".72"/>
-    <ellipse cx="94"  cy="300" rx="18" ry="8"  fill="#7a9e7e" transform="rotate(-8  94  300)" opacity=".68"/>
-    <ellipse cx="180" cy="122" rx="22" ry="10" fill="#6b9070" transform="rotate(-68 180 122)" opacity=".8"/>
-    <ellipse cx="232" cy="72"  rx="20" ry="9"  fill="#7a9e7e" transform="rotate(-72 232 72)"  opacity=".72"/>
-    <ellipse cx="285" cy="36"  rx="16" ry="7"  fill="#8aae8e" transform="rotate(-78 285 36)"  opacity=".65"/>
-    <!-- Rose — large -->
-    <g transform="translate(125,155)">
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#f2c4ce" opacity=".9"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#f2c4ce" opacity=".88" transform="rotate(45)"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#eeaabe" opacity=".85" transform="rotate(90)"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#eeaabe" opacity=".82" transform="rotate(135)"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#e898ae" opacity=".8"  transform="rotate(180)"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#e898ae" opacity=".8"  transform="rotate(225)"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#f2c4ce" opacity=".88" transform="rotate(270)"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#f2c4ce" opacity=".9"  transform="rotate(315)"/>
-      <circle cx="0" cy="0" r="11" fill="#c4687e"/>
-      <circle cx="0" cy="0" r="6.5" fill="#d4788e"/>
-    </g>
-    <!-- Rose — medium -->
-    <g transform="translate(76,298)">
-      <ellipse cx="0" cy="-15" rx="8" ry="13" fill="#f5d0d8" opacity=".9"/>
-      <ellipse cx="0" cy="-15" rx="8" ry="13" fill="#f5d0d8" opacity=".88" transform="rotate(60)"/>
-      <ellipse cx="0" cy="-15" rx="8" ry="13" fill="#eebccc" opacity=".84" transform="rotate(120)"/>
-      <ellipse cx="0" cy="-15" rx="8" ry="13" fill="#eebccc" opacity=".82" transform="rotate(180)"/>
-      <ellipse cx="0" cy="-15" rx="8" ry="13" fill="#f5d0d8" opacity=".88" transform="rotate(240)"/>
-      <ellipse cx="0" cy="-15" rx="8" ry="13" fill="#eebccc" opacity=".84" transform="rotate(300)"/>
-      <circle cx="0" cy="0" r="9" fill="#c4687e"/>
-      <circle cx="0" cy="0" r="5.5" fill="#d4788e"/>
-    </g>
-    <!-- Rose — small top-right -->
-    <g transform="translate(243,62)">
-      <ellipse cx="0" cy="-12" rx="7" ry="11" fill="#f2c4ce" opacity=".85"/>
-      <ellipse cx="0" cy="-12" rx="7" ry="11" fill="#f2c4ce" opacity=".83" transform="rotate(72)"/>
-      <ellipse cx="0" cy="-12" rx="7" ry="11" fill="#e8a0b0" opacity=".8"  transform="rotate(144)"/>
-      <ellipse cx="0" cy="-12" rx="7" ry="11" fill="#e8a0b0" opacity=".8"  transform="rotate(216)"/>
-      <ellipse cx="0" cy="-12" rx="7" ry="11" fill="#f2c4ce" opacity=".83" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="8" fill="#b45870"/>
-      <circle cx="0" cy="0" r="4.5" fill="#c4687e"/>
-    </g>
-    <!-- Buds -->
-    <ellipse cx="198" cy="98"  rx="8"  ry="14" fill="#f5d0d8" opacity=".65"/>
-    <ellipse cx="42"  cy="322" rx="7"  ry="12" fill="#f2c4ce" opacity=".62"/>
-    <ellipse cx="305" cy="26"  rx="6"  ry="10" fill="#f5d0d8" opacity=".55"/>
+    <use href="#ramo"/>
   </svg>
 
-  <!-- Floral corner — bottom right (mirrored via CSS rotate 180°) -->
+  <!-- El mismo ramo abajo a la derecha, girado 180° desde el CSS -->
   <svg class="floral-corner br" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M10,345 Q70,240 150,160 Q220,90 345,15" stroke="#7a9e7e" fill="none" stroke-width="2.2" stroke-linecap="round"/>
-    <path d="M10,245 Q60,210 105,160" stroke="#9ab89e" fill="none" stroke-width="1.6" stroke-linecap="round"/>
-    <path d="M72,345 Q118,298 148,240" stroke="#9ab89e" fill="none" stroke-width="1.6" stroke-linecap="round"/>
-    <path d="M195,110 Q225,80 268,50" stroke="#9ab89e" fill="none" stroke-width="1.4" stroke-linecap="round"/>
-    <ellipse cx="102" cy="208" rx="24" ry="11" fill="#7a9e7e" transform="rotate(-42 102 208)" opacity=".82"/>
-    <ellipse cx="138" cy="170" rx="26" ry="11" fill="#6b9070" transform="rotate(-58 138 170)" opacity=".8"/>
-    <ellipse cx="68"  cy="268" rx="20" ry="9"  fill="#8aae8e" transform="rotate(-18 68  268)" opacity=".72"/>
-    <ellipse cx="94"  cy="300" rx="18" ry="8"  fill="#7a9e7e" transform="rotate(-8  94  300)" opacity=".68"/>
-    <ellipse cx="180" cy="122" rx="22" ry="10" fill="#6b9070" transform="rotate(-68 180 122)" opacity=".8"/>
-    <ellipse cx="232" cy="72"  rx="20" ry="9"  fill="#7a9e7e" transform="rotate(-72 232 72)"  opacity=".72"/>
-    <ellipse cx="285" cy="36"  rx="16" ry="7"  fill="#8aae8e" transform="rotate(-78 285 36)"  opacity=".65"/>
-    <g transform="translate(125,155)">
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#f2c4ce" opacity=".9"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#f2c4ce" opacity=".88" transform="rotate(45)"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#eeaabe" opacity=".85" transform="rotate(90)"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#eeaabe" opacity=".82" transform="rotate(135)"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#e898ae" opacity=".8"  transform="rotate(180)"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#e898ae" opacity=".8"  transform="rotate(225)"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#f2c4ce" opacity=".88" transform="rotate(270)"/>
-      <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#f2c4ce" opacity=".9"  transform="rotate(315)"/>
-      <circle cx="0" cy="0" r="11" fill="#c4687e"/>
-      <circle cx="0" cy="0" r="6.5" fill="#d4788e"/>
-    </g>
-    <g transform="translate(76,298)">
-      <ellipse cx="0" cy="-15" rx="8" ry="13" fill="#f5d0d8" opacity=".9"/>
-      <ellipse cx="0" cy="-15" rx="8" ry="13" fill="#f5d0d8" opacity=".88" transform="rotate(60)"/>
-      <ellipse cx="0" cy="-15" rx="8" ry="13" fill="#eebccc" opacity=".84" transform="rotate(120)"/>
-      <ellipse cx="0" cy="-15" rx="8" ry="13" fill="#eebccc" opacity=".82" transform="rotate(180)"/>
-      <ellipse cx="0" cy="-15" rx="8" ry="13" fill="#f5d0d8" opacity=".88" transform="rotate(240)"/>
-      <ellipse cx="0" cy="-15" rx="8" ry="13" fill="#eebccc" opacity=".84" transform="rotate(300)"/>
-      <circle cx="0" cy="0" r="9" fill="#c4687e"/>
-      <circle cx="0" cy="0" r="5.5" fill="#d4788e"/>
-    </g>
-    <g transform="translate(243,62)">
-      <ellipse cx="0" cy="-12" rx="7" ry="11" fill="#f2c4ce" opacity=".85"/>
-      <ellipse cx="0" cy="-12" rx="7" ry="11" fill="#f2c4ce" opacity=".83" transform="rotate(72)"/>
-      <ellipse cx="0" cy="-12" rx="7" ry="11" fill="#e8a0b0" opacity=".8"  transform="rotate(144)"/>
-      <ellipse cx="0" cy="-12" rx="7" ry="11" fill="#e8a0b0" opacity=".8"  transform="rotate(216)"/>
-      <ellipse cx="0" cy="-12" rx="7" ry="11" fill="#f2c4ce" opacity=".83" transform="rotate(288)"/>
-      <circle cx="0" cy="0" r="8" fill="#b45870"/>
-      <circle cx="0" cy="0" r="4.5" fill="#c4687e"/>
-    </g>
-    <ellipse cx="198" cy="98"  rx="8"  ry="14" fill="#f5d0d8" opacity=".65"/>
-    <ellipse cx="42"  cy="322" rx="7"  ry="12" fill="#f2c4ce" opacity=".62"/>
-    <ellipse cx="305" cy="26"  rx="6"  ry="10" fill="#f5d0d8" opacity=".55"/>
+    <use href="#ramo"/>
   </svg>
 
   <!-- Content -->
@@ -1328,7 +1593,7 @@
   </div>
 
   <div class="fade-in delay-3">
-    <p class="hero-date">20 · Marzo · 2027</p>
+    <p class="hero-date">13 · Marzo · 2027</p>
     <p class="hero-location">Cuernavaca, Morelos</p>
   </div>
 
@@ -1344,10 +1609,11 @@
      COUNTDOWN
 ══════════════════════════════════ -->
 <section class="s-countdown" id="countdown">
+  <svg class="deco bl" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
   <div class="inner">
     <span class="s-tag reveal">La cuenta regresiva</span>
     <h2 class="s-title reveal">Faltan <em>tan pocos días…</em></h2>
-    <div class="floral-sep reveal">❀ ✿ ❀</div>
+    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
 
     <div class="countdown-grid reveal">
       <div class="cd-card">
@@ -1374,10 +1640,11 @@
      NOSOTROS — fotos
 ══════════════════════════════════ -->
 <section class="s-fotos" id="nosotros">
+  <svg class="deco tr sm" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
   <div class="inner">
     <span class="s-tag reveal">Nosotros</span>
     <h2 class="s-title reveal">Así llegamos <em>hasta aquí</em></h2>
-    <div class="floral-sep reveal">❀ ✿ ❀</div>
+    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
 
     <div class="photo-grid reveal">
       <figure class="photo-frame">
@@ -1394,7 +1661,7 @@
 
     <p class="photo-note reveal">
       De todos los viajes juntos, el que más ilusión nos hace
-      empieza el 20 de marzo.
+      empieza en marzo de 2027.
     </p>
   </div>
 </section>
@@ -1404,106 +1671,42 @@
      Los bloques con data-dia se muestran según ?tipo= (ver script)
 ══════════════════════════════════ -->
 <section id="itinerario">
+  <svg class="deco br" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
   <div class="inner">
     <span class="s-tag reveal">El gran fin de semana</span>
     <h2 class="s-title reveal">Nuestro <em>itinerario</em></h2>
-    <div class="floral-sep reveal">❀ ✿ ❀</div>
+    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
 
-    <p class="itin-note reveal" id="itin-note"></p>
+    <!-- Las filas con data-dia se quitan según ?tipo= (ver script) -->
+    <ol class="agenda reveal">
+      <li data-dia="brunch">
+        <span class="ag-when"><b>Vie 12</b><i>Marzo</i></span>
+        <span class="ag-what">Brunch de bienvenida</span>
+        <span class="ag-time hora-pendiente">Por confirmar</span>
+      </li>
+      <li data-dia="boda">
+        <span class="ag-when"><b>Sáb 13</b><i>Marzo</i></span>
+        <span class="ag-what">Ceremonia religiosa</span>
+        <span class="ag-time">5:00 PM</span>
+      </li>
+      <li class="ag-sub" data-dia="boda">
+        <span class="ag-when"></span>
+        <span class="ag-what">Recepción</span>
+        <span class="ag-time">7:30 PM</span>
+      </li>
+      <li data-dia="post">
+        <span class="ag-when"><b>Dom 14</b><i>Marzo</i></span>
+        <span class="ag-what">Postcelebración</span>
+        <span class="ag-time hora-pendiente">Por confirmar</span>
+      </li>
+    </ol>
 
-    <!-- ── Sede única: los tres días en el mismo lugar ── -->
-    <div class="venue-card reveal">
-      <p class="venue-label">Una sola sede, todo el fin de semana</p>
-      <h3 class="venue-name">Quinta Santa María</h3>
-      <p class="venue-address">
-        Cam. al Monasterio 9, Santa María Ahuacatitlán<br>
-        62100 Cuernavaca, Morelos
-      </p>
+    <p class="venue-line reveal">
+      <span>Todo en <strong>Quinta Santa María</strong><br>
+            Cam. al Monasterio 9 · Cuernavaca, Morelos</span>
       <a href="https://maps.google.com/?q=Quinta+Santa+Maria+Camino+al+Monasterio+9+Santa+Maria+Ahuacatitlan+62100+Cuernavaca+Morelos"
-         target="_blank" rel="noopener" class="d-link">
-        📍 Ver en mapa
-      </a>
-    </div>
-
-    <!-- ── Brunch · viernes 19 (solo invitaciones Tipo 1) ── -->
-    <div class="day-block reveal" data-dia="brunch">
-      <div class="day-head">
-        <span class="day-num"></span>
-        <div>
-          <p class="day-date">Viernes 19 de marzo</p>
-          <h3 class="day-name">Brunch de bienvenida</h3>
-        </div>
-      </div>
-      <div class="details-grid">
-        <div class="d-card">
-          <div class="d-icon">🥐</div>
-          <p class="d-type">Brunch</p>
-          <h3 class="d-title">Para abrir<br>el fin de semana</h3>
-          <div class="d-info">
-            Un desayuno tardío para reencontrarnos con calma
-            antes de que empiece todo.
-            <strong>Hora</strong>
-            <span class="hora-pendiente">Por confirmar</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── Boda · sábado 20 ── -->
-    <div class="day-block reveal" data-dia="boda">
-      <div class="day-head">
-        <span class="day-num"></span>
-        <div>
-          <p class="day-date">Sábado 20 de marzo</p>
-          <h3 class="day-name">El día de la boda</h3>
-        </div>
-      </div>
-      <div class="details-grid">
-        <div class="d-card">
-          <div class="d-icon">💒</div>
-          <p class="d-type">Ceremonia religiosa</p>
-          <h3 class="d-title">El momento<br>que nos une</h3>
-          <div class="d-info">
-            <strong>Hora</strong>
-            5:00 PM
-          </div>
-        </div>
-
-        <div class="d-card">
-          <div class="d-icon">🥂</div>
-          <p class="d-type">Recepción</p>
-          <h3 class="d-title">A celebrar<br>toda la noche</h3>
-          <div class="d-info">
-            <strong>Hora</strong>
-            7:30 PM
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── Postcelebración · domingo 21 ── -->
-    <div class="day-block reveal" data-dia="post">
-      <div class="day-head">
-        <span class="day-num"></span>
-        <div>
-          <p class="day-date">Domingo 21 de marzo</p>
-          <h3 class="day-name">Postcelebración</h3>
-        </div>
-      </div>
-      <div class="details-grid">
-        <div class="d-card">
-          <div class="d-icon">🌤️</div>
-          <p class="d-type">Postcelebración</p>
-          <h3 class="d-title">El cierre<br>del fin de semana</h3>
-          <div class="d-info">
-            Un último momento juntos, sin prisa,
-            para despedirnos como se debe.
-            <strong>Hora</strong>
-            <span class="hora-pendiente">Por confirmar</span>
-          </div>
-        </div>
-      </div>
-    </div>
+         target="_blank" rel="noopener" class="d-link">📍 Ver en mapa</a>
+    </p>
   </div>
 </section>
 
@@ -1511,38 +1714,18 @@
      HOSPEDAJE
 ══════════════════════════════════ -->
 <section class="s-hospedaje" id="hospedaje">
+  <svg class="deco tl sm" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
   <div class="inner">
     <span class="s-tag reveal">Dónde quedarte</span>
     <h2 class="s-title reveal">Hospedaje en <em>Cuernavaca</em></h2>
-    <div class="floral-sep reveal">❀ ✿ ❀</div>
+    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
 
-    <div class="lodging-card reveal">
-      <div class="d-icon">🏡</div>
-      <p class="d-type">Recomendación</p>
-      <h3 class="d-title">Quédate cerca,<br>quédate todo el fin</h3>
-      <p class="lodging-note">
-        Como la celebración son tres días, lo más cómodo es dormir cerca
-        de la sede y no regresar manejando cada noche. Te recomendamos
-        buscar un <strong>Airbnb por la zona de Santa María Ahuacatitlán</strong>,
-        a unos minutos de la Quinta.
-      </p>
-      <ul class="lodging-tips">
-        <li>
-          <span class="tip-ic" aria-hidden="true">🔎</span>
-          <span>Busca <em>“Santa María Ahuacatitlán, Cuernavaca”</em> y filtra
-                por las noches del 19 al 21 de marzo.</span>
-        </li>
-        <li>
-          <span class="tip-ic" aria-hidden="true">👪</span>
-          <span>Si vienen varios, una casa completa suele salir mejor
-                que cuartos por separado.</span>
-        </li>
-        <li>
-          <span class="tip-ic" aria-hidden="true">📅</span>
-          <span>Reserva con tiempo: es fin de semana y la zona se llena.</span>
-        </li>
-      </ul>
-    </div>
+    <p class="lodging-note reveal">
+      Quédate cerca y disfruta el fin de semana completo.
+      Te recomendamos buscar un <strong>Airbnb por Santa María
+      Ahuacatitlán</strong>, a unos minutos de la sede.
+    </p>
+    <p class="lodging-hint reveal">Reserva con tiempo · la zona se llena</p>
   </div>
 </section>
 
@@ -1550,10 +1733,11 @@
      DRESSCODE
 ══════════════════════════════════ -->
 <section class="s-dresscode" id="vestimenta">
+  <svg class="deco bl" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
   <div class="inner">
     <span class="s-tag reveal">Vestimenta</span>
     <h2 class="s-title reveal">Etiqueta <em>Formal</em></h2>
-    <div class="floral-sep reveal">❀ ✿ ❀</div>
+    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
 
     <p class="dresscode-note reveal">
       Te pedimos asistir en <strong>etiqueta formal</strong>.<br>
@@ -1594,10 +1778,11 @@
      RSVP
 ══════════════════════════════════ -->
 <section class="s-rsvp" id="rsvp">
+  <svg class="deco tr sm" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
   <div class="inner">
     <span class="s-tag reveal">Confirmación de asistencia</span>
     <h2 class="s-title reveal">¿Nos <em>acompañas?</em></h2>
-    <div class="floral-sep reveal">❀ ✿ ❀</div>
+    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
 
     <!-- Tarjeta personalizada (se muestra solo si la URL trae ?nombre=X&cupos=N) -->
     <div id="invite-card" class="invite-card reveal" style="display:none">
@@ -1643,10 +1828,26 @@
      FOOTER
 ══════════════════════════════════ -->
 <footer>
+  <svg class="deco br" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
   <p class="footer-names">Gabriel &amp; Jatzive</p>
-  <p class="footer-sub">20 · Marzo · 2027 · Cuernavaca, Morelos</p>
+  <p class="footer-sub">13 · Marzo · 2027 · Cuernavaca, Morelos</p>
   <p class="footer-love">Con amor, los esperamos</p>
 </footer>
+
+<!-- ══════════════════════════════════
+     HOJAS AL VIENTO
+     Va al final del body a propósito: así cae por delante de los
+     ramos de las esquinas (mismo z-index, gana el orden del DOM) y
+     por detrás del texto, que va en z-index 1.
+══════════════════════════════════ -->
+<div class="hojas" aria-hidden="true">
+  <svg class="hoja h1" viewBox="0 0 30 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg>
+  <svg class="hoja h2" viewBox="0 0 30 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg>
+  <svg class="hoja h3" viewBox="0 0 30 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg>
+  <svg class="hoja h4" viewBox="0 0 30 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg>
+  <svg class="hoja h5" viewBox="0 0 30 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg>
+  <svg class="hoja h6" viewBox="0 0 30 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg>
+</div>
 
 <script>
   /* ── Invitación personalizada (URL params) + formulario de nombres ── */
@@ -1660,23 +1861,23 @@
     const phone  = '525599192118';
 
     /* ── Tipo de invitación ──
-       Tipo 1 → viernes 19, sábado 20 y domingo 21
-       Tipo 2 → solo sábado 20 y domingo 21
+       Tipo 1 → viernes 12, sábado 13 y domingo 14
+       Tipo 2 → solo sábado 13 y domingo 14
        Sin parámetro se asume Tipo 1 (vista completa). ── */
     const tipo = p.get('tipo') === '2' ? 2 : 1;
 
     const DIAS = {
-      brunch: { emoji: '🥐', chip: 'Vie 19', corto: '19 mar', largo: 'Viernes 19 · Brunch' },
-      boda:   { emoji: '💍', chip: 'Sáb 20', corto: '20 mar', largo: 'Sábado 20 · Boda' },
-      post:   { emoji: '🌤️', chip: 'Dom 21', corto: '21 mar', largo: 'Domingo 21 · Postcelebración' }
+      brunch: { emoji: '🥐', chip: 'Vie 12', corto: '12 mar', largo: 'Viernes 12 · Brunch' },
+      boda:   { emoji: '💍', chip: 'Sáb 13', corto: '13 mar', largo: 'Sábado 13 · Boda' },
+      post:   { emoji: '🌤️', chip: 'Dom 14', corto: '14 mar', largo: 'Domingo 14 · Postcelebración' }
     };
     const DIAS_POR_TIPO = {
       1: ['brunch', 'boda', 'post'],
       2: ['boda', 'post']
     };
     const ETIQUETA_TIPO = {
-      1: 'Completa (19, 20 y 21 de marzo)',
-      2: 'Boda y postcelebración (20 y 21 de marzo)'
+      1: 'Completa (12, 13 y 14 de marzo)',
+      2: 'Boda y postcelebración (13 y 14 de marzo)'
     };
     const incluidos = DIAS_POR_TIPO[tipo];
 
@@ -1687,21 +1888,10 @@
       return ids.map(function (d) { return DIAS[d].corto; }).join(' · ');
     }
 
-    // Quitar del DOM los días a los que no está invitado y renumerar los demás
-    var numDia = 0;
-    document.querySelectorAll('.day-block').forEach(function (bloque) {
-      if (incluidos.indexOf(bloque.getAttribute('data-dia')) === -1) {
-        bloque.remove();
-        return;
-      }
-      numDia++;
-      bloque.querySelector('.day-num').textContent = ('0' + numDia).slice(-2);
+    // Quitar de la agenda los días a los que no está invitado
+    document.querySelectorAll('.agenda [data-dia]').forEach(function (fila) {
+      if (incluidos.indexOf(fila.getAttribute('data-dia')) === -1) fila.remove();
     });
-
-    // Nota de encabezado del itinerario
-    document.getElementById('itin-note').innerHTML = tipo === 2
-      ? 'Te esperamos el <strong>sábado 20</strong> y el <strong>domingo 21 de marzo</strong>.'
-      : 'Te esperamos los <strong>tres días</strong>: viernes 19, sábado 20 y domingo 21 de marzo.';
 
     // Días incluidos, dentro de la tarjeta personalizada
     document.getElementById('invite-days').textContent = chipsDe(incluidos);
@@ -1758,6 +1948,9 @@
     toggleBtn.addEventListener('click', function () {
       var visible = formWrap.style.display !== 'none';
       formWrap.style.display = visible ? 'none' : 'block';
+      // El formulario abierto no cabe en una diapositiva: avisar para
+      // que se suelte el enganche del scroll mientras esté visible.
+      document.dispatchEvent(new CustomEvent('rsvp:form', { detail: !visible }));
       if (!visible) {
         // Scroll suave hacia el formulario
         setTimeout(function () { formWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
@@ -1808,7 +2001,7 @@
       box.innerHTML =
         '<p class="rsvp-confirmed-icon">🎊</p>' +
         '<p class="rsvp-confirmed-title">¡Asistencia confirmada!</p>' +
-        '<p class="rsvp-confirmed-sub">Te esperamos el 20 de marzo 💐</p>';
+        '<p class="rsvp-confirmed-sub">Te esperamos el 13 de marzo 💐</p>';
       box.appendChild(ul);
       box.style.display = 'block';
     }
@@ -1941,22 +2134,35 @@
   /* ══════════════════════════════════════════════════════════════
      MÚSICA DE FONDO — audio/cancion.m4a
 
-     La canción SIEMPRE suena con audio: nunca se reproduce en silencio.
+     Sobre el "que empiece sola al abrir": ningún navegador deja sonar
+     audio sin que el visitante haya tocado la página antes. No es algo
+     que se pueda saltar con código — es una regla del navegador, y en
+     los navegadores dentro de WhatsApp (que es por donde va a llegar
+     esta invitación) es todavía más estricta. Lo que sí se puede, y es
+     lo que hace esto:
 
-     Ojo: ningún navegador permite el autoplay con sonido si el visitante no
-     ha interactuado antes con la página. Por eso intentamos reproducir de
-     inmediato y, si el navegador lo bloquea, la canción arranca — desde el
-     principio y con sonido — en el primer toque / scroll del invitado.
+       1. Intentar sonar de una. En escritorio, si ya visitaron el sitio
+          antes, el navegador suele permitirlo y arranca sola.
+       2. Si lo bloquea, dejar el archivo descargándose en silencio (el
+          autoplay SIN sonido sí está permitido) y arrancar al primer
+          gesto: un toque, una tecla o el primer scroll. Como esta
+          invitación se recorre deslizando, ese gesto llega en un par de
+          segundos y se siente como si se hubiera encendido sola.
 
-     Si el archivo no existe, el botón no aparece y la invitación funciona igual.
+     Si el archivo no existe, el botón no aparece y la invitación
+     funciona igual.
      ══════════════════════════════════════════════════════════════ */
   (function () {
-    var VOL_MAX = 0.35;             // volumen final — suave, de fondo
+    var VOL_MAX = 0.35;   // volumen final — suave, de fondo
+    var FADE_MS = 320;    // entrada del volumen
 
     var audio = document.getElementById('bg-music');
     var btn   = document.getElementById('music-btn');
-    var pausadoPorUsuario = false;
+
     var fadeTimer = null;
+    var pausadoPorUsuario = false;
+    var precalentando = false;   // suena en silencio, solo para llenar el búfer
+    var yaSono = false;          // ya sonó de verdad al menos una vez
 
     // Si el archivo no existe o el formato no es soportado, ocultamos el botón
     audio.addEventListener('error', function () {
@@ -1964,44 +2170,113 @@
       clearInterval(fadeTimer);
     }, true);
 
-    audio.muted  = false;           // nunca silenciado: si suena, suena de verdad
+    // Nunca dejar el elemento en volumen 1: si un play() tarda en
+    // resolver, el invitado se comería el arranque a todo volumen.
     audio.volume = VOL_MAX;
 
-    function marcarEstado(sonando) {
-      btn.classList.toggle('playing', sonando);
-      btn.classList.toggle('hint', !sonando && !pausadoPorUsuario);
-      btn.setAttribute('aria-pressed', sonando ? 'true' : 'false');
-      btn.setAttribute('aria-label', sonando ? 'Silenciar música' : 'Activar música');
+    function sonando() { return !audio.paused && !audio.muted && !precalentando; }
+
+    function marcar() {
+      var son = sonando();
+      btn.classList.toggle('playing', son);
+      btn.classList.toggle('hint', !son && !pausadoPorUsuario);
+      btn.setAttribute('aria-pressed', son ? 'true' : 'false');
+      btn.setAttribute('aria-label', son ? 'Silenciar música' : 'Activar música');
     }
 
-    function fadeIn() {
+    /* Antes esto subía de 0 a 0.35 en 25 pasos de 60 ms: segundo y medio
+       hasta oírse de verdad, y eso era lo que se sentía como "tarda
+       mucho". Ahora entra ya audible y solo redondea la subida en 320 ms,
+       lo justo para que no truene el arranque. */
+    function subirVolumen() {
       clearInterval(fadeTimer);
-      audio.volume = 0;
+      audio.volume = VOL_MAX * 0.45;
+      var pasos = 8;
+      var paso  = (VOL_MAX - audio.volume) / pasos;
       fadeTimer = setInterval(function () {
-        var v = Math.min(VOL_MAX, audio.volume + VOL_MAX / 25);
-        audio.volume = v;
-        if (v >= VOL_MAX) clearInterval(fadeTimer);
-      }, 60);
+        audio.volume = Math.min(VOL_MAX, audio.volume + paso);
+        if (audio.volume >= VOL_MAX - 0.001) {
+          audio.volume = VOL_MAX;
+          clearInterval(fadeTimer);
+        }
+      }, FADE_MS / pasos);
     }
 
-    // Reproduce siempre con sonido. Devuelve true si el navegador lo permitió.
-    function reproducir() {
+    /* Enciende el sonido de verdad. Si venía precalentando ya está
+       reproduciendo en silencio: basta quitar el mute y volver al inicio,
+       que es instantáneo — no hay que pedir un play() ni esperar búfer. */
+    function encenderSonido() {
+      clearInterval(fadeTimer);
+      var venia = precalentando;
+      precalentando = false;
       audio.muted = false;
+      audio.volume = VOL_MAX * 0.45;   // el nivel de entrada, antes del play()
+
+      if (venia && !audio.paused) {
+        try { audio.currentTime = 0; } catch (_) {}
+        yaSono = true;
+        subirVolumen();
+        marcar();
+        return Promise.resolve(true);
+      }
+
       var p = audio.play();
       if (p && p.then) {
-        return p.then(function () { fadeIn(); return true; })
-                .catch(function () { return false; });
+        return p.then(function () {
+          yaSono = true; subirVolumen(); marcar(); return true;
+        }).catch(function () {
+          marcar(); return false;
+        });
       }
-      fadeIn();
+      yaSono = true; subirVolumen(); marcar();
       return Promise.resolve(true);
     }
 
-    audio.addEventListener('play',  function () { marcarEstado(true);  });
-    audio.addEventListener('pause', function () { marcarEstado(false); });
-    marcarEstado(false);
-    btn.style.display = 'flex';
+    /* Precalentado silencioso: baja el archivo para que al primer gesto
+       ya esté listo. Se corta en cuanto hay búfer suficiente — dejarlo
+       sonando en silencio gasta batería y en iOS aparecería en la
+       pantalla de bloqueo como si estuviera reproduciendo algo. */
+    function precalentar() {
+      if (yaSono || pausadoPorUsuario) return;
+      audio.muted = true;
+      precalentando = true;
 
-    var eventos = ['pointerdown', 'touchstart', 'keydown', 'scroll'];
+      var tope;
+      function terminar() {
+        if (!precalentando) return;      // el invitado ya se adelantó
+        precalentando = false;
+        clearTimeout(tope);
+        audio.removeEventListener('canplaythrough', terminar);
+        audio.pause();
+        try { audio.currentTime = 0; } catch (_) {}
+        audio.muted = false;             // listo para sonar en cuanto haya gesto
+        marcar();
+      }
+
+      tope = setTimeout(terminar, 8000); // red lenta: no insistir para siempre
+      audio.addEventListener('canplaythrough', terminar);
+
+      var p = audio.play();
+      if (p && p.catch) p.catch(terminar);
+    }
+
+    audio.addEventListener('play',         marcar);
+    audio.addEventListener('pause',        marcar);
+    audio.addEventListener('volumechange', marcar);
+
+    marcar();
+    btn.style.display = 'flex';
+    audio.load();   // empuja la descarga aunque el navegador ignore preload
+
+    // 1) Intento inmediato con sonido; si no, precalentar y esperar el gesto
+    encenderSonido().then(function (sono) {
+      if (sono) return;
+      precalentar();
+      armarGesto();
+    });
+
+    // 2) Primer gesto del invitado — toque, tecla o scroll
+    var eventos = ['pointerdown', 'touchstart', 'keydown', 'click', 'scroll'];
 
     function armarGesto() {
       eventos.forEach(function (ev) {
@@ -2014,47 +2289,46 @@
     function primerGesto(e) {
       // El botón tiene su propio manejador: no lo pisamos desde aquí
       if (e && e.target && e.target.closest && e.target.closest('#music-btn')) return;
-      desarmarGesto();
-      if (pausadoPorUsuario || !audio.paused) return;
-      reproducir();
+      if (pausadoPorUsuario) { desarmarGesto(); return; }
+      // Solo dejamos de escuchar si de verdad sonó: si el navegador lo
+      // rechazó, este gesto no servía y hay que seguir esperando otro.
+      encenderSonido().then(function (sono) { if (sono) desarmarGesto(); });
     }
-
-    // 1) Intento inmediato CON sonido
-    reproducir().then(function (sono) {
-      // 2) Si el navegador lo bloqueó, esperamos el primer gesto del invitado
-      if (!sono) armarGesto();
-    });
 
     // 3) Control manual — siempre gana sobre el arranque automático
     btn.addEventListener('click', function (e) {
       e.stopPropagation();
-      if (audio.paused) {
-        pausadoPorUsuario = false;
-        reproducir();
-      } else {
+      if (sonando()) {
         pausadoPorUsuario = true;
         clearInterval(fadeTimer);
         audio.pause();
+        marcar();
+      } else {
+        pausadoPorUsuario = false;
+        encenderSonido();
       }
     });
 
     // 4) Pausar al cambiar de pestaña o minimizar; retomar al volver
     document.addEventListener('visibilitychange', function () {
       if (document.hidden) {
+        precalentando = false;
         if (!audio.paused) audio.pause();
-      } else if (!pausadoPorUsuario) {
-        reproducir();
+      } else if (!pausadoPorUsuario && yaSono) {
+        audio.muted = false;
+        var p = audio.play();
+        if (p && p.then) p.then(subirVolumen).catch(function () {});
       }
     });
   })();
 
   /* ── Countdown ── */
-  /* Sábado 20 de marzo de 2027, 5:00 PM — hora de la ceremonia.
+  /* Sábado 13 de marzo de 2027, 5:00 PM — hora de la ceremonia.
      El offset -06:00 es obligatorio: sin él la fecha se interpreta en la
      hora LOCAL del visitante y un invitado fuera de México vería una
      cuenta regresiva distinta. México no aplica horario de verano
      desde 2022, así que en marzo de 2027 sigue en UTC-6. */
-  const target = new Date('2027-03-20T17:00:00-06:00');
+  const target = new Date('2027-03-13T17:00:00-06:00');
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
@@ -2086,6 +2360,63 @@
     { threshold: 0.12 }
   );
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* ── Paginado ──
+     El enganche entre diapositivas lo hace el CSS (scroll-snap). Aquí
+     solo van dos cosas: marcar en qué página vamos y apagar el enganche
+     cuando una página deja de caber en la pantalla — si no cabe y se
+     mantiene enganchada, el invitado no puede llegar al final de esa
+     página. Eso pasa con el formulario de RSVP abierto, con el texto
+     ampliado del navegador o en teléfonos muy bajitos. */
+  (function () {
+    var doc      = document.documentElement;
+    var paginas  = Array.prototype.slice.call(document.querySelectorAll('section, footer'));
+    var puntos   = Array.prototype.slice.call(document.querySelectorAll('.pager a'));
+    var formAbierto = false;
+
+    /* Alto que el invitado puede llegar a ver. En el hero los ramos de
+       las esquinas se salen a propósito y el overflow:hidden los corta:
+       ese sobrante no es contenido inalcanzable, así que ahí se mide el
+       alto recortado. Si no, el hero mediría 20 px de más y el enganche
+       se apagaría siempre. */
+    function altoReal(s) {
+      return getComputedStyle(s).overflowY === 'visible'
+        ? s.scrollHeight
+        : s.clientHeight;
+    }
+
+    function revisarAltura() {
+      var noCabe = paginas.some(function (s) {
+        return altoReal(s) > window.innerHeight + 8;
+      });
+      doc.classList.toggle('no-snap', noCabe || formAbierto);
+    }
+
+    // El formulario avisa cuando se abre o se cierra
+    document.addEventListener('rsvp:form', function (e) {
+      formAbierto = !!e.detail;
+      revisarAltura();
+    });
+
+    revisarAltura();
+    window.addEventListener('resize', revisarAltura);
+    window.addEventListener('load', revisarAltura);   // tras cargar las fotos
+
+    // Punto activo del paginador
+    if (puntos.length) {
+      var porId = {};
+      puntos.forEach(function (a) { porId[a.getAttribute('href').slice(1)] = a; });
+
+      var obsPag = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) {
+          var punto = porId[e.target.id];
+          if (punto) punto.classList.toggle('is-active', e.isIntersecting);
+        });
+      }, { threshold: 0.55 });
+
+      paginas.forEach(function (s) { if (s.id && porId[s.id]) obsPag.observe(s); });
+    }
+  })();
 </script>
 
 </body>
