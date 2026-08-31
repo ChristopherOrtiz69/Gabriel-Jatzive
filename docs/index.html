@@ -324,12 +324,27 @@
       animation: caer linear infinite;
     }
 
+    /* El volteador gira; dentro van la cara y el dorso, cada uno
+       oculto cuando le da la espalda al que mira. Así, al girar, se ve
+       el reverso pálido de la hoja — que es lo que pasa de verdad
+       cuando una hoja cae dando vueltas. */
+    .hoja .volteador {
+      position: relative;
+      transform-style: preserve-3d;
+      animation: voltear linear infinite;
+    }
+
     .hoja svg {
       display: block;
       width: 100%;
       height: auto;
-      transform-style: preserve-3d;
-      animation: voltear linear infinite;
+      backface-visibility: hidden;
+    }
+
+    .hoja .dorso {
+      position: absolute;
+      inset: 0;
+      transform: rotateY(180deg);
     }
 
     @keyframes voltear {
@@ -360,12 +375,12 @@
 
     /* El volteo no es múltiplo de la caída: si lo fuera, cada hoja
        repetiría exactamente la misma pose en cada vuelta. */
-    .hoja.h1 svg { animation-duration:  6.5s; animation-delay: -1s; }
-    .hoja.h2 svg { animation-duration:  9s;   animation-delay: -4s; }
-    .hoja.h3 svg { animation-duration:  7.5s; animation-delay: -6s; }
-    .hoja.h4 svg { animation-duration: 11s;   animation-delay: -2s; }
-    .hoja.h5 svg { animation-duration:  8s;   animation-delay: -7s; }
-    .hoja.h6 svg { animation-duration: 12s;   animation-delay: -3s; }
+    .hoja.h1 .volteador { animation-duration:  6.5s; animation-delay: -1s; }
+    .hoja.h2 .volteador { animation-duration:  9s;   animation-delay: -4s; }
+    .hoja.h3 .volteador { animation-duration:  7.5s; animation-delay: -6s; }
+    .hoja.h4 .volteador { animation-duration: 11s;   animation-delay: -2s; }
+    .hoja.h5 .volteador { animation-duration:  8s;   animation-delay: -7s; }
+    .hoja.h6 .volteador { animation-duration: 12s;   animation-delay: -3s; }
 
     .s-tag {
       display: block;
@@ -1458,25 +1473,55 @@
       <stop offset="100%" stop-color="#faefea"/>
     </radialGradient>
 
-    <!-- Cuatro paradas y no dos: el verde vira ligeramente al azul en
-         la sombra, que es como se comporta el eucalipto de verdad. -->
-    <linearGradient id="gHojaA" x1="18%" y1="0%" x2="82%" y2="100%">
-      <stop offset="0%"   stop-color="#cbdcc2"/>
-      <stop offset="35%"  stop-color="#aec3a4"/>
-      <stop offset="72%"  stop-color="#92a98a"/>
-      <stop offset="100%" stop-color="#7a9276"/>
+    <!-- ══ Mitades del limbo ══
+         Un solo degradado sobre toda la hoja la deja plana. El nervio
+         central divide dos superficies que están en ángulos distintos,
+         así que cada mitad recibe su propia luz: la de arriba clara, la
+         de abajo en sombra. Eso es lo que le da volumen. -->
+    <linearGradient id="gHojaA1" x1="10%" y1="100%" x2="70%" y2="0%">
+      <stop offset="0%"   stop-color="#aec3a3"/>
+      <stop offset="55%"  stop-color="#bfd2b6"/>
+      <stop offset="100%" stop-color="#cdddc4"/>
     </linearGradient>
-    <linearGradient id="gHojaB" x1="18%" y1="0%" x2="82%" y2="100%">
-      <stop offset="0%"   stop-color="#b8ccae"/>
-      <stop offset="35%"  stop-color="#9bb192"/>
-      <stop offset="72%"  stop-color="#82997b"/>
-      <stop offset="100%" stop-color="#6b8368"/>
+    <linearGradient id="gHojaA2" x1="10%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%"   stop-color="#a8bf9e"/>
+      <stop offset="55%"  stop-color="#96b08c"/>
+      <stop offset="100%" stop-color="#85a07c"/>
     </linearGradient>
-    <linearGradient id="gHojaC" x1="18%" y1="0%" x2="82%" y2="100%">
-      <stop offset="0%"   stop-color="#adc3a2"/>
-      <stop offset="35%"  stop-color="#8ea686"/>
-      <stop offset="72%"  stop-color="#768e6f"/>
-      <stop offset="100%" stop-color="#5f775c"/>
+
+    <linearGradient id="gHojaB1" x1="10%" y1="100%" x2="70%" y2="0%">
+      <stop offset="0%"   stop-color="#9fb695"/>
+      <stop offset="55%"  stop-color="#b0c4a6"/>
+      <stop offset="100%" stop-color="#c0d2b6"/>
+    </linearGradient>
+    <linearGradient id="gHojaB2" x1="10%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%"   stop-color="#99b090"/>
+      <stop offset="55%"  stop-color="#87a07d"/>
+      <stop offset="100%" stop-color="#75906d"/>
+    </linearGradient>
+
+    <linearGradient id="gHojaC1" x1="10%" y1="100%" x2="70%" y2="0%">
+      <stop offset="0%"   stop-color="#93ab88"/>
+      <stop offset="55%"  stop-color="#a3ba97"/>
+      <stop offset="100%" stop-color="#b3c9a7"/>
+    </linearGradient>
+    <linearGradient id="gHojaC2" x1="10%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%"   stop-color="#8aa382"/>
+      <stop offset="55%"  stop-color="#799271"/>
+      <stop offset="100%" stop-color="#68815f"/>
+    </linearGradient>
+
+    <!-- El dorso del eucalipto es más pálido y ceniciento que la cara.
+         En una hoja que cae se ve la mitad del tiempo. -->
+    <linearGradient id="gDorso1" x1="10%" y1="100%" x2="70%" y2="0%">
+      <stop offset="0%"   stop-color="#c9d5c0"/>
+      <stop offset="55%"  stop-color="#d9e2d1"/>
+      <stop offset="100%" stop-color="#e6ecdf"/>
+    </linearGradient>
+    <linearGradient id="gDorso2" x1="10%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%"   stop-color="#b4c2ac"/>
+      <stop offset="55%"  stop-color="#a3b29b"/>
+      <stop offset="100%" stop-color="#91a08a"/>
     </linearGradient>
 
     <!-- Sombra sin filtro: un degradado que se desvanece cuesta lo
@@ -1526,44 +1571,84 @@
     <path id="petaloGerbera" d="M0 0C-3.4 -6 -4.2 -16 -3.1 -25C-2.5 -30.2 -1.2 -32.4 0 -32.4C1.2 -32.4 2.5 -30.2 3.1 -25C4.2 -16 3.4 -6 0 0Z"/>
 
     <!-- ══ Hoja de eucalipto ══
-         Centrada en el origen y tumbada. Lo que la separa de un óvalo
-         de color son cuatro cosas: el limbo ligeramente asimétrico (una
-         hoja perfecta no existe), el pecíolo leñoso, el nervio central
-         y los secundarios saliendo de él en abanico. -->
+         Centrada en el origen, tumbada, con la punta a la derecha.
+
+         El limbo va en DOS MITADES con degradados distintos, separadas
+         por el nervio. No es un capricho: son dos superficies en ángulos
+         distintos y cada una recibe su propia luz. Un solo degradado
+         sobre toda la hoja la deja plana por más paradas que tenga.
+
+         El nervio central va CLARO, no oscuro: es una cresta que
+         sobresale y por tanto atrapa luz. Dibujarlo oscuro es el error
+         más común y lo que hace que una hoja parezca calcomanía.
+
+         La silueta es ovada con ápice en punta y las dos mitades
+         desiguales — una hoja perfectamente simétrica no existe. -->
     <g id="hojaA">
-      <path d="M-13.6 1.4C-15.6 1.1 -16.8 .3 -17.4 -.7" fill="none" stroke="#9b8a6a" stroke-width="1.5" stroke-linecap="round"/>
-      <path d="M-13 .7C-12.5 -6 -7.3 -10.5 -.3 -11.1C7 -11.7 12.2 -7.5 13 -.5C12.5 6.6 7.1 11.3 0 10.9C-7 10.5 -12.5 6.5 -13 .7Z" fill="url(#gHojaA)"/>
-      <ellipse cx="-3.2" cy="-4.6" rx="7" ry="4" fill="url(#gBrillo)" transform="rotate(-20 -3.2 -4.6)"/>
-      <path d="M-11.9 .5C-6 -1.5 5.1 -1.8 11.7 -.7" fill="none" stroke="#7d9676" stroke-width=".95" stroke-linecap="round" opacity=".45"/>
-      <g fill="none" stroke="#7d9676" stroke-width=".5" stroke-linecap="round" opacity=".3">
-        <path d="M-6.4 -.7C-4.7 -4 -2.4 -6.3 .7 -7.7"/>
-        <path d="M.2 -1.5C1.9 -4.4 4.1 -6.1 6.9 -6.8"/>
-        <path d="M-6.6 0C-4.9 3.3 -2.6 5.7 .5 7"/>
-        <path d="M0 -.4C1.7 2.7 3.9 4.7 6.6 5.6"/>
+      <path d="M-13.4 1.3C-15.5 1.5 -16.9 .9 -17.8 -.2" fill="none" stroke="#9b8a6a" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M-13 1C-12 -6.5 -6.5 -11.2 .5 -11.6C7.6 -12 12.8 -7.8 14 -1.5C4 -1.8 -7 -1.2 -13 1Z" fill="url(#gHojaA1)"/>
+      <path d="M-13 1C-12.4 7.2 -6.6 11.6 .4 11.2C7.2 10.8 12.6 6 14 -1.5C4 -1.8 -7 -1.2 -13 1Z" fill="url(#gHojaA2)"/>
+      <path d="M-13 1C-12 -6.5 -6.5 -11.2 .5 -11.6C7.6 -12 12.8 -7.8 14 -1.5C12.6 6 7.2 10.8 .4 11.2C-6.6 11.6 -12.4 7.2 -13 1Z" fill="none" stroke="#7a8a63" stroke-width=".5" opacity=".32"/>
+      <ellipse cx="-2.6" cy="-5.2" rx="6.6" ry="3.4" fill="url(#gBrillo)" transform="rotate(-16 -2.6 -5.2)"/>
+      <path d="M-12.4 .9C-7 -1.1 4 -1.7 13.4 -1.4" fill="none" stroke="#e2ecd9" stroke-width="1.1" stroke-linecap="round" opacity=".5"/>
+      <g fill="none" stroke="#6d8666" stroke-width=".55" stroke-linecap="round" opacity=".34">
+        <path d="M-7.6 -.4C-6.2 -4.2 -3.6 -7 .2 -8.6"/>
+        <path d="M-1.4 -1.4C-.2 -4.8 2 -7.2 5.4 -8.4"/>
+        <path d="M4.6 -1.7C5.8 -4 7.6 -5.6 10 -6.4"/>
+        <path d="M-7.4 .3C-6 4 -3.4 6.6 .3 8.1"/>
+        <path d="M-1.2 -.5C0 3 2.2 5.4 5.5 6.5"/>
+        <path d="M4.8 -1.4C6 .8 7.8 2.4 10.2 3.2"/>
       </g>
     </g>
+
     <g id="hojaB">
-      <path d="M-13.6 1.4C-15.6 1.1 -16.8 .3 -17.4 -.7" fill="none" stroke="#8e7d5f" stroke-width="1.5" stroke-linecap="round"/>
-      <path d="M-13 .7C-12.5 -6 -7.3 -10.5 -.3 -11.1C7 -11.7 12.2 -7.5 13 -.5C12.5 6.6 7.1 11.3 0 10.9C-7 10.5 -12.5 6.5 -13 .7Z" fill="url(#gHojaB)"/>
-      <ellipse cx="-3.2" cy="-4.6" rx="7" ry="4" fill="url(#gBrillo)" transform="rotate(-20 -3.2 -4.6)"/>
-      <path d="M-11.9 .5C-6 -1.5 5.1 -1.8 11.7 -.7" fill="none" stroke="#6d8666" stroke-width=".95" stroke-linecap="round" opacity=".45"/>
-      <g fill="none" stroke="#6d8666" stroke-width=".5" stroke-linecap="round" opacity=".3">
-        <path d="M-6.4 -.7C-4.7 -4 -2.4 -6.3 .7 -7.7"/>
-        <path d="M.2 -1.5C1.9 -4.4 4.1 -6.1 6.9 -6.8"/>
-        <path d="M-6.6 0C-4.9 3.3 -2.6 5.7 .5 7"/>
-        <path d="M0 -.4C1.7 2.7 3.9 4.7 6.6 5.6"/>
+      <path d="M-13.4 1.3C-15.5 1.5 -16.9 .9 -17.8 -.2" fill="none" stroke="#8e7d5f" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M-13 1C-12 -6.5 -6.5 -11.2 .5 -11.6C7.6 -12 12.8 -7.8 14 -1.5C4 -1.8 -7 -1.2 -13 1Z" fill="url(#gHojaB1)"/>
+      <path d="M-13 1C-12.4 7.2 -6.6 11.6 .4 11.2C7.2 10.8 12.6 6 14 -1.5C4 -1.8 -7 -1.2 -13 1Z" fill="url(#gHojaB2)"/>
+      <path d="M-13 1C-12 -6.5 -6.5 -11.2 .5 -11.6C7.6 -12 12.8 -7.8 14 -1.5C12.6 6 7.2 10.8 .4 11.2C-6.6 11.6 -12.4 7.2 -13 1Z" fill="none" stroke="#6e7f58" stroke-width=".5" opacity=".32"/>
+      <ellipse cx="-2.6" cy="-5.2" rx="6.6" ry="3.4" fill="url(#gBrillo)" transform="rotate(-16 -2.6 -5.2)"/>
+      <path d="M-12.4 .9C-7 -1.1 4 -1.7 13.4 -1.4" fill="none" stroke="#d8e4ce" stroke-width="1.1" stroke-linecap="round" opacity=".48"/>
+      <g fill="none" stroke="#5e7658" stroke-width=".55" stroke-linecap="round" opacity=".34">
+        <path d="M-7.6 -.4C-6.2 -4.2 -3.6 -7 .2 -8.6"/>
+        <path d="M-1.4 -1.4C-.2 -4.8 2 -7.2 5.4 -8.4"/>
+        <path d="M4.6 -1.7C5.8 -4 7.6 -5.6 10 -6.4"/>
+        <path d="M-7.4 .3C-6 4 -3.4 6.6 .3 8.1"/>
+        <path d="M-1.2 -.5C0 3 2.2 5.4 5.5 6.5"/>
+        <path d="M4.8 -1.4C6 .8 7.8 2.4 10.2 3.2"/>
       </g>
     </g>
+
     <g id="hojaC">
-      <path d="M-13.6 1.4C-15.6 1.1 -16.8 .3 -17.4 -.7" fill="none" stroke="#82724f" stroke-width="1.5" stroke-linecap="round"/>
-      <path d="M-13 .7C-12.5 -6 -7.3 -10.5 -.3 -11.1C7 -11.7 12.2 -7.5 13 -.5C12.5 6.6 7.1 11.3 0 10.9C-7 10.5 -12.5 6.5 -13 .7Z" fill="url(#gHojaC)"/>
-      <ellipse cx="-3.2" cy="-4.6" rx="7" ry="4" fill="url(#gBrillo)" transform="rotate(-20 -3.2 -4.6)"/>
-      <path d="M-11.9 .5C-6 -1.5 5.1 -1.8 11.7 -.7" fill="none" stroke="#62795c" stroke-width=".95" stroke-linecap="round" opacity=".45"/>
-      <g fill="none" stroke="#62795c" stroke-width=".5" stroke-linecap="round" opacity=".3">
-        <path d="M-6.4 -.7C-4.7 -4 -2.4 -6.3 .7 -7.7"/>
-        <path d="M.2 -1.5C1.9 -4.4 4.1 -6.1 6.9 -6.8"/>
-        <path d="M-6.6 0C-4.9 3.3 -2.6 5.7 .5 7"/>
-        <path d="M0 -.4C1.7 2.7 3.9 4.7 6.6 5.6"/>
+      <path d="M-13.4 1.3C-15.5 1.5 -16.9 .9 -17.8 -.2" fill="none" stroke="#82724f" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M-13 1C-12 -6.5 -6.5 -11.2 .5 -11.6C7.6 -12 12.8 -7.8 14 -1.5C4 -1.8 -7 -1.2 -13 1Z" fill="url(#gHojaC1)"/>
+      <path d="M-13 1C-12.4 7.2 -6.6 11.6 .4 11.2C7.2 10.8 12.6 6 14 -1.5C4 -1.8 -7 -1.2 -13 1Z" fill="url(#gHojaC2)"/>
+      <path d="M-13 1C-12 -6.5 -6.5 -11.2 .5 -11.6C7.6 -12 12.8 -7.8 14 -1.5C12.6 6 7.2 10.8 .4 11.2C-6.6 11.6 -12.4 7.2 -13 1Z" fill="none" stroke="#63744e" stroke-width=".5" opacity=".32"/>
+      <ellipse cx="-2.6" cy="-5.2" rx="6.6" ry="3.4" fill="url(#gBrillo)" transform="rotate(-16 -2.6 -5.2)"/>
+      <path d="M-12.4 .9C-7 -1.1 4 -1.7 13.4 -1.4" fill="none" stroke="#cfdcc4" stroke-width="1.1" stroke-linecap="round" opacity=".45"/>
+      <g fill="none" stroke="#526a4d" stroke-width=".55" stroke-linecap="round" opacity=".34">
+        <path d="M-7.6 -.4C-6.2 -4.2 -3.6 -7 .2 -8.6"/>
+        <path d="M-1.4 -1.4C-.2 -4.8 2 -7.2 5.4 -8.4"/>
+        <path d="M4.6 -1.7C5.8 -4 7.6 -5.6 10 -6.4"/>
+        <path d="M-7.4 .3C-6 4 -3.4 6.6 .3 8.1"/>
+        <path d="M-1.2 -.5C0 3 2.2 5.4 5.5 6.5"/>
+        <path d="M4.8 -1.4C6 .8 7.8 2.4 10.2 3.2"/>
+      </g>
+    </g>
+
+    <!-- El dorso: mismo trazo, tonos cenicientos y sin brillo — el
+         reverso del eucalipto es mate. Solo se usa en las hojas que
+         caen, cuando el giro deja ver la cara de atrás. -->
+    <g id="hojaDorso">
+      <path d="M-13.4 1.3C-15.5 1.5 -16.9 .9 -17.8 -.2" fill="none" stroke="#9b8a6a" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M-13 1C-12 -6.5 -6.5 -11.2 .5 -11.6C7.6 -12 12.8 -7.8 14 -1.5C4 -1.8 -7 -1.2 -13 1Z" fill="url(#gDorso1)"/>
+      <path d="M-13 1C-12.4 7.2 -6.6 11.6 .4 11.2C7.2 10.8 12.6 6 14 -1.5C4 -1.8 -7 -1.2 -13 1Z" fill="url(#gDorso2)"/>
+      <path d="M-13 1C-12 -6.5 -6.5 -11.2 .5 -11.6C7.6 -12 12.8 -7.8 14 -1.5C12.6 6 7.2 10.8 .4 11.2C-6.6 11.6 -12.4 7.2 -13 1Z" fill="none" stroke="#8a9673" stroke-width=".5" opacity=".3"/>
+      <path d="M-12.4 .9C-7 -1.1 4 -1.7 13.4 -1.4" fill="none" stroke="#f2f6ec" stroke-width="1.3" stroke-linecap="round" opacity=".7"/>
+      <g fill="none" stroke="#93a58c" stroke-width=".55" stroke-linecap="round" opacity=".4">
+        <path d="M-7.6 -.4C-6.2 -4.2 -3.6 -7 .2 -8.6"/>
+        <path d="M-1.4 -1.4C-.2 -4.8 2 -7.2 5.4 -8.4"/>
+        <path d="M-7.4 .3C-6 4 -3.4 6.6 .3 8.1"/>
+        <path d="M-1.2 -.5C0 3 2.2 5.4 5.5 6.5"/>
       </g>
     </g>
 
@@ -1759,13 +1844,16 @@
          Tres tonos en vez de uno. Seis hojas idénticas cayendo se leen
          como copias; variando el verde parecen hojas distintas. -->
     <g id="hoja">
-      <g transform="translate(16,12)"><use href="#hojaB"/></g>
+      <g transform="translate(18,12)"><use href="#hojaB"/></g>
     </g>
     <g id="hojaCae2">
-      <g transform="translate(16,12)"><use href="#hojaA" transform="scale(1,-1)"/></g>
+      <g transform="translate(18,12)"><use href="#hojaA" transform="scale(1,-1)"/></g>
     </g>
     <g id="hojaCae3">
-      <g transform="translate(16,12)"><use href="#hojaC"/></g>
+      <g transform="translate(18,12)"><use href="#hojaC"/></g>
+    </g>
+    <g id="hojaCaeDorso">
+      <g transform="translate(18,12)"><use href="#hojaDorso"/></g>
     </g>
 
     <!-- ── Rincón: la versión ligera del ramo, para las demás páginas ──
@@ -2090,12 +2178,12 @@
      por detrás del texto, que va en z-index 1.
 ══════════════════════════════════ -->
 <div class="hojas" aria-hidden="true">
-  <div class="hoja h1"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg></div>
-  <div class="hoja h2"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae2"/></svg></div>
-  <div class="hoja h3"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae3"/></svg></div>
-  <div class="hoja h4"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae2"/></svg></div>
-  <div class="hoja h5"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg></div>
-  <div class="hoja h6"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae3"/></svg></div>
+  <div class="hoja h1"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
+  <div class="hoja h2"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae2"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
+  <div class="hoja h3"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae3"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
+  <div class="hoja h4"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae2"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
+  <div class="hoja h5"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
+  <div class="hoja h6"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae3"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
 </div>
 
 <script>
