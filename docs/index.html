@@ -124,15 +124,16 @@
       overflow: hidden;
     }
 
-    /* Floral corner SVGs */
+    /* Ramos de las esquinas del hero. El desborde negativo crece con
+       el tamaño: si no, un ramo más grande se despega de la esquina. */
     .floral-corner {
       position: absolute;
-      width: 370px;
-      height: 370px;
+      width: 555px;
+      height: 555px;
       pointer-events: none;
     }
-    .floral-corner.tl { top: -20px; left: -20px; }
-    .floral-corner.br { bottom: -20px; right: -20px; transform: rotate(180deg); }
+    .floral-corner.tl { top: -30px; left: -30px; }
+    .floral-corner.br { bottom: -30px; right: -30px; transform: rotate(180deg); }
 
     /* El contenido del hero, por encima de la capa de hojas.
        En el resto de secciones de esto se encarga .inner. */
@@ -242,18 +243,18 @@
        enganche del scroll — la sección lo recorta en el borde. */
     .deco {
       position: absolute;
-      width: 240px;
-      height: 240px;
+      width: 360px;
+      height: 360px;
       opacity: .72;
       pointer-events: none;
       z-index: 0;
     }
-    .deco.sm { width: 192px; height: 192px; }
+    .deco.sm { width: 288px; height: 288px; }
 
-    .deco.tl { top: -24px;    left:  -24px; }
-    .deco.tr { top: -24px;    right: -24px; transform: rotate(90deg); }
-    .deco.br { bottom: -24px; right: -24px; transform: rotate(180deg); }
-    .deco.bl { bottom: -24px; left:  -24px; transform: rotate(270deg); }
+    .deco.tl { top: -36px;    left:  -36px; }
+    .deco.tr { top: -36px;    right: -36px; transform: rotate(90deg); }
+    .deco.br { bottom: -36px; right: -36px; transform: rotate(180deg); }
+    .deco.bl { bottom: -36px; left:  -36px; transform: rotate(270deg); }
 
     /* ════════════════════════════════
        MOVIMIENTO — brisa y hojas al viento
@@ -1310,7 +1311,7 @@
     /* ── Tablet / pantallas medianas ── */
     @media (max-width: 768px) {
       section { padding: 4.2rem 1.4rem; }
-      .floral-corner { width: 240px; height: 240px; }
+      .floral-corner { width: 360px; height: 360px; }
       .btn { padding: 1rem 2.4rem; }
     }
 
@@ -1318,7 +1319,7 @@
     @media (max-width: 600px) {
       /* Hero */
       .hero { padding: 4rem 1.4rem 5.5rem; }
-      .floral-corner { width: 165px; height: 165px; }
+      .floral-corner { width: 248px; height: 248px; }
       .hero-tagline  { font-size: .68rem; letter-spacing: 3px; margin-bottom: 1.1rem; }
       .hero-amp      { margin: .2rem 0; }
       .divider       { margin: 1.5rem auto; max-width: 250px; }
@@ -1332,8 +1333,8 @@
 
       /* Rincones más chicos y más tenues: en el teléfono el contenido
          pasa cerca de las esquinas y no debe competir con él. */
-      .deco    { width: 152px; height: 152px; opacity: .55; }
-      .deco.sm { width: 126px; height: 126px; }
+      .deco    { width: 228px; height: 228px; opacity: .5; }
+      .deco.sm { width: 189px; height: 189px; }
 
       /* Menos hojas y más chicas: en una pantalla de teléfono seis
          cruzando se sienten multitud, no detalle. */
@@ -1406,7 +1407,7 @@
 
     /* ── Teléfonos muy pequeños (≤ 390 px: iPhone SE, Moto G, Galaxy A) ── */
     @media (max-width: 390px) {
-      .floral-corner { width: 130px; height: 130px; }
+      .floral-corner { width: 195px; height: 195px; }
       .hero { padding: 3.5rem 1.1rem 5rem; }
       .hero-tagline { font-size: .62rem; letter-spacing: 2px; }
       section { padding: 3rem 1rem; }
