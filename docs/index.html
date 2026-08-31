@@ -556,19 +556,23 @@
        navegador no recorta fondos sobre texto, el texto se vería
        transparente y desaparecería. */
     .ag-hielo {
-      color: #6f96a2;
+      color: #2c5868;
       font-weight: 500;
       letter-spacing: .035em;
     }
 
     @supports ((-webkit-background-clip: text) or (background-clip: text)) {
       .ag-hielo {
+        /* Todo el rango va por debajo del marfil del fondo. Antes las
+           paradas claras eran casi blancas y esos tramos de las letras
+           se borraban: parecía texto transparente. El hielo lo da el
+           vaivén frío/claro, no lo pálido. */
         background-image: linear-gradient(155deg,
-          #9dc3cd 0%, #eaf6f9 30%, #7aa0ab 58%, #d6eaef 80%, #628b98 100%);
+          #3a6878 0%, #55838f 22%, #2c5868 48%, #4d7987 72%, #244b5b 100%);
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
-        filter: drop-shadow(0 1px 2px rgba(122,160,171,.4));
+        filter: drop-shadow(0 1px 1px rgba(28,66,80,.28));
       }
     }
 
@@ -579,8 +583,8 @@
       height: .82em;
       vertical-align: -.08em;
       margin-right: .34em;
-      opacity: .9;
-      filter: drop-shadow(0 0 2px rgba(154,196,207,.75));
+      opacity: 1;
+      filter: drop-shadow(0 0 2px rgba(120,168,182,.6));
     }
 
     /* ── Sede: una línea al pie de la agenda, no una tarjeta ── */
@@ -2010,7 +2014,7 @@
          Simetría hexagonal como la de verdad: tres ejes cruzados en el
          centro y un par de ramitas en cada brazo. -->
     <g id="cristal">
-      <g stroke="#8fb3bd" stroke-width="1.15" stroke-linecap="round" fill="none">
+      <g stroke="#43737f" stroke-width="1.15" stroke-linecap="round" fill="none">
         <path d="M12 2.6V21.4"/>
         <path d="M4.1 7.3 19.9 16.7"/>
         <path d="M4.1 16.7 19.9 7.3"/>
@@ -2021,7 +2025,7 @@
         <path d="M7.3 14.4 6.2 11.9M7.3 14.4 4.6 14.8"/>
         <path d="M16.7 9.6 17.8 12.1M16.7 9.6 19.4 9.2"/>
       </g>
-      <circle cx="12" cy="12" r="1.5" fill="#cfe6ec"/>
+      <circle cx="12" cy="12" r="1.5" fill="#7fa8b4"/>
     </g>
 
     <!-- ── Ramita separadora: eucalipto con una peonía al centro ── -->
