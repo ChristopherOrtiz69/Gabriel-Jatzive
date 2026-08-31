@@ -548,6 +548,41 @@
       letter-spacing: .01em;
     }
 
+    /* ── "Rompe hielo" congelado ──
+       El degradado de hielo se recorta sobre las letras y un halo frío
+       las escarcha. El azul es apagado y algo verdoso, no cian: tiene
+       que convivir con la salvia y el marfil de la invitación.
+       El color plano va fuera del @supports como respaldo — si el
+       navegador no recorta fondos sobre texto, el texto se vería
+       transparente y desaparecería. */
+    .ag-hielo {
+      color: #6f96a2;
+      font-weight: 500;
+      letter-spacing: .035em;
+    }
+
+    @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+      .ag-hielo {
+        background-image: linear-gradient(155deg,
+          #9dc3cd 0%, #eaf6f9 30%, #7aa0ab 58%, #d6eaef 80%, #628b98 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 1px 2px rgba(122,160,171,.4));
+      }
+    }
+
+    /* El cristal va fuera del span helado: si estuviera dentro, el
+       recorte del fondo sobre texto no le tocaría pero el halo sí. */
+    .cristal {
+      width: .82em;
+      height: .82em;
+      vertical-align: -.08em;
+      margin-right: .34em;
+      opacity: .9;
+      filter: drop-shadow(0 0 2px rgba(154,196,207,.75));
+    }
+
     /* ── Sede: una línea al pie de la agenda, no una tarjeta ── */
     .venue-line {
       display: flex;
@@ -1971,6 +2006,24 @@
       <use href="#peonia" transform="translate(80,114) scale(1.05)"/>
     </g>
 
+    <!-- ── Cristal de hielo, para el "Rompe hielo" del itinerario ──
+         Simetría hexagonal como la de verdad: tres ejes cruzados en el
+         centro y un par de ramitas en cada brazo. -->
+    <g id="cristal">
+      <g stroke="#8fb3bd" stroke-width="1.15" stroke-linecap="round" fill="none">
+        <path d="M12 2.6V21.4"/>
+        <path d="M4.1 7.3 19.9 16.7"/>
+        <path d="M4.1 16.7 19.9 7.3"/>
+        <path d="M12 6.2 9.7 4.3M12 6.2 14.3 4.3"/>
+        <path d="M12 17.8 9.7 19.7M12 17.8 14.3 19.7"/>
+        <path d="M7.3 9.6 4.6 9.2M7.3 9.6 6.2 12.1"/>
+        <path d="M16.7 14.4 19.4 14.8M16.7 14.4 17.8 11.9"/>
+        <path d="M7.3 14.4 6.2 11.9M7.3 14.4 4.6 14.8"/>
+        <path d="M16.7 9.6 17.8 12.1M16.7 9.6 19.4 9.2"/>
+      </g>
+      <circle cx="12" cy="12" r="1.5" fill="#cfe6ec"/>
+    </g>
+
     <!-- ── Ramita separadora: eucalipto con una peonía al centro ── -->
     <g id="sprig">
       <path d="M13 13 H107" stroke="#a8bd9f" fill="none" stroke-width="1.2" stroke-linecap="round" opacity=".75"/>
@@ -2105,7 +2158,7 @@
     <ol class="agenda reveal">
       <li data-dia="brunch">
         <span class="ag-when"><b>Vie 12</b><i>Marzo</i></span>
-        <span class="ag-what">Rompe hielo</span>
+        <span class="ag-what"><svg class="cristal" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#cristal"/></svg><span class="ag-hielo">Rompe hielo</span></span>
         <span class="ag-time">5:00 PM</span>
       </li>
       <li data-dia="boda">
@@ -2200,7 +2253,6 @@
 <section class="s-rsvp" id="rsvp">
   <svg class="deco tr sm" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
   <div class="inner">
-    <span class="s-tag reveal">Confirmación de asistencia</span>
     <h2 class="s-title reveal">¿Nos <em>acompañas?</em></h2>
     <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
 
@@ -2217,11 +2269,11 @@
     </div>
 
     <p class="rsvp-quote reveal">
-      "Nuestro día más especial será aún más bello<br>
-      con tu presencia a nuestro lado."
+      Para nosotros este es un día muy especial y compartiéndolo
+      contigo, creando momentos inolvidables juntos.
     </p>
 
-    <p class="rsvp-deadline reveal">Confirma tu asistencia antes del 20 de febrero de 2027</p>
+    <p class="rsvp-deadline reveal">Confirma tu asistencia antes del 1 de febrero de 2027</p>
 
     <button id="btn-rsvp-toggle" class="btn btn-rsvp reveal">
       Confirmar asistencia
