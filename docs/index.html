@@ -1458,21 +1458,57 @@
       <stop offset="100%" stop-color="#faefea"/>
     </radialGradient>
 
+    <!-- Cuatro paradas y no dos: el verde vira ligeramente al azul en
+         la sombra, que es como se comporta el eucalipto de verdad. -->
     <linearGradient id="gHojaA" x1="18%" y1="0%" x2="82%" y2="100%">
-      <stop offset="0%"   stop-color="#c2d4b9"/>
-      <stop offset="50%"  stop-color="#a8bd9f"/>
-      <stop offset="100%" stop-color="#87a07f"/>
+      <stop offset="0%"   stop-color="#cbdcc2"/>
+      <stop offset="35%"  stop-color="#aec3a4"/>
+      <stop offset="72%"  stop-color="#92a98a"/>
+      <stop offset="100%" stop-color="#7a9276"/>
     </linearGradient>
     <linearGradient id="gHojaB" x1="18%" y1="0%" x2="82%" y2="100%">
-      <stop offset="0%"   stop-color="#b0c6a7"/>
-      <stop offset="50%"  stop-color="#93a98b"/>
-      <stop offset="100%" stop-color="#77906f"/>
+      <stop offset="0%"   stop-color="#b8ccae"/>
+      <stop offset="35%"  stop-color="#9bb192"/>
+      <stop offset="72%"  stop-color="#82997b"/>
+      <stop offset="100%" stop-color="#6b8368"/>
     </linearGradient>
     <linearGradient id="gHojaC" x1="18%" y1="0%" x2="82%" y2="100%">
-      <stop offset="0%"   stop-color="#a6bd9c"/>
-      <stop offset="50%"  stop-color="#8ba382"/>
-      <stop offset="100%" stop-color="#6e8767"/>
+      <stop offset="0%"   stop-color="#adc3a2"/>
+      <stop offset="35%"  stop-color="#8ea686"/>
+      <stop offset="72%"  stop-color="#768e6f"/>
+      <stop offset="100%" stop-color="#5f775c"/>
     </linearGradient>
+
+    <!-- Sombra sin filtro: un degradado que se desvanece cuesta lo
+         mismo que una elipse y no obliga a recalcular el desenfoque en
+         cada fotograma de la brisa. -->
+    <radialGradient id="gSombra">
+      <stop offset="30%"  stop-color="#6f5348" stop-opacity=".3"/>
+      <stop offset="100%" stop-color="#6f5348" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Brillo del limbo: la hoja de eucalipto es cerosa y rebota luz -->
+    <radialGradient id="gBrillo">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity=".5"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Gerbera coral -->
+    <linearGradient id="gGerbera" x1="50%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%"   stop-color="#d4635a"/>
+      <stop offset="45%"  stop-color="#e8837a"/>
+      <stop offset="100%" stop-color="#f3aa9f"/>
+    </linearGradient>
+    <linearGradient id="gGerberaInt" x1="50%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%"   stop-color="#c0504b"/>
+      <stop offset="55%"  stop-color="#dd7168"/>
+      <stop offset="100%" stop-color="#ec988c"/>
+    </linearGradient>
+    <radialGradient id="gDisco" cx="45%" cy="42%" r="62%">
+      <stop offset="0%"   stop-color="#c9a03c"/>
+      <stop offset="55%"  stop-color="#9d7729"/>
+      <stop offset="100%" stop-color="#6f5220"/>
+    </radialGradient>
 
     <!-- ══ Trazos base ══ -->
 
@@ -1486,19 +1522,49 @@
     <!-- Pétalo de la florecilla de hortensia -->
     <path id="petaloFloret" d="M0 0C-2.8 -1.4 -5 -4.2 -5 -7.2C-5 -10.2 -2.2 -11.8 0 -10.2C2.2 -11.8 5 -10.2 5 -7.2C5 -4.2 2.8 -1.4 0 0Z"/>
 
-    <!-- Hoja de eucalipto, centrada en el origen y tumbada. Nervio
-         central marcado: sin él la hoja se lee como una mancha oval. -->
+    <!-- Pétalo de gerbera: largo, estrecho y rematado en punta -->
+    <path id="petaloGerbera" d="M0 0C-3.4 -6 -4.2 -16 -3.1 -25C-2.5 -30.2 -1.2 -32.4 0 -32.4C1.2 -32.4 2.5 -30.2 3.1 -25C4.2 -16 3.4 -6 0 0Z"/>
+
+    <!-- ══ Hoja de eucalipto ══
+         Centrada en el origen y tumbada. Lo que la separa de un óvalo
+         de color son cuatro cosas: el limbo ligeramente asimétrico (una
+         hoja perfecta no existe), el pecíolo leñoso, el nervio central
+         y los secundarios saliendo de él en abanico. -->
     <g id="hojaA">
-      <path d="M-13 0C-12.2 -6.2 -7 -10.6 0 -11C7.2 -11.4 12.2 -7 13 0C12.2 7 7.2 11.4 0 11C-7 10.6 -12.2 6.2 -13 0Z" fill="url(#gHojaA)"/>
-      <path d="M-10.6 .5C-5 -1.4 5.2 -1.6 11 -.3" fill="none" stroke="#7d9676" stroke-width=".9" stroke-linecap="round" opacity=".4"/>
+      <path d="M-13.6 1.4C-15.6 1.1 -16.8 .3 -17.4 -.7" fill="none" stroke="#9b8a6a" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M-13 .7C-12.5 -6 -7.3 -10.5 -.3 -11.1C7 -11.7 12.2 -7.5 13 -.5C12.5 6.6 7.1 11.3 0 10.9C-7 10.5 -12.5 6.5 -13 .7Z" fill="url(#gHojaA)"/>
+      <ellipse cx="-3.2" cy="-4.6" rx="7" ry="4" fill="url(#gBrillo)" transform="rotate(-20 -3.2 -4.6)"/>
+      <path d="M-11.9 .5C-6 -1.5 5.1 -1.8 11.7 -.7" fill="none" stroke="#7d9676" stroke-width=".95" stroke-linecap="round" opacity=".45"/>
+      <g fill="none" stroke="#7d9676" stroke-width=".5" stroke-linecap="round" opacity=".3">
+        <path d="M-6.4 -.7C-4.7 -4 -2.4 -6.3 .7 -7.7"/>
+        <path d="M.2 -1.5C1.9 -4.4 4.1 -6.1 6.9 -6.8"/>
+        <path d="M-6.6 0C-4.9 3.3 -2.6 5.7 .5 7"/>
+        <path d="M0 -.4C1.7 2.7 3.9 4.7 6.6 5.6"/>
+      </g>
     </g>
     <g id="hojaB">
-      <path d="M-13 0C-12.2 -6.2 -7 -10.6 0 -11C7.2 -11.4 12.2 -7 13 0C12.2 7 7.2 11.4 0 11C-7 10.6 -12.2 6.2 -13 0Z" fill="url(#gHojaB)"/>
-      <path d="M-10.6 .5C-5 -1.4 5.2 -1.6 11 -.3" fill="none" stroke="#6d8666" stroke-width=".9" stroke-linecap="round" opacity=".4"/>
+      <path d="M-13.6 1.4C-15.6 1.1 -16.8 .3 -17.4 -.7" fill="none" stroke="#8e7d5f" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M-13 .7C-12.5 -6 -7.3 -10.5 -.3 -11.1C7 -11.7 12.2 -7.5 13 -.5C12.5 6.6 7.1 11.3 0 10.9C-7 10.5 -12.5 6.5 -13 .7Z" fill="url(#gHojaB)"/>
+      <ellipse cx="-3.2" cy="-4.6" rx="7" ry="4" fill="url(#gBrillo)" transform="rotate(-20 -3.2 -4.6)"/>
+      <path d="M-11.9 .5C-6 -1.5 5.1 -1.8 11.7 -.7" fill="none" stroke="#6d8666" stroke-width=".95" stroke-linecap="round" opacity=".45"/>
+      <g fill="none" stroke="#6d8666" stroke-width=".5" stroke-linecap="round" opacity=".3">
+        <path d="M-6.4 -.7C-4.7 -4 -2.4 -6.3 .7 -7.7"/>
+        <path d="M.2 -1.5C1.9 -4.4 4.1 -6.1 6.9 -6.8"/>
+        <path d="M-6.6 0C-4.9 3.3 -2.6 5.7 .5 7"/>
+        <path d="M0 -.4C1.7 2.7 3.9 4.7 6.6 5.6"/>
+      </g>
     </g>
     <g id="hojaC">
-      <path d="M-13 0C-12.2 -6.2 -7 -10.6 0 -11C7.2 -11.4 12.2 -7 13 0C12.2 7 7.2 11.4 0 11C-7 10.6 -12.2 6.2 -13 0Z" fill="url(#gHojaC)"/>
-      <path d="M-10.6 .5C-5 -1.4 5.2 -1.6 11 -.3" fill="none" stroke="#62795c" stroke-width=".9" stroke-linecap="round" opacity=".4"/>
+      <path d="M-13.6 1.4C-15.6 1.1 -16.8 .3 -17.4 -.7" fill="none" stroke="#82724f" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M-13 .7C-12.5 -6 -7.3 -10.5 -.3 -11.1C7 -11.7 12.2 -7.5 13 -.5C12.5 6.6 7.1 11.3 0 10.9C-7 10.5 -12.5 6.5 -13 .7Z" fill="url(#gHojaC)"/>
+      <ellipse cx="-3.2" cy="-4.6" rx="7" ry="4" fill="url(#gBrillo)" transform="rotate(-20 -3.2 -4.6)"/>
+      <path d="M-11.9 .5C-6 -1.5 5.1 -1.8 11.7 -.7" fill="none" stroke="#62795c" stroke-width=".95" stroke-linecap="round" opacity=".45"/>
+      <g fill="none" stroke="#62795c" stroke-width=".5" stroke-linecap="round" opacity=".3">
+        <path d="M-6.4 -.7C-4.7 -4 -2.4 -6.3 .7 -7.7"/>
+        <path d="M.2 -1.5C1.9 -4.4 4.1 -6.1 6.9 -6.8"/>
+        <path d="M-6.6 0C-4.9 3.3 -2.6 5.7 .5 7"/>
+        <path d="M0 -.4C1.7 2.7 3.9 4.7 6.6 5.6"/>
+      </g>
     </g>
 
     <!-- ══ Flores ══ -->
@@ -1508,7 +1574,7 @@
          que le da volumen; con una sola corona se ve plana. -->
     <g id="peonia" stroke="#c1808d" stroke-width=".55" stroke-opacity=".38">
       <!-- Sombra propia: sin ella la flor flota sobre el follaje -->
-      <ellipse cx="1.5" cy="2.5" rx="24" ry="22" fill="#b3737f" opacity=".16" stroke="none"/>
+      <ellipse cx="1.5" cy="3" rx="27" ry="25" fill="url(#gSombra)" stroke="none"/>
 
       <!-- Pétalos guarda: pocos, anchos y rizados -->
       <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(0)"/>
@@ -1560,6 +1626,48 @@
       <use href="#petalo" fill="url(#gPetaloInt)" transform="rotate(252) scale(.6)"/>
       <use href="#petalo" fill="url(#gPetaloInt)" transform="rotate(324) scale(.6)"/>
       <circle r="3.2" fill="url(#gCorazon)"/>
+    </g>
+
+    <!-- Gerbera coral: la margarita de la referencia. Dos coronas de
+         pétalos estrechos, la de dentro girada medio paso, y un disco
+         central con su corona de flósculos — que aquí es un trazo
+         punteado, más barato que dibujar cuarenta puntitos. -->
+    <g id="gerbera">
+      <ellipse cx="1.5" cy="3" rx="34" ry="31" fill="url(#gSombra)"/>
+
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(0)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(25.7)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(51.4)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(77.1)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(102.9)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(128.6)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(154.3)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(180)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(205.7)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(231.4)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(257.1)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(282.9)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(308.6)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(334.3)"/>
+
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(12.9) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(38.6) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(64.3) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(90) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(115.7) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(141.4) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(167.1) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(192.9) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(218.6) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(244.3) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(270) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(295.7) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(321.4) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(347.1) scale(.8)"/>
+
+      <circle r="9.2" fill="url(#gDisco)"/>
+      <circle r="7.2" fill="none" stroke="#e3bd58" stroke-width="2.6" stroke-dasharray=".9 2" opacity=".75"/>
+      <circle r="4.4" fill="#6a4e1e" opacity=".55"/>
     </g>
 
     <!-- Florecilla de hortensia: cuatro pétalos y un centro dorado -->
@@ -1635,20 +1743,29 @@
       <use href="#hojaB" transform="translate(143,277) rotate(38) scale(1)" opacity=".85"/>
       <use href="#hojaA" transform="translate(123,261) rotate(38) scale(0.885)" opacity=".82"/>
 
-      <use href="#capullo" transform="translate(196,116) rotate(-24)"/>
-      <use href="#capullo" transform="translate(40,306) rotate(14) scale(.85)"/>
+      <use href="#capullo" transform="translate(176,132) rotate(-24)"/>
+      <use href="#capullo" transform="translate(34,296) rotate(14) scale(.85)"/>
 
-      <g transform="translate(252,58)"><use href="#hortensia" transform="scale(1.15)"/></g>
+      <g transform="translate(258,52)"><use href="#hortensia" transform="scale(1.1)"/></g>
 
-      <!-- Las peonías van al final: son el foco y van encima de todo -->
+      <!-- Las flores van al final: son el foco y tapan al follaje -->
+      <use href="#gerbera" transform="translate(214,104) scale(.82) rotate(-12)"/>
       <use href="#peonia" transform="translate(126,160) scale(1.55)"/>
-      <use href="#peonia" transform="translate(72,296) scale(1.12) rotate(18)"/>
+      <use href="#gerbera" transform="translate(44,246) scale(.66) rotate(24)"/>
+      <use href="#peonia" transform="translate(74,300) scale(1.12) rotate(18)"/>
     </g>
 
-    <!-- ── Hoja suelta de eucalipto: la que cae con el viento ── -->
+    <!-- ── Hojas sueltas: las que caen con el viento ──
+         Tres tonos en vez de uno. Seis hojas idénticas cayendo se leen
+         como copias; variando el verde parecen hojas distintas. -->
     <g id="hoja">
-      <g transform="translate(15,12)"><use href="#hojaB"/></g>
-
+      <g transform="translate(16,12)"><use href="#hojaB"/></g>
+    </g>
+    <g id="hojaCae2">
+      <g transform="translate(16,12)"><use href="#hojaA" transform="scale(1,-1)"/></g>
+    </g>
+    <g id="hojaCae3">
+      <g transform="translate(16,12)"><use href="#hojaC"/></g>
     </g>
 
     <!-- ── Rincón: la versión ligera del ramo, para las demás páginas ──
@@ -1677,9 +1794,10 @@
       <use href="#hojaA" transform="translate(67,106) rotate(47) scale(0.846)" opacity=".85"/>
       <use href="#hojaC" transform="translate(53,92) rotate(47) scale(0.731)" opacity=".8"/>
 
-      <use href="#capullo" transform="translate(30,172) rotate(-20) scale(.8)"/>
-      <g transform="translate(162,42) scale(.85)"><use href="#hortensia"/></g>
-      <use href="#peonia" transform="translate(80,112) scale(1.05)"/>
+      <use href="#capullo" transform="translate(28,168) rotate(-20) scale(.8)"/>
+      <g transform="translate(166,38) scale(.82)"><use href="#hortensia"/></g>
+      <use href="#gerbera" transform="translate(128,78) scale(.6) rotate(-16)"/>
+      <use href="#peonia" transform="translate(80,114) scale(1.05)"/>
     </g>
 
     <!-- ── Ramita separadora: eucalipto con una peonía al centro ── -->
@@ -1972,12 +2090,12 @@
      por detrás del texto, que va en z-index 1.
 ══════════════════════════════════ -->
 <div class="hojas" aria-hidden="true">
-  <div class="hoja h1"><svg viewBox="0 0 30 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg></div>
-  <div class="hoja h2"><svg viewBox="0 0 30 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg></div>
-  <div class="hoja h3"><svg viewBox="0 0 30 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg></div>
-  <div class="hoja h4"><svg viewBox="0 0 30 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg></div>
-  <div class="hoja h5"><svg viewBox="0 0 30 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg></div>
-  <div class="hoja h6"><svg viewBox="0 0 30 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg></div>
+  <div class="hoja h1"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg></div>
+  <div class="hoja h2"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae2"/></svg></div>
+  <div class="hoja h3"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae3"/></svg></div>
+  <div class="hoja h4"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae2"/></svg></div>
+  <div class="hoja h5"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg></div>
+  <div class="hoja h6"><svg viewBox="0 0 32 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae3"/></svg></div>
 </div>
 
 <script>
