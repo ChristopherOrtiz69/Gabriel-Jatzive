@@ -366,12 +366,15 @@
       100% { transform: translate3d(2px, 114vh, 0) rotate(24deg);   opacity: 0; }
     }
 
-    .hoja.h1 { left:  8%; width: 24px; animation-duration: 23s; animation-delay:  -2s; --op: .6;  }
-    .hoja.h2 { left: 26%; width: 18px; animation-duration: 31s; animation-delay: -14s; --op: .48; }
-    .hoja.h3 { left: 47%; width: 28px; animation-duration: 26s; animation-delay:  -7s; --op: .58; }
-    .hoja.h4 { left: 68%; width: 20px; animation-duration: 34s; animation-delay: -21s; --op: .44; }
-    .hoja.h5 { left: 84%; width: 25px; animation-duration: 28s; animation-delay: -11s; --op: .55; }
-    .hoja.h6 { left: 58%; width: 16px; animation-duration: 38s; animation-delay: -28s; --op: .4;  }
+    /* Los tamaños van de 14 a 34 px a propósito: en un eucalipto real
+       no caen todas las hojas iguales, y la grande cayendo despacio
+       junto a la chica rápida es lo que da sensación de profundidad. */
+    .hoja.h1 { left:  8%; width: 23px; animation-duration: 23s; animation-delay:  -2s; --op: .6;  }
+    .hoja.h2 { left: 26%; width: 15px; animation-duration: 31s; animation-delay: -14s; --op: .46; }
+    .hoja.h3 { left: 47%; width: 34px; animation-duration: 29s; animation-delay:  -7s; --op: .55; }
+    .hoja.h4 { left: 68%; width: 19px; animation-duration: 34s; animation-delay: -21s; --op: .44; }
+    .hoja.h5 { left: 84%; width: 27px; animation-duration: 26s; animation-delay: -11s; --op: .58; }
+    .hoja.h6 { left: 58%; width: 14px; animation-duration: 38s; animation-delay: -28s; --op: .4;  }
 
     /* El volteo no es múltiplo de la caída: si lo fuera, cada hoja
        repetiría exactamente la misma pose en cada vuelta. */
@@ -902,7 +905,7 @@
       box-sizing: border-box;
       outline: none;
       transition: border-color .2s, background .2s;
-    }
+    } 
 
     .rsvp-input:focus {
       border-color: var(--rose);
@@ -1511,6 +1514,29 @@
       <stop offset="100%" stop-color="#68815f"/>
     </linearGradient>
 
+    <!-- Los discos grandes del eucalipto (el llamado "silver dollar")
+         son más azulados y polvorientos que el resto del follaje. Ese
+         contraste entre hoja grande fría y ramita chica fresca es la
+         mitad de lo que hace que un ramo parezca real. -->
+    <linearGradient id="gHojaD1" x1="10%" y1="100%" x2="70%" y2="0%">
+      <stop offset="0%"   stop-color="#aabcb0"/>
+      <stop offset="55%"  stop-color="#bdcbc1"/>
+      <stop offset="100%" stop-color="#cdd9d0"/>
+    </linearGradient>
+    <linearGradient id="gHojaD2" x1="10%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%"   stop-color="#a2b4a8"/>
+      <stop offset="55%"  stop-color="#91a599"/>
+      <stop offset="100%" stop-color="#82968a"/>
+    </linearGradient>
+
+    <!-- Las hojitas de las ramitas de relleno: verde fresco, sin la
+         ceniza de los discos grandes. -->
+    <linearGradient id="gHojita" x1="0%" y1="0%" x2="55%" y2="100%">
+      <stop offset="0%"   stop-color="#abc69d"/>
+      <stop offset="55%"  stop-color="#91b083"/>
+      <stop offset="100%" stop-color="#77966c"/>
+    </linearGradient>
+
     <!-- El dorso del eucalipto es más pálido y ceniciento que la cara.
          En una hoja que cae se ve la mitad del tiempo. -->
     <linearGradient id="gDorso1" x1="10%" y1="100%" x2="70%" y2="0%">
@@ -1633,6 +1659,50 @@
         <path d="M-1.2 -.5C0 3 2.2 5.4 5.5 6.5"/>
         <path d="M4.8 -1.4C6 .8 7.8 2.4 10.2 3.2"/>
       </g>
+    </g>
+
+
+    <!-- Disco grande y azulado: la hoja de porte del ramo. Mismo trazo
+         que las demás, tonos glaucos. -->
+    <g id="hojaD">
+      <path d="M-13.4 1.3C-15.5 1.5 -16.9 .9 -17.8 -.2" fill="none" stroke="#8f8a70" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M-13 1C-12 -6.5 -6.5 -11.2 .5 -11.6C7.6 -12 12.8 -7.8 14 -1.5C4 -1.8 -7 -1.2 -13 1Z" fill="url(#gHojaD1)"/>
+      <path d="M-13 1C-12.4 7.2 -6.6 11.6 .4 11.2C7.2 10.8 12.6 6 14 -1.5C4 -1.8 -7 -1.2 -13 1Z" fill="url(#gHojaD2)"/>
+      <path d="M-13 1C-12 -6.5 -6.5 -11.2 .5 -11.6C7.6 -12 12.8 -7.8 14 -1.5C12.6 6 7.2 10.8 .4 11.2C-6.6 11.6 -12.4 7.2 -13 1Z" fill="none" stroke="#7e8c80" stroke-width=".5" opacity=".3"/>
+      <ellipse cx="-2.6" cy="-5.2" rx="6.6" ry="3.4" fill="url(#gBrillo)" transform="rotate(-16 -2.6 -5.2)"/>
+      <path d="M-12.4 .9C-7 -1.1 4 -1.7 13.4 -1.4" fill="none" stroke="#e7eee9" stroke-width="1.1" stroke-linecap="round" opacity=".5"/>
+      <g fill="none" stroke="#7b8f84" stroke-width=".55" stroke-linecap="round" opacity=".32">
+        <path d="M-7.6 -.4C-6.2 -4.2 -3.6 -7 .2 -8.6"/>
+        <path d="M-1.4 -1.4C-.2 -4.8 2 -7.2 5.4 -8.4"/>
+        <path d="M4.6 -1.7C5.8 -4 7.6 -5.6 10 -6.4"/>
+        <path d="M-7.4 .3C-6 4 -3.4 6.6 .3 8.1"/>
+        <path d="M-1.2 -.5C0 3 2.2 5.4 5.5 6.5"/>
+        <path d="M4.8 -1.4C6 .8 7.8 2.4 10.2 3.2"/>
+      </g>
+    </g>
+
+    <!-- Hojita lanceolada: nace en el origen y apunta a la derecha.
+         Es el otro follaje de la referencia — pequeño y en punta, no
+         redondo. Solo dos trazos: a este tamaño no cabe más detalle. -->
+    <g id="hojita">
+      <path d="M0 0C1.5 -3 4.5 -3.5 7.5 -2.7C9.8 -2.1 11 -1 11.4 0C11 1 9.8 2.1 7.5 2.7C4.5 3.5 1.5 3 0 0Z" fill="url(#gHojita)"/>
+      <path d="M1.2 0C4 -.3 8 -.2 10.4 0" fill="none" stroke="#d5e2cb" stroke-width=".55" stroke-linecap="round" opacity=".5"/>
+    </g>
+
+    <!-- Ramita de relleno: tallo fino con pares de hojitas opuestas que
+         se van cerrando y achicando hacia la punta. Es lo que rellena
+         los huecos entre las flores sin engordar el ramo. -->
+    <g id="ramita">
+      <path d="M0 0C12 -2 26 -3.6 40.5 -3" fill="none" stroke="#8fa886" stroke-width="1.1" stroke-linecap="round"/>
+      <use href="#hojita" transform="translate(5.5,-.9) rotate(-54) scale(.97)"/>
+      <use href="#hojita" transform="translate(5.5,-.9) rotate(50) scale(.92)"/>
+      <use href="#hojita" transform="translate(14,-2.1) rotate(-46) scale(.9)"/>
+      <use href="#hojita" transform="translate(14,-2.1) rotate(41) scale(.85)"/>
+      <use href="#hojita" transform="translate(23,-2.9) rotate(-39) scale(.8)"/>
+      <use href="#hojita" transform="translate(23,-2.9) rotate(34) scale(.75)"/>
+      <use href="#hojita" transform="translate(31.5,-3.2) rotate(-31) scale(.68)"/>
+      <use href="#hojita" transform="translate(31.5,-3.2) rotate(26) scale(.63)"/>
+      <use href="#hojita" transform="translate(38.5,-3.1) rotate(-9) scale(.56)"/>
     </g>
 
     <!-- El dorso: mismo trazo, tonos cenicientos y sin brillo — el
@@ -1795,38 +1865,44 @@
       <path d="M70 348 Q118 300 150 240" stroke="#a8bd9f" fill="none" stroke-width="1.7" stroke-linecap="round"/>
 
       <!-- Tallo principal, tramo bajo -->
-      <use href="#hojaA" transform="translate(39,327) rotate(38) scale(1.192)" opacity=".95"/>
+      <use href="#hojaD" transform="translate(39,327) rotate(38) scale(1.848)" opacity=".95"/>
       <use href="#hojaB" transform="translate(19,311) rotate(38) scale(1.115)" opacity=".9"/>
-      <use href="#hojaA" transform="translate(68,289) rotate(38) scale(1.231)" opacity=".95"/>
-      <use href="#hojaC" transform="translate(48,273) rotate(38) scale(1.115)" opacity=".88"/>
+      <use href="#hojaA" transform="translate(68,289) rotate(38) scale(0.739)" opacity=".95"/>
+      <use href="#hojaC" transform="translate(48,273) rotate(38) scale(1.227,0.417)" opacity=".88"/>
       <use href="#hojaB" transform="translate(96,253) rotate(38) scale(1.231)" opacity=".92"/>
-      <use href="#hojaA" transform="translate(76,237) rotate(38) scale(1.115)" opacity=".9"/>
+      <use href="#hojaD" transform="translate(76,237) rotate(38) scale(1.728)" opacity=".9"/>
       <use href="#hojaA" transform="translate(125,218) rotate(38) scale(1.192)" opacity=".95"/>
-      <use href="#hojaC" transform="translate(105,202) rotate(38) scale(1.077)" opacity=".88"/>
-      <use href="#hojaB" transform="translate(150,189) rotate(38) scale(1.154)" opacity=".92"/>
+      <use href="#hojaC" transform="translate(105,202) rotate(38) scale(0.646)" opacity=".88"/>
+      <use href="#hojaB" transform="translate(150,189) rotate(38) scale(1.269,0.431)" opacity=".92"/>
       <use href="#hojaA" transform="translate(130,173) rotate(38) scale(1.038)" opacity=".88"/>
 
       <!-- Tallo principal, tramo alto -->
-      <use href="#hojaA" transform="translate(183,156) rotate(52) scale(1.154)" opacity=".93"/>
+      <use href="#hojaD" transform="translate(183,156) rotate(52) scale(1.789)" opacity=".93"/>
       <use href="#hojaB" transform="translate(167,136) rotate(52) scale(1.038)" opacity=".88"/>
-      <use href="#hojaB" transform="translate(217,126) rotate(52) scale(1.115)" opacity=".9"/>
-      <use href="#hojaA" transform="translate(201,106) rotate(52) scale(1)" opacity=".88"/>
+      <use href="#hojaB" transform="translate(217,126) rotate(52) scale(0.669)" opacity=".9"/>
+      <use href="#hojaA" transform="translate(201,106) rotate(52) scale(1.1,0.374)" opacity=".88"/>
       <use href="#hojaA" transform="translate(255,95) rotate(52) scale(1.077)" opacity=".9"/>
-      <use href="#hojaC" transform="translate(239,75) rotate(52) scale(0.962)" opacity=".85"/>
+      <use href="#hojaD" transform="translate(239,75) rotate(52) scale(1.491)" opacity=".85"/>
       <use href="#hojaB" transform="translate(297,63) rotate(52) scale(1)" opacity=".88"/>
-      <use href="#hojaA" transform="translate(281,43) rotate(52) scale(0.885)" opacity=".84"/>
-      <use href="#hojaA" transform="translate(336,35) rotate(52) scale(0.846)" opacity=".8"/>
+      <use href="#hojaA" transform="translate(281,43) rotate(52) scale(0.531)" opacity=".84"/>
+      <use href="#hojaA" transform="translate(336,35) rotate(52) scale(0.931,0.317)" opacity=".8"/>
       <use href="#hojaB" transform="translate(320,15) rotate(52) scale(0.769)" opacity=".76"/>
 
       <!-- Tallos secundarios -->
-      <use href="#hojaB" transform="translate(48,237) rotate(52) scale(1)" opacity=".85"/>
+      <use href="#hojaD" transform="translate(48,237) rotate(52) scale(1.55)" opacity=".85"/>
       <use href="#hojaA" transform="translate(32,217) rotate(52) scale(0.923)" opacity=".82"/>
-      <use href="#hojaA" transform="translate(83,206) rotate(52) scale(1)" opacity=".85"/>
-      <use href="#hojaC" transform="translate(67,186) rotate(52) scale(0.885)" opacity=".8"/>
+      <use href="#hojaA" transform="translate(83,206) rotate(52) scale(0.6)" opacity=".85"/>
+      <use href="#hojaC" transform="translate(67,186) rotate(52) scale(0.974,0.331)" opacity=".8"/>
       <use href="#hojaA" transform="translate(116,316) rotate(38) scale(1.038)" opacity=".88"/>
-      <use href="#hojaB" transform="translate(96,300) rotate(38) scale(0.962)" opacity=".84"/>
+      <use href="#hojaD" transform="translate(96,300) rotate(38) scale(1.491)" opacity=".84"/>
       <use href="#hojaB" transform="translate(143,277) rotate(38) scale(1)" opacity=".85"/>
-      <use href="#hojaA" transform="translate(123,261) rotate(38) scale(0.885)" opacity=".82"/>
+      <use href="#hojaA" transform="translate(123,261) rotate(38) scale(0.531)" opacity=".82"/>
+
+      <!-- Ramitas de relleno, abriéndose del tallo hacia afuera -->
+      <use href="#ramita" transform="translate(96,236) rotate(-128) scale(1.15)" opacity=".92"/>
+      <use href="#ramita" transform="translate(176,152) rotate(38) scale(1)" opacity=".88"/>
+      <use href="#ramita" transform="translate(268,74) rotate(-118) scale(.9)" opacity=".85"/>
+      <use href="#ramita" transform="translate(60,300) rotate(52) scale(.95)" opacity=".88"/>
 
       <use href="#capullo" transform="translate(176,132) rotate(-24)"/>
       <use href="#capullo" transform="translate(34,296) rotate(14) scale(.85)"/>
@@ -1852,6 +1928,9 @@
     <g id="hojaCae3">
       <g transform="translate(18,12)"><use href="#hojaC"/></g>
     </g>
+    <g id="hojaCae4">
+      <g transform="translate(18,12)"><use href="#hojaD"/></g>
+    </g>
     <g id="hojaCaeDorso">
       <g transform="translate(18,12)"><use href="#hojaDorso"/></g>
     </g>
@@ -1864,23 +1943,27 @@
       <path d="M2 206 Q44 152 92 100 Q132 58 210 4" stroke="#8ba382" fill="none" stroke-width="2" stroke-linecap="round"/>
       <path d="M4 150 Q40 122 74 84" stroke="#a8bd9f" fill="none" stroke-width="1.5" stroke-linecap="round"/>
 
-      <use href="#hojaA" transform="translate(31,186) rotate(41) scale(1)" opacity=".95"/>
+      <use href="#hojaA" transform="translate(31,186) rotate(41) scale(1.1,0.374)" opacity=".95"/>
       <use href="#hojaB" transform="translate(15,172) rotate(41) scale(0.923)" opacity=".9"/>
-      <use href="#hojaA" transform="translate(63,149) rotate(41) scale(1.038)" opacity=".95"/>
+      <use href="#hojaD" transform="translate(63,149) rotate(41) scale(1.609)" opacity=".95"/>
       <use href="#hojaC" transform="translate(47,135) rotate(41) scale(0.923)" opacity=".88"/>
-      <use href="#hojaB" transform="translate(91,117) rotate(41) scale(0.962)" opacity=".92"/>
-      <use href="#hojaA" transform="translate(75,103) rotate(41) scale(0.885)" opacity=".9"/>
+      <use href="#hojaB" transform="translate(91,117) rotate(41) scale(0.577)" opacity=".92"/>
+      <use href="#hojaA" transform="translate(75,103) rotate(41) scale(0.974,0.331)" opacity=".9"/>
       <use href="#hojaA" transform="translate(125,82) rotate(52) scale(0.962)" opacity=".92"/>
-      <use href="#hojaB" transform="translate(113,66) rotate(52) scale(0.846)" opacity=".88"/>
+      <use href="#hojaD" transform="translate(113,66) rotate(52) scale(1.311)" opacity=".88"/>
       <use href="#hojaB" transform="translate(166,48) rotate(52) scale(0.885)" opacity=".88"/>
-      <use href="#hojaA" transform="translate(154,32) rotate(52) scale(0.808)" opacity=".85"/>
-      <use href="#hojaA" transform="translate(204,21) rotate(52) scale(0.769)" opacity=".8"/>
+      <use href="#hojaA" transform="translate(154,32) rotate(52) scale(0.485)" opacity=".85"/>
+      <use href="#hojaA" transform="translate(204,21) rotate(52) scale(0.846,0.288)" opacity=".8"/>
       <use href="#hojaB" transform="translate(192,5) rotate(52) scale(0.692)" opacity=".76"/>
 
-      <use href="#hojaB" transform="translate(36,136) rotate(47) scale(0.846)" opacity=".85"/>
+      <use href="#hojaD" transform="translate(36,136) rotate(47) scale(1.311)" opacity=".85"/>
       <use href="#hojaA" transform="translate(22,122) rotate(47) scale(0.769)" opacity=".8"/>
-      <use href="#hojaA" transform="translate(67,106) rotate(47) scale(0.846)" opacity=".85"/>
-      <use href="#hojaC" transform="translate(53,92) rotate(47) scale(0.731)" opacity=".8"/>
+      <use href="#hojaA" transform="translate(67,106) rotate(47) scale(0.508)" opacity=".85"/>
+      <use href="#hojaC" transform="translate(53,92) rotate(47) scale(0.804,0.273)" opacity=".8"/>
+
+      <!-- Ramitas de relleno -->
+      <use href="#ramita" transform="translate(58,128) rotate(-126) scale(.9)" opacity=".9"/>
+      <use href="#ramita" transform="translate(120,64) rotate(42) scale(.8)" opacity=".85"/>
 
       <use href="#capullo" transform="translate(28,168) rotate(-20) scale(.8)"/>
       <g transform="translate(166,38) scale(.82)"><use href="#hortensia"/></g>
@@ -2180,7 +2263,7 @@
 <div class="hojas" aria-hidden="true">
   <div class="hoja h1"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
   <div class="hoja h2"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae2"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
-  <div class="hoja h3"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae3"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
+  <div class="hoja h3"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae4"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
   <div class="hoja h4"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae2"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
   <div class="hoja h5"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hoja"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
   <div class="hoja h6"><div class="volteador"><svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCae3"/></svg><svg class="dorso" viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg"><use href="#hojaCaeDorso"/></svg></div></div>
