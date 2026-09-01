@@ -285,6 +285,15 @@
       transform-box: view-box;
       transform-origin: 0% 100%;
       animation: brisa 9.5s ease-in-out infinite;
+      filter: url(#fAcuarela);
+    }
+
+    /* El filtro de turbulencia se recalcula al rotar. En escritorio no
+       se nota; en un teléfono son nueve ramos meciéndose y ahí sí pesa,
+       así que ahí se dibuja con el borde limpio. */
+    @media (max-width: 900px) {
+      .floral-corner use,
+      .deco use { filter: none; }
     }
 
     /* Duraciones y desfases distintos: en sincronía se ve mecánico.
@@ -1589,6 +1598,17 @@
       <stop offset="55%"  stop-color="#a3b29b"/>
       <stop offset="100%" stop-color="#91a08a"/>
     </linearGradient>
+
+    <!-- ══ Borde de acuarela ══
+         Lo que delata al vector es el borde perfecto. feTurbulence
+         genera ruido y feDisplacementMap empuja cada píxel del contorno
+         según ese ruido: el filo deja de ser matemático y tiembla como
+         el de un pincel. Con scale bajo tiembla; con scale alto se
+         derrite, así que 2.6 es el techo util. -->
+    <filter id="fAcuarela" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="2.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
 
     <!-- Sombra sin filtro: un degradado que se desvanece cuesta lo
          mismo que una elipse y no obliga a recalcular el desenfoque en
