@@ -849,12 +849,14 @@
       border-radius: 14px;
       transition: transform .22s ease, filter .22s ease;
     }
-    /* La bolsa es una sola imagen BLANCA que se tiñe por código. El
-       color va en una capa encima en mix-blend-mode:multiply: blanco
-       por color da el color, y las zonas sombreadas de la foto dan ese
-       mismo color más oscuro, así que el volumen se conserva solo. La
-       capa se recorta con el alfa de la propia imagen — sin eso el
-       tinte saldría como un rectángulo.
+    /* Una imagen por tienda, ya en el color de la marca. El teñido se
+       hizo sobre el archivo (multiplicando la bolsa blanca original por
+       el color, a resolución completa y antes de reescalar), no en el
+       navegador: teñir en CSS pedía una máscara, y Chromium bloquea las
+       imágenes de máscara cuando la página se abre con doble clic —
+       las bolsas salían blancas al previsualizar en local. Horneado
+       también sale mejor de calidad y no depende de que el navegador
+       soporte modos de fusión.
        Se mide por ALTO y no por ancho: el alto es la dimensión que
        tiene el presupuesto contado, porque si la diapositiva pasa de
        una pantalla se apaga el enganche del scroll de toda la
@@ -862,31 +864,11 @@
     .bolsa-fig {
       position: relative;
       display: block;
-      isolation: isolate;
     }
     .bolsa-fig img {
       display: block;
       height: clamp(88px, 28vw, 124px);
       width: auto;
-    }
-    /* Sin soporte de máscara la bolsa se queda blanca, que es un
-       resultado perfectamente presentable; el nombre impreso ya la
-       distingue. El color solo se pinta cuando se puede recortar. */
-    @supports ((-webkit-mask-image: url("x.png")) or (mask-image: url("x.png"))) {
-      .bolsa-fig::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: var(--bg-tinte, #e8dcc4);
-        mix-blend-mode: multiply;
-        -webkit-mask-image: url("img/bolsa.png");
-                mask-image: url("img/bolsa.png");
-        -webkit-mask-size: 100% 100%;
-                mask-size: 100% 100%;
-        -webkit-mask-repeat: no-repeat;
-                mask-repeat: no-repeat;
-        pointer-events: none;
-      }
     }
 
     /* Cormorant y no Raleway: es la tipografía de la invitación y aquí
@@ -910,7 +892,7 @@
       font-size: clamp(.78rem, 2.2vw, .84rem);
       font-weight: 500;
       letter-spacing: .015em;
-      color: #3f4d3a;
+      color: var(--nombre, #3f4d3a);
       text-align: center;
       line-height: 1.15;
       transition: color .2s;
@@ -928,23 +910,26 @@
       box-shadow: 0 0 0 3px var(--warm), 0 0 0 5px rgba(140, 74, 86, .9);
     }
 
-    /* Seleccionada: se levanta de la mesa y el nombre toma color.
-       Dos señales a la vez, no solo una sombra sutil. */
+    /* Seleccionada: se levanta de la mesa, proyecta más sombra y sube
+       un poco de brillo y saturación. Antes la segunda señal era teñir
+       el nombre de rosa, pero eso ya no sirve: sobre azul, rosa fuerte
+       y amarillo no hay un color de texto que se lea bien en los tres
+       y a la vez se distinga del normal. El brillo funciona sobre
+       cualquier color, y sigue habiendo tres señales contando que el
+       panel de abajo cambia. */
     .bolsa.activa {
       transform: translateY(-14px);
-      filter: drop-shadow(0 8px 14px rgba(138,106,74,.32));
+      filter: drop-shadow(0 9px 16px rgba(90, 60, 40, .34)) brightness(1.07) saturate(1.06);
     }
-    /* Rosa oscuro y no el --deep-rose de la paleta: ese sobre la bolsa
-       verde salvia daba 2:1 de contraste y el nombre se perdía justo
-       en la bolsa seleccionada. */
-    .bolsa.activa .bolsa-nombre { color: #8a4553; }
 
-    /* Un tinte por bolsa. Al multiplicar sobre una imagen casi blanca
-       el resultado es prácticamente este color, y las sombras de la
-       foto lo oscurecen en proporción. */
-    .bolsa.b1 { --bg-tinte: #e8dcc4; }
-    .bolsa.b2 { --bg-tinte: #f0d0cc; }
-    .bolsa.b3 { --bg-tinte: #c9dabf; }
+    /* El color del nombre depende del color de la bolsa. Sobre el azul
+       de Amazon y el rosa de Liverpool solo el blanco pasa el 4.5:1
+       (5.5:1 y 4.7:1); sobre el amarillo de Palacio el blanco se queda
+       en 1.8:1 y hay que ir al revés, con un café oscuro que da 5.7:1.
+       Es además como rotulan las marcas sus propias bolsas. */
+    .bolsa.b1 { --nombre: #ffffff; }
+    .bolsa.b2 { --nombre: #ffffff; }
+    .bolsa.b3 { --nombre: #4a3512; }
 
     /* ── Panel de datos ──
        min-height fijo a propósito: si el panel creciera al abrirse, la
@@ -2885,15 +2870,15 @@
     <div class="mesa reveal">
       <div class="bolsas" role="group" aria-label="Elige una tienda">
         <button type="button" class="bolsa b1" aria-pressed="false" aria-controls="det-amazon" data-tienda="amazon">
-          <span class="bolsa-fig"><img src="img/bolsa.png" width="260" height="415" alt="" loading="lazy" decoding="async"></span>
+          <span class="bolsa-fig"><img src="img/bolsa-amazon.png" width="240" height="383" alt="" loading="lazy" decoding="async"></span>
           <span class="bolsa-nombre">Amazon</span>
         </button>
         <button type="button" class="bolsa b2" aria-pressed="false" aria-controls="det-liverpool" data-tienda="liverpool">
-          <span class="bolsa-fig"><img src="img/bolsa.png" width="260" height="415" alt="" loading="lazy" decoding="async"></span>
+          <span class="bolsa-fig"><img src="img/bolsa-liverpool.png" width="240" height="383" alt="" loading="lazy" decoding="async"></span>
           <span class="bolsa-nombre">Liverpool</span>
         </button>
         <button type="button" class="bolsa b3" aria-pressed="false" aria-controls="det-palacio" data-tienda="palacio">
-          <span class="bolsa-fig"><img src="img/bolsa.png" width="260" height="415" alt="" loading="lazy" decoding="async"></span>
+          <span class="bolsa-fig"><img src="img/bolsa-palacio.png" width="240" height="383" alt="" loading="lazy" decoding="async"></span>
           <span class="bolsa-nombre">Palacio de Hierro</span>
         </button>
       </div>
