@@ -765,6 +765,122 @@
     }
 
     /* ════════════════════════════════
+       MESA DE REGALOS
+       Esta sección la van a usar sobre todo personas mayores, así que
+       todo está sobredimensionado a propósito: números grandes con
+       cifras de ancho fijo, botones de 54 px de alto y una sola acción
+       por tienda. Nada de enlaces discretos dentro de un párrafo.
+    ════════════════════════════════ */
+    .s-regalos {
+      background: var(--warm);
+      border-top: 1px solid #e3d8c6;
+      border-bottom: 1px solid #e3d8c6;
+    }
+
+    .regalos {
+      list-style: none;
+      max-width: 620px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: .85rem;
+    }
+
+    .regalo {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      background: #fff;
+      border: 1px solid #e7ddcf;
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      box-shadow: 0 4px 18px rgba(59,74,53,.07);
+    }
+
+    .regalo-tienda {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 500;
+      color: var(--brown);
+      line-height: 1.15;
+    }
+
+    .regalo-etiqueta {
+      display: block;
+      font-family: 'Raleway', sans-serif;
+      font-size: .62rem;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-bottom: .2rem;
+    }
+
+    /* El número va en la sans, NO en la Cormorant del resto de títulos:
+       esa serif usa cifras de estilo antiguo, con el 3, el 5 y el 0
+       colgando bajo la línea base. Se ve elegante en una fecha y se
+       lee fatal en un número que alguien va a dictar en el mostrador.
+       Aquí mandan las cifras de caja alta, de ancho fijo y separadas. */
+    .regalo-num {
+      display: block;
+      font-family: 'Raleway', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      font-variant-numeric: lining-nums tabular-nums;
+      color: #9c5560;
+      line-height: 1.2;
+      margin-top: .1rem;
+    }
+
+    /* Un solo botón por tienda, con área de toque generosa */
+    .regalo-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      min-height: 54px;
+      min-width: 132px;
+      padding: 0 1.3rem;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, var(--deep-rose), #9c5560);
+      color: #fff;
+      font-family: 'Raleway', sans-serif;
+      font-size: .8rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(157,85,96,.28);
+      transition: transform .2s, box-shadow .2s, background .2s;
+    }
+    .regalo-btn:hover  { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(157,85,96,.36); }
+    .regalo-btn:active { transform: translateY(0); }
+    .regalo-btn:focus-visible { outline: 3px solid var(--sage); outline-offset: 3px; }
+
+    /* Estado copiado: verde, para que se note sin leer */
+    .regalo-btn.copiado {
+      background: linear-gradient(135deg, #4b9c6e, #2f7d53);
+      box-shadow: 0 6px 18px rgba(47,125,83,.3);
+    }
+
+    .regalo-btn svg { width: 15px; height: 15px; flex: none; }
+
+    .regalos-nota {
+      max-width: 480px;
+      margin: 1.5rem auto 0;
+      text-align: center;
+      font-size: .95rem;
+      line-height: 1.75;
+      color: var(--brown);
+      opacity: .85;
+    }
+    .regalos-nota strong { font-weight: 600; color: var(--sage-dark); }
+
+    /* ════════════════════════════════
        DRESSCODE
     ════════════════════════════════ */
     .s-dresscode { background: #f1ede1; }
@@ -1538,6 +1654,7 @@
   <a href="#itinerario" data-label="Itinerario"       aria-label="Ir a Itinerario"></a>
   <a href="#hospedaje"  data-label="Hospedaje"        aria-label="Ir a Hospedaje"></a>
   <a href="#dress-code" data-label="Dress code"       aria-label="Ir a Dress code"></a>
+  <a href="#regalos"    data-label="Mesa de regalos"  aria-label="Ir a Mesa de regalos"></a>
   <a href="#rsvp"       data-label="Confirmar"        aria-label="Ir a Confirmar asistencia"></a>
 </nav>
 
@@ -2462,6 +2579,58 @@
 </section>
 
 <!-- ══════════════════════════════════
+     MESA DE REGALOS
+══════════════════════════════════ -->
+<section class="s-regalos" id="regalos">
+  <div class="deco br" aria-hidden="true"><img src="img/ramo.png" width="1408" height="768" alt="" loading="lazy" decoding="async"></div>
+  <div class="inner">
+    <span class="s-tag reveal">Con cariño</span>
+    <h2 class="s-title reveal">Mesa de <em>regalos</em></h2>
+    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
+
+    <ul class="regalos reveal">
+      <li class="regalo">
+        <span class="regalo-tienda">Amazon</span>
+        <a class="regalo-btn" href="https://www.amazon.com.mx/wedding/share/JatyGabo130327"
+           target="_blank" rel="noopener">
+          Abrir
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+        </a>
+      </li>
+
+      <li class="regalo">
+        <span class="regalo-tienda">
+          Liverpool
+          <span class="regalo-etiqueta">Número de evento</span>
+          <span class="regalo-num">52024031</span>
+        </span>
+        <button type="button" class="regalo-btn" data-copiar="52024031">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copiar
+        </button>
+      </li>
+
+      <li class="regalo">
+        <span class="regalo-tienda">
+          Palacio de Hierro
+          <span class="regalo-etiqueta">Número de evento</span>
+          <span class="regalo-num">5000904</span>
+        </span>
+        <button type="button" class="regalo-btn" data-copiar="5000904">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copiar
+        </button>
+      </li>
+    </ul>
+
+    <p class="regalos-nota reveal">
+      Si prefieres obsequiar en efectivo, en el evento habrá
+      <strong>sobres disponibles</strong>.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
      RSVP
 ══════════════════════════════════ -->
 <section class="s-rsvp" id="rsvp">
@@ -3047,6 +3216,83 @@
     { threshold: 0.12 }
   );
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* ── Copiar el número de la mesa de regalos ──
+     El botón cambia a "¡Copiado!" y se pone verde: para quien no lea
+     el texto, el color ya le dice que funcionó. Vuelve solo a los
+     dos segundos, así que no deja al invitado en un estado raro.
+     execCommand es el respaldo para navegadores viejos, que es
+     justo el escenario probable en este público. */
+  (function () {
+    var botones = document.querySelectorAll('[data-copiar]');
+    if (!botones.length) return;
+
+    function respaldo(texto) {
+      var ta = document.createElement('textarea');
+      ta.value = texto;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (_) {}
+      document.body.removeChild(ta);
+      return ok;
+    }
+
+    botones.forEach(function (btn) {
+      var original = btn.innerHTML;
+      var reloj = null;
+
+      btn.addEventListener('click', function () {
+        var num = btn.getAttribute('data-copiar');
+
+        function avisar(texto, verde) {
+          btn.classList.toggle('copiado', verde);
+          btn.textContent = texto;
+          clearTimeout(reloj);
+          reloj = setTimeout(function () {
+            btn.classList.remove('copiado');
+            btn.innerHTML = original;
+          }, 2600);
+        }
+        function listo()  { avisar('¡Copiado!', true); }
+        /* Si el portapapeles falla, se selecciona el número y se dice
+           qué hacer. Un botón que no responde al toque deja al invitado
+           sin saber si funcionó — peor que no tener botón. */
+        function falló() {
+          var n = btn.parentNode.querySelector('.regalo-num');
+          if (n && window.getSelection) {
+            var r = document.createRange();
+            r.selectNodeContents(n);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(r);
+          }
+          avisar('Cópialo', false);
+        }
+
+        /* El plazo no sobra: en algunos navegadores writeText se queda
+           pendiente para siempre en vez de rechazar, y entonces no
+           entraría ninguna rama y el botón se quedaría mudo. */
+        var resuelto = false;
+        function unaVez(fn) { return function () { if (!resuelto) { resuelto = true; fn(); } }; }
+        var ok = unaVez(listo), mal = unaVez(falló);
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          setTimeout(function () { if (!resuelto && !respaldo(num)) mal(); else ok(); }, 1200);
+          navigator.clipboard.writeText(num).then(ok).catch(function () {
+            if (respaldo(num)) { ok(); } else { mal(); }
+          });
+        } else if (respaldo(num)) {
+          ok();
+        } else {
+          mal();
+        }
+      });
+    });
+  })();
 
   /* ── Paginado ──
      El enganche entre diapositivas lo hace el CSS (scroll-snap). Aquí
