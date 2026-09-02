@@ -124,16 +124,31 @@
       overflow: hidden;
     }
 
-    /* Ramos de las esquinas del hero. El desborde negativo crece con
-       el tamaño: si no, un ramo más grande se despega de la esquina. */
+    /* ── Ramos de las esquinas ──
+       El arte es una guirnalda horizontal (img/ramo.png). Para que
+       funcione como pieza de esquina se gira 112°: así el eje cruza el
+       vértice en diagonal y las dos colas de eucalipto corren por los
+       dos bordes. El contenedor es solo un ancla de tamaño cero; la
+       imagen se centra sobre él y de ahí sale hacia afuera. */
     .floral-corner {
       position: absolute;
-      width: 555px;
-      height: 555px;
+      width: 0;
+      height: 0;
       pointer-events: none;
     }
-    .floral-corner.tl { top: -30px; left: -30px; }
-    .floral-corner.br { bottom: -30px; right: -30px; transform: rotate(180deg); }
+    .floral-corner img {
+      position: absolute;
+      width: 760px;
+      height: auto;
+      left: -380px;
+      top: -207px;
+      transform-origin: 50% 50%;
+    }
+    .floral-corner.tl { top: 78px;    left: 78px; }
+    .floral-corner.br { bottom: 78px; right: 78px; }
+
+    .floral-corner.tl img { animation: brisaRamo 9.5s ease-in-out infinite; }
+    .floral-corner.br img { animation: brisaRamoInv 11.5s ease-in-out infinite; animation-delay: -3s; }
 
     /* El contenido del hero, por encima de la capa de hojas.
        En el resto de secciones de esto se encarga .inner. */
@@ -243,18 +258,35 @@
        enganche del scroll — la sección lo recorta en el borde. */
     .deco {
       position: absolute;
-      width: 360px;
-      height: 360px;
+      width: 0;
+      height: 0;
       opacity: .72;
       pointer-events: none;
       z-index: 0;
     }
-    .deco.sm { width: 288px; height: 288px; }
 
-    .deco.tl { top: -36px;    left:  -36px; }
-    .deco.tr { top: -36px;    right: -36px; transform: rotate(90deg); }
-    .deco.br { bottom: -36px; right: -36px; transform: rotate(180deg); }
-    .deco.bl { bottom: -36px; left:  -36px; transform: rotate(270deg); }
+    /* Mismo esquema que el hero: la imagen se centra sobre el ancla y
+       nace girada para cruzar el vértice. Cada esquina suma su cuarto
+       de vuelta al ángulo base. */
+    .deco img {
+      position: absolute;
+      width: 520px;
+      height: auto;
+      left: -260px;
+      top: -142px;
+      transform-origin: 50% 50%;
+    }
+    .deco.sm img { width: 420px; left: -210px; top: -115px; }
+
+    .deco.tl { top: 56px;    left:  56px; }
+    .deco.tr { top: 56px;    right: 56px; }
+    .deco.br { bottom: 56px; right: 56px; }
+    .deco.bl { bottom: 56px; left:  56px; }
+
+    .deco.tl img { animation: brisaRamo    12s ease-in-out infinite; animation-delay: -1s; }
+    .deco.tr img { animation: brisaRamoTr  13s ease-in-out infinite; animation-delay: -4s; }
+    .deco.br img { animation: brisaRamoInv 11s ease-in-out infinite; animation-delay: -7s; }
+    .deco.bl img { animation: brisaRamoBl  14s ease-in-out infinite; animation-delay: -9s; }
 
     /* ════════════════════════════════
        MOVIMIENTO — brisa y hojas al viento
@@ -266,6 +298,26 @@
     @keyframes brisa {
       0%, 100% { transform: rotate(-2deg) translateY(0); }
       50%      { transform: rotate(2deg)  translateY(-3px); }
+    }
+
+    /* El ramo ya nace girado 112° para cruzar la esquina, así que la
+       brisa tiene que mecerse ALREDEDOR de ese ángulo, no desde cero:
+       si no, la animación pisaría la rotación de colocación. */
+    @keyframes brisaRamo {
+      0%, 100% { transform: rotate(110deg) translateY(0); }
+      50%      { transform: rotate(114deg) translateY(-4px); }
+    }
+    @keyframes brisaRamoInv {
+      0%, 100% { transform: rotate(290deg) translateY(0); }
+      50%      { transform: rotate(294deg) translateY(-4px); }
+    }
+    @keyframes brisaRamoTr {
+      0%, 100% { transform: rotate(200deg) translateY(0); }
+      50%      { transform: rotate(204deg) translateY(-4px); }
+    }
+    @keyframes brisaRamoBl {
+      0%, 100% { transform: rotate(20deg) translateY(0); }
+      50%      { transform: rotate(24deg) translateY(-4px); }
     }
 
     /* La ramita del separador es diminuta: con 2° no se le nota nada,
@@ -280,21 +332,15 @@
        lo desplazaría. Además el pivote queda en la base del tallo
        —esquina inferior izquierda del viewBox— y no en el centro:
        así se mece desde donde nace en vez de flotar. */
-    .floral-corner use,
-    .deco use {
+    .floral-sep use {
       transform-box: view-box;
-      transform-origin: 0% 100%;
-      animation: brisa 9.5s ease-in-out infinite;
-      filter: url(#fAcuarela);
+      transform-origin: 50% 100%;
     }
 
     /* El filtro de turbulencia se recalcula al rotar. En escritorio no
        se nota; en un teléfono son nueve ramos meciéndose y ahí sí pesa,
        así que ahí se dibuja con el borde limpio. */
-    @media (max-width: 900px) {
-      .floral-corner use,
-      .deco use { filter: none; }
-    }
+
 
     /* Duraciones y desfases distintos: en sincronía se ve mecánico.
        El delay negativo además arranca a media animación. */
@@ -1320,7 +1366,7 @@
     /* ── Tablet / pantallas medianas ── */
     @media (max-width: 768px) {
       section { padding: 4.2rem 1.4rem; }
-      .floral-corner { width: 360px; height: 360px; }
+      .floral-corner img { width: 620px; left: -310px; top: -169px; }
       .btn { padding: 1rem 2.4rem; }
     }
 
@@ -1328,7 +1374,7 @@
     @media (max-width: 600px) {
       /* Hero */
       .hero { padding: 4rem 1.4rem 5.5rem; }
-      .floral-corner { width: 248px; height: 248px; }
+      .floral-corner img { width: 470px; left: -235px; top: -128px; }
       .hero-tagline  { font-size: .68rem; letter-spacing: 3px; margin-bottom: 1.1rem; }
       .hero-amp      { margin: .2rem 0; }
       .divider       { margin: 1.5rem auto; max-width: 250px; }
@@ -1342,8 +1388,9 @@
 
       /* Rincones más chicos y más tenues: en el teléfono el contenido
          pasa cerca de las esquinas y no debe competir con él. */
-      .deco    { width: 228px; height: 228px; opacity: .5; }
-      .deco.sm { width: 189px; height: 189px; }
+      .deco { opacity: .5; }
+      .deco img    { width: 340px; left: -170px; top: -93px; }
+      .deco.sm img { width: 285px; left: -142px; top: -78px; }
 
       /* Menos hojas y más chicas: en una pantalla de teléfono seis
          cruzando se sienten multitud, no detalle. */
@@ -1416,7 +1463,7 @@
 
     /* ── Teléfonos muy pequeños (≤ 390 px: iPhone SE, Moto G, Galaxy A) ── */
     @media (max-width: 390px) {
-      .floral-corner { width: 195px; height: 195px; }
+      .floral-corner img { width: 400px; left: -200px; top: -109px; }
       .hero { padding: 3.5rem 1.1rem 5rem; }
       .hero-tagline { font-size: .62rem; letter-spacing: 2px; }
       section { padding: 3rem 1rem; }
@@ -1440,8 +1487,8 @@
     ════════════════════════════════ */
     @media (prefers-reduced-motion: reduce) {
       .hojas { display: none; }
-      .floral-corner use,
-      .deco use,
+      .floral-corner img,
+      .deco img,
       .floral-sep use,
       .scroll-hint,
       .music-btn.playing .m-disc,
@@ -2209,14 +2256,14 @@
 <section class="hero" id="inicio">
 
   <!-- Ramo de la esquina superior izquierda -->
-  <svg class="floral-corner tl" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <use href="#ramo"/>
-  </svg>
+  <div class="floral-corner tl" aria-hidden="true">
+    <img src="img/ramo.png" width="1408" height="768" alt="" decoding="async">
+  </div>
 
   <!-- El mismo ramo abajo a la derecha, girado 180° desde el CSS -->
-  <svg class="floral-corner br" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <use href="#ramo"/>
-  </svg>
+  <div class="floral-corner br" aria-hidden="true">
+    <img src="img/ramo.png" width="1408" height="768" alt="" decoding="async">
+  </div>
 
   <!-- Content -->
   <p class="hero-tagline fade-in">Con todo nuestro amor, les anunciamos</p>
@@ -2250,7 +2297,7 @@
      NOSOTROS — fotos
 ══════════════════════════════════ -->
 <section class="s-fotos" id="nosotros">
-  <svg class="deco bl" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
+  <div class="deco bl" aria-hidden="true"><img src="img/ramo.png" width="1408" height="768" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
     <span class="s-tag reveal">Nosotros</span>
     <h2 class="s-title reveal">Hemos vivido muchas <em>aventuras juntos</em></h2>
@@ -2279,7 +2326,7 @@
      COUNTDOWN
 ══════════════════════════════════ -->
 <section class="s-countdown" id="countdown">
-  <svg class="deco tr sm" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
+  <div class="deco tr sm" aria-hidden="true"><img src="img/ramo.png" width="1408" height="768" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
     <span class="s-tag reveal">La cuenta regresiva</span>
     <h2 class="s-title reveal">Faltan <em>tan pocos días…</em></h2>
@@ -2311,7 +2358,7 @@
      Los bloques con data-dia se muestran según ?tipo= (ver script)
 ══════════════════════════════════ -->
 <section id="itinerario">
-  <svg class="deco br" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
+  <div class="deco br" aria-hidden="true"><img src="img/ramo.png" width="1408" height="768" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
     <span class="s-tag reveal">Un fin de semana inolvidable</span>
     <h2 class="s-title reveal">Nuestro <em>itinerario</em></h2>
@@ -2359,7 +2406,7 @@
      HOSPEDAJE
 ══════════════════════════════════ -->
 <section class="s-hospedaje" id="hospedaje">
-  <svg class="deco tl sm" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
+  <div class="deco tl sm" aria-hidden="true"><img src="img/ramo.png" width="1408" height="768" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
     <span class="s-tag reveal">Dónde quedarte</span>
     <h2 class="s-title reveal">Hospedaje en <em>Cuernavaca</em></h2>
@@ -2378,7 +2425,7 @@
      DRESSCODE
 ══════════════════════════════════ -->
 <section class="s-dresscode" id="dress-code">
-  <svg class="deco bl" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
+  <div class="deco bl" aria-hidden="true"><img src="img/ramo.png" width="1408" height="768" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
     <h2 class="s-title reveal">Dress <em>code</em></h2>
     <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
@@ -2413,7 +2460,7 @@
      RSVP
 ══════════════════════════════════ -->
 <section class="s-rsvp" id="rsvp">
-  <svg class="deco tr sm" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
+  <div class="deco tr sm" aria-hidden="true"><img src="img/ramo.png" width="1408" height="768" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
     <h2 class="s-title reveal">¿Nos <em>acompañas?</em></h2>
     <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
@@ -2462,7 +2509,7 @@
      FOOTER
 ══════════════════════════════════ -->
 <footer>
-  <svg class="deco br" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#rincon"/></svg>
+  <div class="deco br" aria-hidden="true"><img src="img/ramo.png" width="1408" height="768" alt="" loading="lazy" decoding="async"></div>
   <p class="footer-names">Gabriel &amp; Jatzive</p>
   <p class="footer-sub">13 · Marzo · 2027 · Cuernavaca, Morelos</p>
   <p class="footer-love">Con amor, los esperamos</p>
