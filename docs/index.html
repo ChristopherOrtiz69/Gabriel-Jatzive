@@ -1487,8 +1487,13 @@
     ════════════════════════════════ */
     @media (prefers-reduced-motion: reduce) {
       .hojas { display: none; }
+      /* !important a propósito: las animaciones de los ramos se
+         declaran por esquina (.floral-corner.tl img), que es más
+         específico que .floral-corner img y ganaba la cascada aun
+         dentro de este bloque. Aquí no es un atajo: es una garantía
+         de accesibilidad que tiene que ganar siempre. */
       .floral-corner img,
-      .deco img,
+      .deco img { animation: none !important; }
       .floral-sep use,
       .scroll-hint,
       .music-btn.playing .m-disc,
