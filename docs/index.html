@@ -777,26 +777,45 @@
       border-bottom: 1px solid #e3d8c6;
     }
 
+    /* El alto de esta sección es crítico: si pasa de una pantalla se
+       apaga el enganche del scroll de TODA la invitación. Todo lo de
+       aquí abajo está apretado hasta el límite, menos el área de toque
+       de los botones, que es lo único que no se negocia. */
+    .s-regalos { padding-top: 2.8rem; padding-bottom: 2.8rem; }
+    .s-regalos .floral-sep { margin: .9rem 0 1.5rem; }
+
     .regalos {
       list-style: none;
       max-width: 620px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: .85rem;
+      gap: .7rem;
     }
 
+    /* Tarjeta en vertical y no en dos columnas: Liverpool y Palacio
+       necesitan DOS acciones (copiar el número y abrir la página donde
+       se pega), y dos botones apretados a la derecha del número
+       quedarían diminutos justo para quien peor los va a tocar. */
     .regalo {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      gap: 1rem;
       background: #fff;
       border: 1px solid #e7ddcf;
       border-radius: 14px;
-      padding: 1rem 1.2rem;
+      padding: .8rem 1rem .85rem;
       box-shadow: 0 4px 18px rgba(59,74,53,.07);
     }
+
+    .regalo-acciones {
+      display: flex;
+      gap: .6rem;
+      margin-top: .55rem;
+    }
+    .regalo-acciones .regalo-btn { flex: 1; min-width: 0; }
+
+    /* Amazon no tiene número, así que su tarjeta va en una sola fila */
+    .regalo.simple { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 1rem; }
+    .regalo.simple .regalo-acciones { margin-top: 0; }
+    .regalo.simple .regalo-btn { min-width: 140px; }
 
     .regalo-tienda {
       font-family: 'Cormorant Garamond', serif;
@@ -825,7 +844,7 @@
     .regalo-num {
       display: block;
       font-family: 'Raleway', sans-serif;
-      font-size: 1.55rem;
+      font-size: 1.45rem;
       font-weight: 600;
       letter-spacing: .1em;
       font-variant-numeric: lining-nums tabular-nums;
@@ -840,7 +859,7 @@
       align-items: center;
       justify-content: center;
       gap: .45rem;
-      min-height: 54px;
+      min-height: 48px;
       min-width: 132px;
       padding: 0 1.3rem;
       border: none;
@@ -867,14 +886,26 @@
       box-shadow: 0 6px 18px rgba(47,125,83,.3);
     }
 
+    /* Secundario: mismo tamaño de toque, menos peso visual. Así queda
+       claro de un vistazo cuál es el camino principal (abrir) y cuál
+       la ayuda (copiar), sin que ninguno sea difícil de atinar. */
+    .regalo-btn.sec {
+      background: #fff;
+      color: var(--deep-rose);
+      border: 1.5px solid var(--rose);
+      box-shadow: none;
+    }
+    .regalo-btn.sec:hover { background: #fdf6f4; box-shadow: 0 4px 14px rgba(157,85,96,.16); }
+    .regalo-btn.sec.copiado { background: #eef8f1; color: #2f7d53; border-color: #6db98c; }
+
     .regalo-btn svg { width: 15px; height: 15px; flex: none; }
 
     .regalos-nota {
       max-width: 480px;
-      margin: 1.5rem auto 0;
+      margin: 1.1rem auto 0;
       text-align: center;
-      font-size: .95rem;
-      line-height: 1.75;
+      font-size: .9rem;
+      line-height: 1.65;
       color: var(--brown);
       opacity: .85;
     }
@@ -1568,7 +1599,7 @@
         max-width: 340px;
         margin: 0 auto;
         padding: 1.15rem 1rem;
-        min-height: 54px;
+        min-height: 48px;
         letter-spacing: 2px;
         font-size: .8rem;
       }
@@ -2589,43 +2620,55 @@
     <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
 
     <ul class="regalos reveal">
-      <li class="regalo">
+      <li class="regalo simple">
         <span class="regalo-tienda">Amazon</span>
-        <a class="regalo-btn" href="https://www.amazon.com.mx/wedding/share/JatyGabo130327"
-           target="_blank" rel="noopener">
-          Abrir
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
-        </a>
+        <div class="regalo-acciones">
+          <a class="regalo-btn" href="https://www.amazon.com.mx/wedding/share/JatyGabo130327"
+             target="_blank" rel="noopener">
+            Abrir
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+          </a>
+        </div>
       </li>
 
       <li class="regalo">
-        <span class="regalo-tienda">
-          Liverpool
-          <span class="regalo-etiqueta">Número de evento</span>
-          <span class="regalo-num">52024031</span>
-        </span>
-        <button type="button" class="regalo-btn" data-copiar="52024031">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          Copiar
-        </button>
+        <span class="regalo-tienda">Liverpool</span>
+        <span class="regalo-etiqueta">Número de evento</span>
+        <span class="regalo-num">52024031</span>
+        <div class="regalo-acciones">
+          <button type="button" class="regalo-btn sec" data-copiar="52024031">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copiar
+          </button>
+          <a class="regalo-btn" href="https://mesaderegalos.liverpool.com.mx/eventodebusqueda"
+             target="_blank" rel="noopener">
+            Abrir
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+          </a>
+        </div>
       </li>
 
       <li class="regalo">
-        <span class="regalo-tienda">
-          Palacio de Hierro
-          <span class="regalo-etiqueta">Número de evento</span>
-          <span class="regalo-num">5000904</span>
-        </span>
-        <button type="button" class="regalo-btn" data-copiar="5000904">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          Copiar
-        </button>
+        <span class="regalo-tienda">Palacio de Hierro</span>
+        <span class="regalo-etiqueta">Número de evento</span>
+        <span class="regalo-num">5000904</span>
+        <div class="regalo-acciones">
+          <button type="button" class="regalo-btn sec" data-copiar="5000904">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copiar
+          </button>
+          <a class="regalo-btn" href="https://www.elpalaciodehierro.com/listaregalos"
+             target="_blank" rel="noopener">
+            Abrir
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+          </a>
+        </div>
       </li>
     </ul>
 
     <p class="regalos-nota reveal">
-      Si prefieres obsequiar en efectivo, en el evento habrá
-      <strong>sobres disponibles</strong>.
+      Copia el número, abre la tienda y pégalo ahí. Si prefieres
+      efectivo, en el evento habrá <strong>sobres disponibles</strong>.
     </p>
   </div>
 </section>
