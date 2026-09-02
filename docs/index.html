@@ -781,7 +781,7 @@
        apaga el enganche del scroll de TODA la invitación. Todo lo de
        aquí abajo está apretado hasta el límite, menos el área de toque
        de los botones, que es lo único que no se negocia. */
-    .s-regalos { padding-top: 2.8rem; padding-bottom: 2.8rem; }
+    .s-regalos { padding-top: 2.35rem; padding-bottom: 2.35rem; }
     .s-regalos .floral-sep { margin: .9rem 0 1.5rem; }
 
     /* El nombre de la tienda dentro del panel */
@@ -824,7 +824,7 @@
       display: block;
       width: 100%;
       height: auto;
-      margin-top: -30px;
+      margin-top: -23px;
       position: relative;
       z-index: 1;
     }
@@ -849,20 +849,65 @@
       border-radius: 14px;
       transition: transform .22s ease, filter .22s ease;
     }
-    .bolsa svg { width: clamp(66px, 19vw, 92px); height: auto; display: block; }
+    /* La bolsa es una sola imagen BLANCA que se tiñe por código. El
+       color va en una capa encima en mix-blend-mode:multiply: blanco
+       por color da el color, y las zonas sombreadas de la foto dan ese
+       mismo color más oscuro, así que el volumen se conserva solo. La
+       capa se recorta con el alfa de la propia imagen — sin eso el
+       tinte saldría como un rectángulo.
+       Se mide por ALTO y no por ancho: el alto es la dimensión que
+       tiene el presupuesto contado, porque si la diapositiva pasa de
+       una pantalla se apaga el enganche del scroll de toda la
+       invitación. */
+    .bolsa-fig {
+      position: relative;
+      display: block;
+      isolation: isolate;
+    }
+    .bolsa-fig img {
+      display: block;
+      height: clamp(88px, 28vw, 124px);
+      width: auto;
+    }
+    /* Sin soporte de máscara la bolsa se queda blanca, que es un
+       resultado perfectamente presentable; el nombre impreso ya la
+       distingue. El color solo se pinta cuando se puede recortar. */
+    @supports ((-webkit-mask-image: url("x.png")) or (mask-image: url("x.png"))) {
+      .bolsa-fig::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: var(--bg-tinte, #e8dcc4);
+        mix-blend-mode: multiply;
+        -webkit-mask-image: url("img/bolsa.png");
+                mask-image: url("img/bolsa.png");
+        -webkit-mask-size: 100% 100%;
+                mask-size: 100% 100%;
+        -webkit-mask-repeat: no-repeat;
+                mask-repeat: no-repeat;
+        pointer-events: none;
+      }
+    }
 
     /* Cormorant y no Raleway: es la tipografía de la invitación y aquí
        el nombre va sobre la bolsa, como una etiqueta impresa. Cormorant
        tiene la x muy baja, así que va bastante más grande que un sans
        del mismo tamaño aparente — la mayoría de quien lee esto no tiene
        veinte años. Sin mayúsculas, que en serif se leen peor. */
+    /* La bolsa está en vista de tres cuartos, así que el centro del
+       panel frontal NO es el centro de la imagen: el fuelle izquierdo
+       lo corre a la derecha. Medido sobre el archivo, el panel va del
+       16.7% al 98.8% del ancho y su centro cae en el 57.5%. El nombre
+       se centra ahí, y en vertical al 71%, que es la franja libre
+       entre donde acaban las asas y donde empieza el fondo. */
     .bolsa-nombre {
       position: absolute;
-      left: 6%;
-      right: 6%;
-      bottom: 8%;
+      left: 18%;
+      right: 3%;
+      top: 71%;
+      transform: translateY(-50%);
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(.8rem, 2.5vw, .95rem);
+      font-size: clamp(.78rem, 2.2vw, .84rem);
       font-weight: 500;
       letter-spacing: .015em;
       color: #3f4d3a;
@@ -894,9 +939,12 @@
        en la bolsa seleccionada. */
     .bolsa.activa .bolsa-nombre { color: #8a4553; }
 
-    .bolsa.b1 { --bg-cuerpo:#e4d8c1; --bg-canto:#cdbb97; --bg-asa:#b99a70; --bg-papel:#fbf5e8; }
-    .bolsa.b2 { --bg-cuerpo:#eccfcb; --bg-canto:#d8a9a8; --bg-asa:#c68f92; --bg-papel:#fdf1ef; }
-    .bolsa.b3 { --bg-cuerpo:#c3d4ba; --bg-canto:#a2b998; --bg-asa:#8ba382; --bg-papel:#f0f6ec; }
+    /* Un tinte por bolsa. Al multiplicar sobre una imagen casi blanca
+       el resultado es prácticamente este color, y las sombras de la
+       foto lo oscurecen en proporción. */
+    .bolsa.b1 { --bg-tinte: #e8dcc4; }
+    .bolsa.b2 { --bg-tinte: #f0d0cc; }
+    .bolsa.b3 { --bg-tinte: #c9dabf; }
 
     /* ── Panel de datos ──
        min-height fijo a propósito: si el panel creciera al abrirse, la
@@ -905,7 +953,7 @@
        principio, abrir y cerrar no mueve nada de sitio. */
     .mesa-panel {
       max-width: 460px;
-      margin: 2.3rem auto 0;
+      margin: 1.85rem auto 0;
       min-height: 148px;
       display: flex;
       align-items: center;
@@ -2491,10 +2539,6 @@
 
 
     <!-- ══ Mesa de regalos ══ -->
-    <linearGradient id="gMaderaTapa" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   stop-color="#d3b48c"/>
-      <stop offset="100%" stop-color="#bd9a6e"/>
-    </linearGradient>
     <linearGradient id="gMaderaCanto" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%"   stop-color="#ab8760"/>
       <stop offset="100%" stop-color="#8c6b48"/>
@@ -2586,101 +2630,6 @@
         <use href="#hojaLiana" transform="translate(537.6 103.7) rotate(158) scale(1.25)"/>
         <use href="#hojaLiana" transform="translate(536 112) rotate(103) scale(1)"/>
       </g>
-    </g>
-
-    <!-- Bolsa de regalo, vista de frente.
-         Los colores llegan por variables CSS: una sola definición sirve
-         para las tres. El volumen, en cambio, lo dan degradados NEUTROS
-         de blanco y negro superpuestos, que funcionan igual sobre
-         cualquier color. Un degradado que llevara color no serviría:
-         al referenciarlo desde el árbol de <use>, var() se resuelve en
-         el <linearGradient> original y no en la bolsa que lo usa, así
-         que las tres saldrían del mismo tono. -->
-    <linearGradient id="gLuzBolsa" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"  stop-color="#ffffff" stop-opacity=".48"/>
-      <stop offset="30%" stop-color="#ffffff" stop-opacity=".14"/>
-      <stop offset="58%" stop-color="#ffffff" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="gSombraBolsa" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="50%"  stop-color="#4a3520" stop-opacity="0"/>
-      <stop offset="86%"  stop-color="#4a3520" stop-opacity=".16"/>
-      <stop offset="100%" stop-color="#4a3520" stop-opacity=".30"/>
-    </linearGradient>
-    <linearGradient id="gPisoBolsa" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   stop-color="#4a3520" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#4a3520" stop-opacity=".16"/>
-    </linearGradient>
-    <linearGradient id="gCuelloBolsa" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   stop-color="#4a3520" stop-opacity=".22"/>
-      <stop offset="100%" stop-color="#4a3520" stop-opacity="0"/>
-    </linearGradient>
-    <clipPath id="cBolsa">
-      <path d="M20 30 L80 30 L78.6 112 L21.4 112 Z"/>
-    </clipPath>
-
-    <g id="bolsa">
-      <ellipse cx="50" cy="112" rx="31" ry="3.6" fill="#7d5f3f" opacity=".2"/>
-
-      <!-- Asa de atrás: más estrecha y más alta. Vista desde un poco
-           arriba, la asa lejana se proyecta MÁS alta que la cercana, y
-           que se vean DOS es lo que distingue una bolsa de una cubeta. -->
-      <path d="M36 29 C36 12 42.5 6.5 50 6.5 C57.5 6.5 64 12 64 29" fill="none"
-            style="stroke:var(--bg-asa,#c9a87e)" stroke-width="2.3"
-            stroke-linecap="round" opacity=".5"/>
-
-      <!-- El hueco: lo que se ve dentro, entre el borde de atrás (que
-           curva hacia arriba) y el de enfrente (que curva hacia abajo,
-           porque es el lado cercano de la elipse de la boca). -->
-      <path d="M19.4 26.7 Q50 21.6 80.6 26.7 Q50 28.4 19.4 26.7 Z"
-            fill="#4a3520" opacity=".42"/>
-
-      <!-- Papel de seda arrugado, tres picos de alturas distintas -->
-      <g style="fill:var(--bg-papel,#fbf3e6)">
-        <path d="M31 30 Q33.5 19 36.5 16 Q38.5 20.5 41 21 Q42.5 14 44.5 12.5 L46.5 30 Z"/>
-        <path d="M45.5 30 Q47.5 14 50 11.5 Q53 17.5 55.5 18.5 L57.5 30 Z"/>
-        <path d="M56.5 30 Q59 18 62 15.5 Q63.5 20 65.5 21 L68 30 Z"/>
-      </g>
-      <g fill="none" stroke="#8a6a4a" stroke-width=".5" opacity=".2" stroke-linecap="round">
-        <path d="M36.5 16 L38 30"/><path d="M44.5 12.5 L43.5 30"/>
-        <path d="M50 11.5 L51.5 30"/><path d="M62 15.5 L60.5 30"/>
-      </g>
-
-      <!-- Cuerpo: recto y de esquinas limpias, con una conicidad mínima.
-           Un cuerpo abombado con esquinas redondas se lee como cubeta;
-           el papel de una bolsa dobla en canto vivo. -->
-      <path d="M20 30 L80 30 L78.6 112 L21.4 112 Z"
-            style="fill:var(--bg-cuerpo,#e2d6bf)"/>
-
-      <g clip-path="url(#cBolsa)">
-        <rect x="19" y="29" width="62" height="84" fill="url(#gLuzBolsa)"/>
-        <rect x="19" y="29" width="62" height="84" fill="url(#gSombraBolsa)"/>
-        <rect x="19" y="92" width="62" height="21" fill="url(#gPisoBolsa)"/>
-        <rect x="19" y="34" width="62" height="10" fill="url(#gCuelloBolsa)"/>
-        <!-- Los dobleces de las esquinas del fuelle y el refuerzo del fondo -->
-        <g fill="none" stroke="#8a6a4a" opacity=".14" stroke-width=".6">
-          <path d="M27.5 30 L28.1 112"/>
-          <path d="M72.5 30 L71.9 112"/>
-          <path d="M21.8 102 L78.2 102"/>
-        </g>
-      </g>
-
-      <!-- Ribete de la boca: una cinta FINA y casi plana que sobresale
-           apenas del cuerpo. El collar ancho y curvo era el otro medio
-           motivo por el que esto parecía una cubeta. -->
-      <path d="M18.6 26.6 Q50 28.2 81.4 26.6 L81.4 33.4 Q50 35 18.6 33.4 Z"
-            style="fill:var(--bg-canto,#cbb995)"/>
-      <path d="M18.6 26.6 Q50 28.2 81.4 26.6 L81.35 28.2 Q50 29.8 18.65 28.2 Z"
-            fill="#ffffff" opacity=".28"/>
-      <path d="M18.6 33.4 Q50 35 81.4 33.4 L81.38 34.5 Q50 36.1 18.62 34.5 Z"
-            fill="#4a3520" opacity=".12"/>
-
-      <!-- Ojales y asa de enfrente, con el brillo por el lado de la luz -->
-      <circle cx="32" cy="31" r="1" fill="#4a3520" opacity=".34"/>
-      <circle cx="68" cy="31" r="1" fill="#4a3520" opacity=".34"/>
-      <path d="M32 31 C32 14 40 8.5 50 8.5 C60 8.5 68 14 68 31" fill="none"
-            style="stroke:var(--bg-asa,#c9a87e)" stroke-width="2.9" stroke-linecap="round"/>
-      <path d="M33.4 28.5 C33.8 16 40.6 10.8 50 10.6" fill="none"
-            stroke="#ffffff" stroke-width=".9" stroke-linecap="round" opacity=".3"/>
     </g>
 
     <!-- ── Cristal de hielo, para el "Rompe hielo" del itinerario ──
@@ -2936,15 +2885,15 @@
     <div class="mesa reveal">
       <div class="bolsas" role="group" aria-label="Elige una tienda">
         <button type="button" class="bolsa b1" aria-pressed="false" aria-controls="det-amazon" data-tienda="amazon">
-          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#bolsa"/></svg>
+          <span class="bolsa-fig"><img src="img/bolsa.png" width="260" height="415" alt="" loading="lazy" decoding="async"></span>
           <span class="bolsa-nombre">Amazon</span>
         </button>
         <button type="button" class="bolsa b2" aria-pressed="false" aria-controls="det-liverpool" data-tienda="liverpool">
-          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#bolsa"/></svg>
+          <span class="bolsa-fig"><img src="img/bolsa.png" width="260" height="415" alt="" loading="lazy" decoding="async"></span>
           <span class="bolsa-nombre">Liverpool</span>
         </button>
         <button type="button" class="bolsa b3" aria-pressed="false" aria-controls="det-palacio" data-tienda="palacio">
-          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#bolsa"/></svg>
+          <span class="bolsa-fig"><img src="img/bolsa.png" width="260" height="415" alt="" loading="lazy" decoding="async"></span>
           <span class="bolsa-nombre">Palacio de Hierro</span>
         </button>
       </div>
