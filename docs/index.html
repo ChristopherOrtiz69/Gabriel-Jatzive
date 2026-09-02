@@ -1653,8 +1653,10 @@
     <!-- Pétalo de la florecilla de hortensia -->
     <path id="petaloFloret" d="M0 0C-2.8 -1.4 -5 -4.2 -5 -7.2C-5 -10.2 -2.2 -11.8 0 -10.2C2.2 -11.8 5 -10.2 5 -7.2C5 -4.2 2.8 -1.4 0 0Z"/>
 
-    <!-- Pétalo de gerbera: largo, estrecho y rematado en punta -->
-    <path id="petaloGerbera" d="M0 0C-3.4 -6 -4.2 -16 -3.1 -25C-2.5 -30.2 -1.2 -32.4 0 -32.4C1.2 -32.4 2.5 -30.2 3.1 -25C4.2 -16 3.4 -6 0 0Z"/>
+    <!-- Pétalo de gerbera: fino y de punta roma. Antes era ancho y en
+         punta, y con pocos pétalos eso es exactamente lo que hace que
+         una flor se lea como estrella y no como flor. -->
+    <path id="petaloGerbera" d="M0 0C-2.5 -6 -3 -16 -2.4 -24.5C-2.1 -29 -1.2 -31.2 0 -31.4C1.2 -31.2 2.1 -29 2.4 -24.5C3 -16 2.5 -6 0 0Z"/>
 
     <!-- ══ Hoja de eucalipto ══
          Centrada en el origen, tumbada, con la punta a la derecha.
@@ -1791,18 +1793,26 @@
       <!-- Sombra propia: sin ella la flor flota sobre el follaje -->
       <ellipse cx="1.5" cy="3" rx="27" ry="25" fill="url(#gSombra)" stroke="none"/>
 
-      <!-- Pétalos guarda: pocos, anchos y rizados -->
+      <!-- Pétalos guarda: ocho y no cinco. Con cinco quedan huecos
+           entre pétalo y pétalo y la flor se abre en puntas; con ocho
+           se solapan y el contorno vuelve a ser redondo. -->
       <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(0)"/>
-      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(72)"/>
-      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(144)"/>
-      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(216)"/>
-      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(288)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(45)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(90)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(135)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(180)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(225)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(270)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(315)"/>
 
-      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(36) scale(.84)"/>
-      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(108) scale(.84)"/>
-      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(180) scale(.84)"/>
-      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(252) scale(.84)"/>
-      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(324) scale(.84)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(22.5) scale(.87)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(67.5) scale(.87)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(112.5) scale(.87)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(157.5) scale(.87)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(202.5) scale(.87)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(247.5) scale(.87)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(292.5) scale(.87)"/>
+      <use href="#petaloAncho" fill="url(#gPetalo)" transform="rotate(337.5) scale(.87)"/>
 
       <!-- Coronas de dentro: más apretadas y más intensas -->
       <use href="#petalo" fill="url(#gPetaloInt)" transform="rotate(18) scale(.66)"/>
@@ -1843,11 +1853,84 @@
       <circle r="3.2" fill="url(#gCorazon)"/>
     </g>
 
-    <!-- Gerbera coral: la margarita de la referencia. Dos coronas de
-         pétalos estrechos, la de dentro girada medio paso, y un disco
-         central con su corona de flósculos — que aquí es un trazo
-         punteado, más barato que dibujar cuarenta puntitos. -->
+    <!-- Gerbera: el problema era la cuenta de pétalos. Con catorce y
+         huecos entre ellos se lee como estrella; una gerbera real trae
+         cuarenta o más, finos y sin hueco, en dos coronas encimadas. -->
     <g id="gerbera">
+      <ellipse cx="1.5" cy="3" rx="34" ry="31" fill="url(#gSombra)"/>
+
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(0)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(16.4)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(32.7)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(49.1)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(65.5)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(81.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(98.2)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(114.5)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(130.9)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(147.3)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(163.6)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(180)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(196.4)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(212.7)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(229.1)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(245.5)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(261.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(278.2)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(294.5)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(310.9)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(327.3)"/>
+      <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(343.6)"/>
+
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(8.2) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(24.5) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(40.9) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(57.3) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(73.6) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(90) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(106.4) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(122.7) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(139.1) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(155.5) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(171.8) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(188.2) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(204.5) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(220.9) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(237.3) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(253.6) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(270) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(286.4) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(302.7) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(319.1) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(335.5) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(351.8) scale(.88)"/>
+
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(6) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(28.5) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(51) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(73.5) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(96) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(118.5) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(141) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(163.5) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(186) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(208.5) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(231) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(253.5) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(276) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(298.5) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(321) scale(.52)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(343.5) scale(.52)"/>
+
+      <circle r="9.4" fill="url(#gDisco)"/>
+      <circle r="7.4" fill="none" stroke="#e3bd58" stroke-width="2.6" stroke-dasharray=".8 1.7" opacity=".8"/>
+      <circle r="4.4" fill="#6a4e1e" opacity=".55"/>
+    </g>
+
+    <!-- La misma gerbera con la mitad de pétalos, para las esquinas
+         de las demás páginas: ahí mide unos 30 px y la diferencia no
+         se ve, pero son siete instancias menos de sesenta trazos. -->
+    <g id="gerberaMini">
       <ellipse cx="1.5" cy="3" rx="34" ry="31" fill="url(#gSombra)"/>
 
       <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(0)"/>
@@ -1865,23 +1948,23 @@
       <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(308.6)"/>
       <use href="#petaloGerbera" fill="url(#gGerbera)" transform="rotate(334.3)"/>
 
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(12.9) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(38.6) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(64.3) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(90) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(115.7) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(141.4) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(167.1) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(192.9) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(218.6) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(244.3) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(270) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(295.7) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(321.4) scale(.8)"/>
-      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(347.1) scale(.8)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(12.9) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(38.6) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(64.3) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(90) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(115.7) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(141.4) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(167.1) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(192.9) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(218.6) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(244.3) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(270) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(295.7) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(321.4) scale(.88)"/>
+      <use href="#petaloGerbera" fill="url(#gGerberaInt)" transform="rotate(347.1) scale(.88)"/>
 
-      <circle r="9.2" fill="url(#gDisco)"/>
-      <circle r="7.2" fill="none" stroke="#e3bd58" stroke-width="2.6" stroke-dasharray=".9 2" opacity=".75"/>
+      <circle r="9.4" fill="url(#gDisco)"/>
+      <circle r="7.4" fill="none" stroke="#e3bd58" stroke-width="2.6" stroke-dasharray=".8 1.7" opacity=".8"/>
       <circle r="4.4" fill="#6a4e1e" opacity=".55"/>
     </g>
 
@@ -2125,9 +2208,9 @@
       <use href="#capullo" transform="translate(30,34) rotate(-30) scale(.7)"/>
 
       <g transform="translate(96,86)"><use href="#hortensia" transform="scale(.8)"/></g>
-      <use href="#gerbera" transform="translate(36,40) rotate(20) scale(.5)"/>
+      <use href="#gerberaMini" transform="translate(36,40) rotate(20) scale(.5)"/>
       <use href="#peonia" transform="translate(42,94) scale(.82) rotate(14)"/>
-      <use href="#gerbera" transform="translate(108,44) rotate(-14) scale(.62)"/>
+      <use href="#gerberaMini" transform="translate(108,44) rotate(-14) scale(.62)"/>
       <use href="#peonia" transform="translate(70,60) scale(1.18)"/>
     </g>
 
