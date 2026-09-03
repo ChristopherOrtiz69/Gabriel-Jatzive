@@ -787,11 +787,12 @@
     /* El nombre de la tienda dentro del panel */
     .regalo-tienda-panel {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       font-weight: 500;
       color: var(--brown);
       line-height: 1.15;
       display: block;
+      margin-bottom: .15rem;
     }
 
     /* ── La mesa y las bolsas ──
@@ -939,14 +940,14 @@
     .mesa-panel {
       max-width: 460px;
       margin: 1.85rem auto 0;
-      min-height: 148px;
+      min-height: 128px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: #fff;
       border: 1px solid #e7ddcf;
       border-radius: 14px;
-      padding: .9rem 1.1rem;
+      padding: .7rem 1rem;
       box-shadow: 0 4px 18px rgba(59,74,53,.07);
       text-align: center;
     }
@@ -963,10 +964,15 @@
 
     .regalo-acciones {
       display: flex;
+      justify-content: center;
       gap: .6rem;
-      margin-top: .7rem;
+      margin-top: .55rem;
     }
     .regalo-acciones .regalo-btn { flex: 1; min-width: 0; }
+    /* Amazon lleva un solo botón. Estirado a todo el ancho del panel se
+       veía como una barra enorme y hacía sentir la tarjeta más vacía de
+       lo que está; centrado y a su medida, no. */
+    .regalo-acciones .regalo-btn:only-child { flex: 0 1 auto; min-width: 180px; }
 
     .regalo-tienda {
       font-family: 'Cormorant Garamond', serif;
@@ -976,15 +982,19 @@
       line-height: 1.15;
     }
 
+    /* En línea con el número, no encima: apilados sumaban 41px de los
+       129 que medía el contenido más alto, y como el panel reserva la
+       altura del más alto, esos 41px se veían como hueco vacío en la
+       tarjeta de Amazon, que no lleva número. */
     .regalo-etiqueta {
-      display: block;
+      display: inline;
       font-family: 'Raleway', sans-serif;
       font-size: .62rem;
       font-weight: 500;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--sage-dark);
-      margin-bottom: .2rem;
+      margin-right: .5rem;
     }
 
     /* El número va en la sans, NO en la Cormorant del resto de títulos:
@@ -993,15 +1003,15 @@
        lee fatal en un número que alguien va a dictar en el mostrador.
        Aquí mandan las cifras de caja alta, de ancho fijo y separadas. */
     .regalo-num {
-      display: block;
+      display: inline;
       font-family: 'Raleway', sans-serif;
-      font-size: 1.45rem;
+      font-size: 1.2rem;
       font-weight: 600;
       letter-spacing: .1em;
       font-variant-numeric: lining-nums tabular-nums;
       color: #9c5560;
       line-height: 1.2;
-      margin-top: .1rem;
+      white-space: nowrap;
     }
 
     /* Un solo botón por tienda, con área de toque generosa */
@@ -2945,8 +2955,8 @@
     </noscript>
 
     <p class="regalos-nota reveal">
-      Copia el número, abre la tienda y pégalo ahí. Si prefieres
-      efectivo, en el evento habrá <strong>sobres disponibles</strong>.
+      Si quieres obsequiarnos algo, aquí hay algunas ideas, también
+      habrá <strong>sobres para efectivo</strong>.
     </p>
   </div>
 </section>
