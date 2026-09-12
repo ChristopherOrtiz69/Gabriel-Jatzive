@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Invitación de boda — Gabriel & Jatzive · 13 de Marzo 2027 · Quinta Santa María, Cuernavaca">
-  <meta name="theme-color" content="#eef2e6">
+  <meta name="theme-color" content="#fff8c9">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>Gabriel & Jatzive · Nuestra Boda</title>
@@ -25,6 +25,12 @@
       --silver-peony: #e7c6c2;  /* Silver Peony — rosa empolvado      */
       --bridal-rose:  #d18e98;  /* Bridal Rose  — rosa nupcial        */
 
+      /* Fondo de las diapositivas. Va aparte del --ivory de la paleta
+         a propósito: aquel documenta el color de la boda (el que ven
+         los invitados en el dress code) y este es una decisión de
+         pantalla. Cambiar uno no debe arrastrar al otro. */
+      --light-ivory:  #fff8c9;  /* Light Ivory  — marfil claro        */
+
       /* ── Tonos derivados (contraste y acentos) ── */
       --shadow-deep:  #5c6b54;  /* salvia profunda — etiquetas / texto pequeño */
       --rose-deep:    #b56b78;  /* rosa intenso    — acentos / botones         */
@@ -37,7 +43,7 @@
       --rose-dark: var(--rose-deep);
       --sage:      var(--sage-green);
       --sage-dark: var(--shadow-deep);
-      --cream:     var(--ivory);
+      --cream:     var(--light-ivory);
       --warm:      #faf6ec;
       --brown:     var(--ink);
       --gold:      #c8a76c;
@@ -120,7 +126,7 @@
       text-align: center;
       padding: 5rem 2rem 4rem;
       position: relative;
-      background: linear-gradient(155deg, #eef2e6 0%, #f7f1e3 50%, #f3e7e4 100%);
+      background: var(--cream);
       overflow: hidden;
     }
 
@@ -472,7 +478,7 @@
        COUNTDOWN
     ════════════════════════════════ */
     .s-countdown {
-      background: linear-gradient(135deg, #eef2e6, #f7f1e3, #f3e7e4);
+      background: var(--cream);
       border-top: 1px solid #e3d8c6;
       border-bottom: 1px solid #e3d8c6;
     }
@@ -667,10 +673,10 @@
     .venue-line .d-link { margin-top: 0; }
 
     /* ── Hospedaje ──
-       Tono salvia para separarlo de la sección del dress code, que va
-       justo debajo con un beige plano muy parecido. */
+       Mismo marfil que el resto: la separación con el dress code, que va
+       justo debajo, la marcan los filetes de arriba y abajo. */
     .s-hospedaje {
-      background: linear-gradient(135deg, #eef2e6, #f7f1e3);
+      background: var(--cream);
       border-top: 1px solid #e3d8c6;
       border-bottom: 1px solid #e3d8c6;
     }
@@ -711,7 +717,7 @@
        NOSOTROS — fotos
     ════════════════════════════════ */
     .s-fotos {
-      background: var(--warm);
+      background: var(--cream);
       border-bottom: 1px solid #e3d8c6;
     }
 
@@ -768,11 +774,12 @@
        MESA DE REGALOS
        Esta sección la van a usar sobre todo personas mayores, así que
        todo está sobredimensionado a propósito: números grandes con
-       cifras de ancho fijo, botones de 54 px de alto y una sola acción
-       por tienda. Nada de enlaces discretos dentro de un párrafo.
+       cifras de ancho fijo, botones de 44 px de alto (el mínimo AAA de
+       la WCAG para área de toque) y una sola acción por tienda. Nada de
+       enlaces discretos dentro de un párrafo.
     ════════════════════════════════ */
     .s-regalos {
-      background: var(--warm);
+      background: var(--cream);
       border-top: 1px solid #e3d8c6;
       border-bottom: 1px solid #e3d8c6;
     }
@@ -787,12 +794,12 @@
     /* El nombre de la tienda dentro del panel */
     .regalo-tienda-panel {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
+      font-size: 1.05rem;
       font-weight: 500;
       color: var(--brown);
       line-height: 1.15;
       display: block;
-      margin-bottom: .15rem;
+      margin-bottom: .08rem;
     }
 
     /* ── La mesa y las bolsas ──
@@ -908,7 +915,7 @@
        bajar del 3:1 que necesita un indicador de foco. */
     .bolsa:focus-visible {
       outline: none;
-      box-shadow: 0 0 0 3px var(--warm), 0 0 0 5px rgba(140, 74, 86, .9);
+      box-shadow: 0 0 0 3px var(--cream), 0 0 0 5px rgba(140, 74, 86, .9);
     }
 
     /* Seleccionada: se levanta de la mesa, proyecta más sombra y sube
@@ -936,18 +943,23 @@
        min-height fijo a propósito: si el panel creciera al abrirse, la
        diapositiva pasaría de una pantalla y se apagaría el enganche del
        scroll de TODA la invitación. Reservando el hueco desde el
-       principio, abrir y cerrar no mueve nada de sitio. */
+       principio, abrir y cerrar no mueve nada de sitio.
+
+       Los 110 px NO son holgura: son exactamente lo que mide la tarjeta
+       más alta (Liverpool/Palacio), o sea nombre + número + botón +
+       padding. Si tocas cualquiera de esos tamaños, recalcula este
+       número o el panel volverá a saltar al cambiar de tienda. */
     .mesa-panel {
-      max-width: 460px;
-      margin: 1.85rem auto 0;
-      min-height: 128px;
+      max-width: 276px;
+      margin: 1.1rem auto 0;
+      min-height: 110px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: #fff;
       border: 1px solid #e7ddcf;
       border-radius: 14px;
-      padding: .7rem 1rem;
+      padding: .5rem .7rem;
       box-shadow: 0 4px 18px rgba(59,74,53,.07);
       text-align: center;
     }
@@ -965,14 +977,14 @@
     .regalo-acciones {
       display: flex;
       justify-content: center;
-      gap: .6rem;
-      margin-top: .55rem;
+      gap: .4rem;
+      margin-top: .38rem;
     }
-    .regalo-acciones .regalo-btn { flex: 1; min-width: 0; }
+    .regalo-acciones .regalo-btn { flex: 1; min-width: 0; padding: 0 .75rem; }
     /* Amazon lleva un solo botón. Estirado a todo el ancho del panel se
        veía como una barra enorme y hacía sentir la tarjeta más vacía de
        lo que está; centrado y a su medida, no. */
-    .regalo-acciones .regalo-btn:only-child { flex: 0 1 auto; min-width: 180px; }
+    .regalo-acciones .regalo-btn:only-child { flex: 0 1 auto; min-width: 150px; }
 
     .regalo-tienda {
       font-family: 'Cormorant Garamond', serif;
@@ -991,10 +1003,10 @@
       font-family: 'Raleway', sans-serif;
       font-size: .62rem;
       font-weight: 500;
-      letter-spacing: 2px;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
       color: var(--sage-dark);
-      margin-right: .5rem;
+      margin-right: .4rem;
     }
 
     /* El número va en la sans, NO en la Cormorant del resto de títulos:
@@ -1005,9 +1017,9 @@
     .regalo-num {
       display: inline;
       font-family: 'Raleway', sans-serif;
-      font-size: 1.2rem;
+      font-size: 1.08rem;
       font-weight: 600;
-      letter-spacing: .1em;
+      letter-spacing: .06em;
       font-variant-numeric: lining-nums tabular-nums;
       color: #9c5560;
       line-height: 1.2;
@@ -1020,7 +1032,7 @@
       align-items: center;
       justify-content: center;
       gap: .45rem;
-      min-height: 48px;
+      min-height: 44px;
       min-width: 132px;
       padding: 0 1.3rem;
       border: none;
@@ -1033,6 +1045,7 @@
       letter-spacing: 1.5px;
       text-transform: uppercase;
       text-decoration: none;
+      white-space: nowrap;
       cursor: pointer;
       box-shadow: 0 6px 18px rgba(157,85,96,.28);
       transition: transform .2s, box-shadow .2s, background .2s;
@@ -1075,7 +1088,7 @@
     /* ════════════════════════════════
        DRESSCODE
     ════════════════════════════════ */
-    .s-dresscode { background: #f1ede1; }
+    .s-dresscode { background: var(--cream); }
 
     .dresscode-note {
       text-align: center;
@@ -1114,7 +1127,7 @@
        RSVP
     ════════════════════════════════ */
     .s-rsvp {
-      background: linear-gradient(160deg, #f3e7e4 0%, #f7f1e3 100%);
+      background: var(--cream);
       text-align: center;
     }
 
@@ -2955,7 +2968,7 @@
     </noscript>
 
     <p class="regalos-nota reveal">
-      Si quieres obsequiarnos algo, aquí hay algunas ideas, también
+      Si gustas regalarnos algo, aquí hay algunas ideas; también
       habrá <strong>sobres para efectivo</strong>.
     </p>
   </div>
