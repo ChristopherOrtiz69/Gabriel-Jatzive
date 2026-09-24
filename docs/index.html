@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Invitación de boda — Gabriel & Jatzive · 13 de Marzo 2027 · Quinta Santa María, Cuernavaca">
-  <meta name="theme-color" content="#fff8c9">
+  <meta name="theme-color" content="#f4efe3">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>Gabriel & Jatzive · Nuestra Boda</title>
@@ -21,7 +21,7 @@
       --shadow:       #7a8771;  /* Shadow       — verde salvia oscuro */
       --sage-green:   #a8bd9f;  /* Sage green   — salvia suave        */
       --champagne:    #e2d6bf;  /* Champagne    — beige cálido        */
-      --ivory:        #f5efdf;  /* Ivory        — marfil              */
+      --ivory:        #e0dac9;  /* Ivory        — marfil              */
       --silver-peony: #e7c6c2;  /* Silver Peony — rosa empolvado      */
       --bridal-rose:  #d18e98;  /* Bridal Rose  — rosa nupcial        */
 
@@ -29,7 +29,7 @@
          a propósito: aquel documenta el color de la boda (el que ven
          los invitados en el dress code) y este es una decisión de
          pantalla. Cambiar uno no debe arrastrar al otro. */
-      --light-ivory:  #fff8c9;  /* Light Ivory  — marfil claro        */
+      --light-ivory:  #f0ece4;  /* Ivory satinado — tomado de la tela de referencia */
 
       /* ── Tonos derivados (contraste y acentos) ── */
       --shadow-deep:  #5c6b54;  /* salvia profunda — etiquetas / texto pequeño */
@@ -192,13 +192,11 @@
     .divider {
       display: flex;
       align-items: center;
-      gap: 1rem;
       margin: 2.2rem auto;
       max-width: 320px;
     }
     .divider-line         { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
     .divider-line.right   { background: linear-gradient(to left,  transparent, var(--gold)); }
-    .divider-icon         { font-size: 1.2rem; color: var(--gold); }
 
     .hero-date {
       font-family: 'Cormorant Garamond', serif;
@@ -463,6 +461,8 @@
       font-weight: 300;
       text-align: center;
       color: var(--brown);
+      /* El aire que antes daba la ramita floral bajo cada título */
+      margin-bottom: 2.2rem;
     }
     .s-title em { font-style: italic; color: var(--deep-rose); }
 
@@ -789,7 +789,7 @@
        aquí abajo está apretado hasta el límite, menos el área de toque
        de los botones, que es lo único que no se negocia. */
     .s-regalos { padding-top: 2.35rem; padding-bottom: 2.35rem; }
-    .s-regalos .floral-sep { margin: .9rem 0 1.5rem; }
+    .s-regalos .s-title { margin-bottom: 1.4rem; }
 
     /* El nombre de la tienda dentro del panel */
     .regalo-tienda-panel {
@@ -1677,7 +1677,7 @@
        diapositiva siga cabiendo entera y el enganche no se apague. ── */
     @media (max-height: 780px) {
       section { padding: 3rem 1.5rem; }
-      .floral-sep { margin: .9rem 0 1.6rem; }
+      .s-title { margin-bottom: 1.6rem; }
       .photo-frame img { max-height: 38svh; }
       .photo-frame.offset { margin-top: 1.4rem; }
       .photo-note { margin-top: 1.5rem; }
@@ -1697,6 +1697,11 @@
       .hero { padding: 4rem 1.4rem 5.5rem; }
       .floral-corner img { width: 470px; left: -235px; top: -128px; }
       .hero-tagline  { font-size: .68rem; letter-spacing: 3px; margin-bottom: 1.1rem; }
+      /* Great Vibes tiene rasgos que salen de la caja del glifo (la J
+         y la cola de la e): con 4rem fijos, "Jatzive" se cortaba en
+         teléfonos angostos. Se mide por ancho y se le da aire lateral
+         y vertical para que el trazo completo quepa. */
+      .hero-name     { font-size: min(4rem, 17vw); line-height: 1.25; padding: 0 .2em; }
       .hero-amp      { margin: .2rem 0; }
       .divider       { margin: 1.5rem auto; max-width: 250px; }
       .hero-location { font-size: .76rem; }
@@ -1704,8 +1709,7 @@
       /* Secciones generales */
       section { padding: 3.5rem 1.2rem; }
       .s-tag  { letter-spacing: 3px; font-size: .68rem; }
-      .floral-sep { margin: 1rem 0 1.8rem; }
-      .floral-sep svg { width: 108px; height: 21px; }
+      .s-title { margin-bottom: 1.8rem; }
 
       /* Rincones más chicos y más tenues: en el teléfono el contenido
          pasa cerca de las esquinas y no debe competir con él. */
@@ -1757,6 +1761,33 @@
       .photo-frame.offset { margin-top: 1.2rem; }
       .photo-frame img { max-height: 38svh; }
       .photo-note  { margin-top: 1.6rem; font-size: 1rem; }
+
+      /* Mesa de regalos — panel a la mitad de área (≈210×76 contra
+         276×110). El min-height sigue siendo el de la tarjeta más alta
+         con estos tamaños; si tocas alguno, recalcúlalo. */
+      .mesa-panel {
+        max-width: 210px;
+        min-height: 76px;
+        padding: .35rem .5rem;
+        border-radius: 11px;
+        margin-top: .9rem;
+      }
+      .mesa-hint           { font-size: .74rem; line-height: 1.45; }
+      .regalo-tienda-panel { font-size: .88rem; }
+      .regalo-etiqueta     { font-size: .5rem; letter-spacing: .6px; margin-right: .25rem; }
+      .regalo-num          { font-size: .88rem; }
+      .regalo-acciones     { gap: .3rem; margin-top: .28rem; }
+      .regalo-btn {
+        min-height: 32px;
+        min-width: 0;
+        padding: 0 .6rem;
+        font-size: .64rem;
+        letter-spacing: 1px;
+        gap: .3rem;
+      }
+      .regalo-acciones .regalo-btn { padding: 0 .5rem; }
+      .regalo-acciones .regalo-btn:only-child { min-width: 110px; }
+      .regalo-btn svg { width: 12px; height: 12px; }
 
       /* Dresscode swatches */
       .swatches  { gap: 1rem; }
@@ -2700,7 +2731,6 @@
 
   <div class="divider fade-in delay-2">
     <div class="divider-line"></div>
-    <span class="divider-icon">✿</span>
     <div class="divider-line right"></div>
   </div>
 
@@ -2725,8 +2755,6 @@
   <div class="inner">
     <span class="s-tag reveal">Nosotros</span>
     <h2 class="s-title reveal">Hemos vivido muchas <em>aventuras juntos</em></h2>
-    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
-
     <div class="photo-grid reveal">
       <figure class="photo-frame">
         <img src="img/pareja-flores.jpg" width="900" height="1200"
@@ -2741,7 +2769,7 @@
     </div>
 
     <p class="photo-note reveal">
-      Está a punto de comenzar.
+      Y la más importante está a punto de comenzar.
     </p>
   </div>
 </section>
@@ -2753,9 +2781,7 @@
   <div class="deco tr sm" aria-hidden="true"><img src="img/ramo.png" width="651" height="355" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
     <span class="s-tag reveal">La cuenta regresiva</span>
-    <h2 class="s-title reveal">Faltan <em>tan pocos días…</em></h2>
-    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
-
+    <h2 class="s-title reveal">Faltan pocos días… <em>Comienza</em></h2>
     <div class="countdown-grid reveal">
       <div class="cd-card">
         <span class="cd-num" id="cd-days">--</span>
@@ -2786,8 +2812,6 @@
   <div class="inner">
     <span class="s-tag reveal">Un fin de semana inolvidable</span>
     <h2 class="s-title reveal">Nuestro <em>itinerario</em></h2>
-    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
-
     <!-- Las filas con data-dia se quitan según ?tipo= (ver script) -->
     <ol class="agenda reveal">
       <li data-dia="brunch">
@@ -2807,8 +2831,8 @@
       </li>
       <li class="ag-sub" data-dia="boda">
         <span class="ag-when"></span>
-        <span class="ag-what">Ceremonia civil</span>
-        <span class="ag-time">3:00 PM</span>
+        <span class="ag-what">Ceremonia civil · ¡A disfrutar!</span>
+        <span class="ag-time">4:00 PM</span>
       </li>
       <li data-dia="post">
         <span class="ag-when"><b>Dom 14</b><i>Marzo</i></span>
@@ -2832,10 +2856,7 @@
 <section class="s-hospedaje" id="hospedaje">
   <div class="deco tl sm" aria-hidden="true"><img src="img/ramo.png" width="651" height="355" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
-    <span class="s-tag reveal">Dónde quedarte</span>
     <h2 class="s-title reveal">Hospedaje en <em>Cuernavaca</em></h2>
-    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
-
     <p class="lodging-note reveal">
       Quédate cerca y disfruta el fin de semana completo.
       Te recomendamos buscar un <strong>Airbnb por Santa María
@@ -2851,11 +2872,9 @@
 <section class="s-dresscode" id="dress-code">
   <div class="deco bl" aria-hidden="true"><img src="img/ramo.png" width="651" height="355" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
-    <h2 class="s-title reveal">Dress <em>code</em></h2>
-    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
-
+    <h2 class="s-title reveal">Dress code <em>Formal</em></h2>
     <p class="dresscode-note reveal">
-      Por favor evita el blanco total para que juntos creemos
+      Evita usar estos colores y/o jeans para que juntos creemos
       un ambiente lleno de color, elegancia y amor.
     </p>
 
@@ -2888,8 +2907,6 @@
   <div class="inner">
     <span class="s-tag reveal">Con cariño</span>
     <h2 class="s-title reveal">Mesa de <em>regalos</em></h2>
-    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
-
     <div class="mesa reveal">
       <div class="bolsas" role="group" aria-label="Elige una tienda">
         <button type="button" class="bolsa b1" aria-pressed="false" aria-controls="det-amazon" data-tienda="amazon">
@@ -2981,8 +2998,6 @@
   <div class="deco tr sm" aria-hidden="true"><img src="img/ramo.png" width="651" height="355" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
     <h2 class="s-title reveal">¿Nos <em>acompañas?</em></h2>
-    <div class="floral-sep reveal"><svg viewBox="0 0 120 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#sprig"/></svg></div>
-
     <!-- Tarjeta personalizada (se muestra solo si la URL trae ?nombre=X&cupos=N) -->
     <div id="invite-card" class="invite-card reveal" style="display:none">
       <p class="invite-card-icon">🌸</p>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+?<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -78,6 +78,39 @@
     .sync-badge.sending { background: #fff8e0; color: #a07010; }
     .sync-badge.ok      { background: var(--green-lt); color: var(--green); }
     .sync-badge.err     { background: #fff0f0; color: var(--danger); }
+
+    /* ── Diagnóstico de conexión ── */
+    .diag {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .8rem;
+      flex-wrap: wrap;
+      background: #fffdf6;
+      border: 1px solid #ecdcb8;
+      border-radius: 10px;
+      padding: .8rem 1rem;
+      margin-bottom: 1.1rem;
+    }
+    .diag-text { font-size: .76rem; line-height: 1.6; color: #8a6510; flex: 1; min-width: 200px; }
+    .diag-text strong { font-weight: 600; }
+    .btn-diag {
+      padding: .55rem 1.1rem;
+      border-radius: 8px;
+      border: 1px solid #d8c088;
+      background: #fff;
+      color: #8a6510;
+      font-family: 'Raleway', sans-serif;
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .15s;
+    }
+    .btn-diag:hover { background: #fdf6e4; }
 
     /* ── Form ── */
     .field-row {
@@ -195,6 +228,7 @@
     .guest-item.confirmed { border-color: #a0d8b8; background: #f5fdf8; }
 
     .guest-info { flex: 1; min-width: 0; }
+    .guest-name-row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
     .guest-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.1rem;
@@ -204,6 +238,7 @@
       text-overflow: ellipsis;
     }
     .guest-meta { font-size: .68rem; color: var(--gray); margin-top: .1rem; }
+    .guest-days { font-size: .68rem; color: var(--sage); margin-top: .25rem; letter-spacing: .3px; }
 
     .guest-actions { display: flex; gap: .45rem; flex-shrink: 0; }
     .btn-sm {
@@ -230,11 +265,125 @@
 
     .empty-state { text-align: center; padding: 2rem; color: var(--gray); font-size: .88rem; font-style: italic; }
 
+    /* ── Selector de tipo de invitación ── */
+    .type-picker {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .8rem;
+      margin-bottom: 1.1rem;
+    }
+    @media (max-width: 560px) { .type-picker { grid-template-columns: 1fr; } }
+
+    .type-card {
+      position: relative;
+      display: block;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: .9rem 1rem;
+      background: var(--cream);
+      cursor: pointer;
+      transition: border-color .18s, background .18s, box-shadow .18s;
+    }
+    .type-card input { position: absolute; opacity: 0; pointer-events: none; }
+    .type-card:hover { border-color: var(--rose); }
+    .type-card:has(input:checked) {
+      border-color: var(--rose);
+      background: #fdf0f4;
+      box-shadow: 0 0 0 3px rgba(196,104,126,.12);
+    }
+
+    .type-card-head { display: flex; align-items: center; gap: .5rem; margin-bottom: .6rem; }
+    .type-dot {
+      width: 15px; height: 15px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .type-card:has(input:checked) .type-dot { border-color: var(--rose); }
+    .type-card:has(input:checked) .type-dot::after {
+      content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--rose);
+    }
+    .type-card-name {
+      font-size: .72rem; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--brown);
+    }
+
+    .type-days { list-style: none; display: flex; flex-direction: column; gap: .25rem; }
+    .type-days li { font-size: .74rem; display: flex; align-items: center; gap: .4rem; }
+    .type-days li.on  { color: var(--sage); }
+    .type-days li.off { color: var(--gray); opacity: .5; text-decoration: line-through; }
+    .type-mark { width: 1em; flex-shrink: 0; text-align: center; }
+
+    /* Resumen del tipo dentro del cuadro de resultado */
+    .result-tipo {
+      font-size: .75rem;
+      color: var(--sage);
+      margin-bottom: .6rem;
+      display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+    }
+
+    /* ── Badge de tipo ── */
+    .badge-tipo {
+      display: inline-block;
+      font-family: 'Raleway', sans-serif;
+      font-size: .6rem; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: .2rem .55rem;
+      border-radius: 20px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: filter .15s;
+    }
+    .badge-tipo.t1 { background: #fdf0f4; color: var(--rose); border-color: var(--rose-lt); }
+    .badge-tipo.t2 { background: #eef5ef; color: var(--sage); border-color: #c9dccb; }
+    .badge-tipo:hover { filter: brightness(.95); }
+
+    /* ── Filtros ── */
+    .filters { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .filter-chip {
+      padding: .35rem .8rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--gray);
+      font-family: 'Raleway', sans-serif;
+      font-size: .66rem; letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .filter-chip:hover { border-color: var(--rose); }
+    .filter-chip.active { background: var(--rose); color: #fff; border-color: var(--rose); }
+
+    /* ── Aviso de migración ── */
+    .notice {
+      display: none;
+      background: #fff8e0;
+      border: 1px solid #f0d890;
+      border-radius: 10px;
+      padding: .75rem .9rem;
+      font-size: .78rem;
+      line-height: 1.55;
+      color: #8a6510;
+      margin-bottom: 1rem;
+    }
+    .notice strong { font-weight: 600; }
+
     /* ── Totales ── */
-    .totals { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: 1.1rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
+    .totals-group { margin-top: 1.1rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
+    .totals-group-title {
+      font-size: .6rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gray); margin-bottom: .7rem;
+    }
+    .totals { display: flex; gap: .8rem; flex-wrap: wrap; }
     .total-chip { flex: 1; min-width: 80px; text-align: center; background: var(--cream); border-radius: 10px; padding: .8rem .5rem; border: 1px solid var(--border); }
     .total-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--rose); display: block; line-height: 1; }
     .total-label { font-size: .6rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-top: .3rem; }
+    .total-sub { font-size: .58rem; color: var(--gray); opacity: .75; margin-top: .15rem; }
+    .total-chip.ev { background: #f6faf6; border-color: #d8e3d9; }
+    .total-chip.ev .total-num { color: var(--sage); }
 
     /* ── Script instructions ── */
     .instructions { max-width: 700px; margin: 0 auto 1.4rem; }
@@ -290,6 +439,15 @@
 <div class="card">
   <p class="card-title">Generar nueva invitación</p>
 
+  <div class="diag">
+    <p class="diag-text">
+      El navegador <strong>no puede leer</strong> la respuesta de Google Sheets,
+      así que el aviso «enviado» no garantiza que se haya guardado.
+      Usa esto para comprobarlo de verdad.
+    </p>
+    <a class="btn-diag" id="btn-diag" href="#" target="_blank" rel="noopener">Probar conexión</a>
+  </div>
+
   <div class="field-row">
     <div>
       <label for="inp-nombre">Nombre del invitado / familia</label>
@@ -301,12 +459,16 @@
     </div>
   </div>
 
+  <label>Tipo de invitación</label>
+  <div class="type-picker" id="type-picker"></div>
+
   <button class="btn-gen" onclick="generarLink()">Generar invitación</button>
 
   <div class="result-box" id="result-box">
     <p class="result-label">Link de invitación
       <span class="sync-badge sending" id="sync-badge" style="display:none">sincronizando…</span>
     </p>
+    <p class="result-tipo" id="result-tipo"></p>
     <div class="result-url" id="result-url"></div>
     <div class="result-actions">
       <button class="btn-action" onclick="copiarLink()">📋 Copiar link</button>
@@ -328,24 +490,43 @@
     </div>
   </div>
 
+  <p class="notice" id="notice-migracion"></p>
+
+  <div class="filters" id="filters"></div>
+
   <div class="guest-list" id="guest-list"></div>
 
-  <div class="totals" id="totals" style="display:none">
-    <div class="total-chip">
-      <span class="total-num" id="total-invitados">0</span>
-      <p class="total-label">Invitados</p>
+  <div id="totals" style="display:none">
+    <div class="totals-group">
+      <p class="totals-group-title">Resumen general · todos los invitados</p>
+      <div class="totals">
+        <div class="total-chip">
+          <span class="total-num" id="total-invitados">0</span>
+          <p class="total-label">Invitados</p>
+        </div>
+        <div class="total-chip">
+          <span class="total-num" id="total-lugares">0</span>
+          <p class="total-label">Lugares</p>
+        </div>
+        <div class="total-chip">
+          <span class="total-num" id="total-confirmados">0</span>
+          <p class="total-label">Confirmados ✅</p>
+        </div>
+        <div class="total-chip">
+          <span class="total-num" id="total-pendientes">0</span>
+          <p class="total-label">Pendientes ⬜</p>
+        </div>
+      </div>
     </div>
-    <div class="total-chip">
-      <span class="total-num" id="total-lugares">0</span>
-      <p class="total-label">Lugares</p>
+
+    <div class="totals-group">
+      <p class="totals-group-title">Lugares por tipo de invitación</p>
+      <div class="totals" id="totals-tipos"></div>
     </div>
-    <div class="total-chip">
-      <span class="total-num" id="total-confirmados">0</span>
-      <p class="total-label">Confirmados ✅</p>
-    </div>
-    <div class="total-chip">
-      <span class="total-num" id="total-pendientes">0</span>
-      <p class="total-label">Pendientes ⬜</p>
+
+    <div class="totals-group">
+      <p class="totals-group-title">Asistencia esperada por evento</p>
+      <div class="totals" id="totals-eventos"></div>
     </div>
   </div>
 </div>
@@ -376,47 +557,91 @@
         <div class="step-num">3</div>
         <div>
           <p>Borra todo el código que aparece y pega esto:</p>
-          <code>function getSheet(ss, nombre, encabezados) {
+          <code>var VERSION = 'v2-tipos';
+
+var COLS_INV  = ['Nombre','Lugares','Confirmado','Fecha','ID','Tipo','Días'];
+var COLS_ASIS = ['Grupo','Nombre Completo','Estado','Fecha','Tipo','Días'];
+
+function json(obj) {
+  obj.version = VERSION;
+  return ContentService.createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function getSS() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) throw new Error('El script no está enlazado a ninguna hoja. ' +
+    'Ábrelo desde Extensiones → Apps Script DENTRO de la hoja.');
+  return ss;
+}
+
+function buscarFilaPorId(s, id) {
+  var rows = s.getDataRange().getValues();
+  for (var i=1;i&lt;rows.length;i++) {
+    if (String(rows[i][4])===String(id)) return i+1;
+  }
+  return 0;
+}
+
+function getSheet(ss, nombre, encabezados) {
   var s = ss.getSheetByName(nombre);
-  if (!s) {
-    s = ss.insertSheet(nombre);
-    s.appendRow(encabezados);
-    s.getRange(1,1,1,encabezados.length).setFontWeight('bold');
+  if (!s) s = ss.insertSheet(nombre);
+
+  var ancho    = s.getLastColumn();
+  var actuales = ancho &gt; 0 ? s.getRange(1,1,1,ancho).getValues()[0] : [];
+
+  // Hoja vacía: escribimos todos los encabezados
+  if (actuales.length === 0 || String(actuales[0]).trim() === '') {
+    s.getRange(1,1,1,encabezados.length).setValues([encabezados]).setFontWeight('bold');
+    return s;
+  }
+  // Hoja de una versión anterior: agregamos al final las columnas que falten
+  if (actuales.length &lt; encabezados.length) {
+    var faltan = encabezados.slice(actuales.length);
+    s.getRange(1, actuales.length+1, 1, faltan.length)
+     .setValues([faltan]).setFontWeight('bold');
   }
   return s;
 }
 
 function doPost(e) {
   try {
+    if (!e || !e.postData || !e.postData.contents) {
+      return json({ok:false, error:'Petición sin cuerpo.'});
+    }
     var data = JSON.parse(e.postData.contents);
-    var ss   = SpreadsheetApp.getActiveSpreadsheet();
+    var ss   = getSS();
     var fecha = Utilities.formatDate(new Date(),'America/Mexico_City','dd/MM/yyyy HH:mm');
 
     if (data.action === 'add') {
-      var s = getSheet(ss,'Invitados',['Nombre','Lugares','Confirmado','Fecha','ID']);
-      s.appendRow([data.nombre, data.cupos, 'No ⬜', fecha, data.id]);
+      var s = getSheet(ss,'Invitados',COLS_INV);
+      s.appendRow([data.nombre, data.cupos, 'No ⬜', fecha, data.id,
+                   data.tipoEtiqueta || '', data.dias || '']);
 
     } else if (data.action === 'confirm') {
-      var s = getSheet(ss,'Invitados',['Nombre','Lugares','Confirmado','Fecha','ID']);
-      var rows = s.getDataRange().getValues();
-      for (var i=1;i<rows.length;i++) {
-        if (String(rows[i][4])===String(data.id)) {
-          s.getRange(i+1,3).setValue(data.confirmado ? 'Sí ✅' : 'No ⬜'); break;
-        }
-      }
+      var s = getSheet(ss,'Invitados',COLS_INV);
+      var fil = buscarFilaPorId(s, data.id);
+      if (!fil) return json({ok:false, error:'No se encontró el ID '+data.id});
+      s.getRange(fil,3).setValue(data.confirmado ? 'Sí ✅' : 'No ⬜');
+
+    } else if (data.action === 'tipo') {
+      // Cambio de tipo de invitación hecho desde el admin
+      var s = getSheet(ss,'Invitados',COLS_INV);
+      var fil = buscarFilaPorId(s, data.id);
+      if (!fil) return json({ok:false, error:'No se encontró el ID '+data.id});
+      s.getRange(fil,6).setValue(data.tipoEtiqueta);
+      s.getRange(fil,7).setValue(data.dias);
 
     } else if (data.action === 'delete') {
-      var s = getSheet(ss,'Invitados',['Nombre','Lugares','Confirmado','Fecha','ID']);
-      var rows = s.getDataRange().getValues();
-      for (var i=rows.length-1;i>=1;i--) {
-        if (String(rows[i][4])===String(data.id)) { s.deleteRow(i+1); break; }
-      }
+      var s = getSheet(ss,'Invitados',COLS_INV);
+      var fil = buscarFilaPorId(s, data.id);
+      if (fil) s.deleteRow(fil);
       if (data.nombre) {
         ['Confirmados','Por Confirmar'].forEach(function(hojaName) {
           var h = ss.getSheetByName(hojaName);
           if (!h) return;
           var hRows = h.getDataRange().getValues();
-          for (var i=hRows.length-1;i>=1;i--) {
+          for (var i=hRows.length-1;i&gt;=1;i--) {
             if (String(hRows[i][0])===String(data.nombre)) h.deleteRow(i+1);
           }
         });
@@ -425,26 +650,41 @@ function doPost(e) {
     } else if (data.action === 'asistente') {
       // Persona individual que confirma desde la invitación
       var hoja = data.porConfirmar ? 'Por Confirmar' : 'Confirmados';
-      var s = getSheet(ss, hoja, ['Grupo','Nombre Completo','Estado','Fecha']);
+      var s = getSheet(ss, hoja, COLS_ASIS);
       s.appendRow([
         data.grupo,
         data.nombreCompleto,
         data.porConfirmar ? 'Por confirmar ⏳' : 'Confirmado ✅',
-        fecha
+        fecha,
+        data.tipoEtiqueta || '',
+        data.dias || ''
       ]);
+
+    } else {
+      // Sin este else, una acción desconocida devolvía ok:true
+      // y parecía que todo había funcionado.
+      return json({ok:false, error:'Acción desconocida: '+data.action});
     }
 
-    return ContentService.createTextOutput(JSON.stringify({ok:true}))
-      .setMimeType(ContentService.MimeType.JSON);
+    return json({ok:true});
   } catch(err) {
-    return ContentService.createTextOutput(JSON.stringify({ok:false,error:err.message}))
-      .setMimeType(ContentService.MimeType.JSON);
+    return json({ok:false, error:err.message});
   }
 }
 
+/* Diagnóstico: abre la URL /exec en el navegador y te dice si el script
+   alcanza la hoja, cómo se llama y qué pestañas tiene. */
 function doGet(e) {
-  return ContentService.createTextOutput(JSON.stringify({ok:true}))
-    .setMimeType(ContentService.MimeType.JSON);
+  var out = { ok:true };
+  try {
+    var ss = getSS();
+    out.hoja  = ss.getName();
+    out.hojas = ss.getSheets().map(function(s){ return s.getName(); });
+  } catch(err) {
+    out.ok = false;
+    out.error = err.message;
+  }
+  return json(out);
 }</code>
         </div>
       </div>
@@ -454,9 +694,29 @@ function doGet(e) {
         <div>
           <p>Haz clic en <strong>Implementar → Nueva implementación</strong>.<br>
           · Tipo: <em>Aplicación web</em><br>
-          · Ejecutar como: <em>Yo</em><br>
-          · Quién tiene acceso: <em>Cualquier persona</em><br>
+          · Ejecutar como: <strong>Yo</strong> ← si esto queda en «Usuario que accede
+            a la aplicación web», el script corre con la identidad del invitado,
+            que no tiene acceso a tu hoja, y <strong>todas las escrituras fallan
+            en silencio</strong>.<br>
+          · Quién tiene acceso: <strong>Cualquier persona</strong><br>
           Haz clic en <strong>Implementar</strong> y copia la URL que aparece.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <p>Comprueba que quedó bien con el botón <strong>«Probar conexión»</strong>
+          de arriba. Debe responder algo así:</p>
+          <code>{"ok":true,
+ "hoja":"Invitados Boda",
+ "hojas":["Invitados","Confirmados","Por Confirmar"],
+ "version":"v2-tipos"}</code>
+          <p style="margin-top:.6rem">Si ves <em>"ok":false</em> con el mensaje
+          <em>«You do not have permission…»</em>, vuelve al paso 4 y cambia
+          <strong>Ejecutar como</strong> a <strong>Yo</strong>. Si la
+          <em>version</em> no dice <em>v2-tipos</em>, estás usando una
+          implementación vieja: publica una <strong>nueva versión</strong>.</p>
         </div>
       </div>
 
@@ -471,7 +731,29 @@ function doGet(e) {
   const BASE_URL    = 'https://christopherortiz69.github.io/Gabriel-Jatzive/';
   const WA_PHONE    = '525599192118';
   const STORAGE_KEY = 'gj_invitados';
-  const SCRIPT_KEY  = 'gj_script_url';
+
+  /* ── Sede: los tres días son en el mismo lugar ── */
+  const SEDE = {
+    nombre:    'Quinta Santa María',
+    direccion: 'Cam. al Monasterio 9, Santa María Ahuacatitlán, 62100 Cuernavaca, Mor.'
+  };
+
+  /* ── Los 3 días del evento ── */
+  const EVENTOS = [
+    { id: 'brunch', nombre: 'Brunch',          fecha: 'viernes 19 de marzo de 2027', corta: '19 mar', emoji: '🥐' },
+    { id: 'boda',   nombre: 'Boda',            fecha: 'sábado 20 de marzo de 2027',  corta: '20 mar', emoji: '💍' },
+    { id: 'post',   nombre: 'Postcelebración', fecha: 'domingo 21 de marzo de 2027', corta: '21 mar', emoji: '🌤️' }
+  ];
+
+  /* ── Los 2 tipos de invitación ── */
+  const TIPOS = {
+    1: { id: 1, nombre: 'Completa',    eventos: ['brunch', 'boda', 'post'] },
+    2: { id: 2, nombre: 'Boda y post', eventos: ['boda', 'post'] }
+  };
+  const TIPO_DEFAULT = 1;
+
+  /* Filtro activo de la lista: 'todos' | '1' | '2' */
+  var filtroTipo = 'todos';
 
   /* ══════════════════════════════
      SETUP — Google Sheets
@@ -494,9 +776,13 @@ function doGet(e) {
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(Object.assign({ action: action }, data))
     }).then(function () {
-      if (badge) { badge.className = 'sync-badge ok'; badge.textContent = '✓ guardado en Sheets'; setTimeout(function(){ badge.style.display='none'; }, 3000); }
+      /* Con mode:'no-cors' el navegador NO deja leer la respuesta: esta
+         promesa se cumple aunque Apps Script devuelva un error. Por eso el
+         texto dice "enviado" y no "guardado" — lo único que sabemos con
+         certeza es que la petición salió. Verifica la hoja de vez en cuando. */
+      if (badge) { badge.className = 'sync-badge ok'; badge.textContent = '✓ enviado a Sheets'; badge.title = 'La petición salió correctamente. No se puede confirmar desde aquí que la hoja la haya guardado.'; setTimeout(function(){ badge.style.display='none'; }, 3000); }
     }).catch(function () {
-      if (badge) { badge.className = 'sync-badge err'; badge.textContent = '✕ error de red'; setTimeout(function(){ badge.style.display='none'; }, 4000); }
+      if (badge) { badge.className = 'sync-badge err'; badge.textContent = '✕ error de red'; badge.title = 'No hubo conexión. El invitado quedó guardado en este navegador, pero no llegó a Sheets.'; setTimeout(function(){ badge.style.display='none'; }, 4000); }
     });
   }
 
@@ -509,14 +795,29 @@ function doGet(e) {
   }
   function saveInvitados(list) { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
 
-  function buildInviteUrl(nombre, cupos) {
-    return BASE_URL + '?nombre=' + encodeURIComponent(nombre) + '&cupos=' + cupos;
+  /* ── Tipos y eventos ── */
+  function getTipo(n)            { return TIPOS[n] || TIPOS[TIPO_DEFAULT]; }
+  function incluye(tipo, evId)   { return getTipo(tipo).eventos.indexOf(evId) !== -1; }
+  function eventosDe(tipo)       { return EVENTOS.filter(function (e) { return incluye(tipo, e.id); }); }
+  function etiquetaTipo(tipo)    { var t = getTipo(tipo); return 'Tipo ' + t.id + ' · ' + t.nombre; }
+  function diasCortos(tipo)      { return eventosDe(tipo).map(function (e) { return e.emoji + ' ' + e.corta; }).join(' · '); }
+  function diasTexto(tipo)       { return eventosDe(tipo).map(function (e) { return e.corta; }).join(' · '); }
+
+  function buildInviteUrl(nombre, cupos, tipo) {
+    return BASE_URL + '?nombre=' + encodeURIComponent(nombre) +
+           '&cupos=' + cupos + '&tipo=' + getTipo(tipo).id;
   }
 
-  function buildWaMsg(nombre, cupos, url) {
+  function buildWaMsg(nombre, cupos, tipo, url) {
     var plural = cupos === 1 ? 'lugar' : 'lugares';
+    var agenda = eventosDe(tipo).map(function (e) {
+      return e.emoji + ' ' + e.nombre + ' — ' + e.fecha;
+    }).join('\n');
+
     return '¡Hola ' + nombre + '! 🌸\n' +
-           'Con todo cariño, te invitamos a la boda de *Gabriel & Jatzive*.\n' +
+           'Con todo cariño, te invitamos a la boda de *Gabriel & Jatzive*.\n\n' +
+           'Te esperamos en:\n' + agenda + '\n\n' +
+           '📍 *' + SEDE.nombre + '*\n' + SEDE.direccion + '\n\n' +
            'Te reservamos *' + cupos + ' ' + plural + '*. Aquí está tu invitación personalizada:\n' +
            url + '\n\n' +
            'Por favor confirma tu asistencia desde el link. ¡Los esperamos! 💐';
@@ -532,34 +833,79 @@ function doGet(e) {
   function escJs(s) {
     return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   }
+  /* Nombre que va DENTRO de un onclick="fn('...')".
+     Hay que escapar dos veces: primero para el string de JS y luego para el
+     atributo HTML. Sin el segundo paso, un nombre con comillas dobles
+     —Familia "Los Pérez"— cerraba el atributo y rompía los botones. */
+  function escAttrJs(s) {
+    return escHtml(escJs(s));
+  }
 
   /* ══════════════════════════════
      GENERAR
   ══════════════════════════════ */
+  /* Dibuja las dos tarjetas de tipo a partir de TIPOS + EVENTOS */
+  function renderTypePicker() {
+    document.getElementById('type-picker').innerHTML = Object.keys(TIPOS).map(function (k) {
+      var t = TIPOS[k];
+      var dias = EVENTOS.map(function (e) {
+        var on = incluye(t.id, e.id);
+        return '<li class="' + (on ? 'on' : 'off') + '">' +
+                 '<span class="type-mark">' + (on ? '✓' : '—') + '</span>' +
+                 e.emoji + ' ' + e.nombre + ' · ' + e.corta +
+               '</li>';
+      }).join('');
+
+      return '<label class="type-card">' +
+          '<input type="radio" name="tipo-inv" value="' + t.id + '"' +
+                 (t.id === TIPO_DEFAULT ? ' checked' : '') + '>' +
+          '<span class="type-card-head">' +
+            '<span class="type-dot"></span>' +
+            '<span class="type-card-name">Tipo ' + t.id + ' · ' + t.nombre + '</span>' +
+          '</span>' +
+          '<ul class="type-days">' + dias + '</ul>' +
+        '</label>';
+    }).join('');
+  }
+
+  function tipoSeleccionado() {
+    var el = document.querySelector('input[name="tipo-inv"]:checked');
+    return el ? parseInt(el.value, 10) : TIPO_DEFAULT;
+  }
+
   function generarLink() {
     var nombre = document.getElementById('inp-nombre').value.trim();
     var cupos  = Math.max(1, parseInt(document.getElementById('inp-cupos').value, 10) || 1);
+    var tipo   = tipoSeleccionado();
 
     if (!nombre) { document.getElementById('inp-nombre').focus(); return; }
 
-    var url    = buildInviteUrl(nombre, cupos);
-    var msg    = buildWaMsg(nombre, cupos, url);
+    var url    = buildInviteUrl(nombre, cupos, tipo);
+    var msg    = buildWaMsg(nombre, cupos, tipo, url);
     var waHref = 'https://wa.me/' + WA_PHONE + '?text=' + encodeURIComponent(msg);
 
     document.getElementById('result-url').textContent = url;
+    document.getElementById('result-tipo').innerHTML =
+      '<span class="badge-tipo t' + tipo + '">' + etiquetaTipo(tipo) + '</span>' +
+      '<span>' + diasCortos(tipo) + '</span>';
     document.getElementById('btn-wa-send').href = waHref;
     document.getElementById('result-box').style.display = 'block';
     document.getElementById('copied-msg').style.display = 'none';
 
     /* Guardar localmente */
-    var list  = getInvitados();
-    var existe = list.find(function(i){ return i.nombre === nombre && i.cupos === cupos; });
+    var list   = getInvitados();
+    var existe = list.find(function (i) {
+      return i.nombre === nombre && i.cupos === cupos && getTipo(i.tipo).id === tipo;
+    });
     if (!existe) {
-      var inv = { id: Date.now(), nombre: nombre, cupos: cupos, ts: Date.now(), confirmado: false };
+      var inv = { id: Date.now(), nombre: nombre, cupos: cupos, tipo: tipo, ts: Date.now(), confirmado: false };
       list.unshift(inv);
       saveInvitados(list);
       renderLista();
-      syncSheet('add', { id: inv.id, nombre: inv.nombre, cupos: inv.cupos });
+      syncSheet('add', {
+        id: inv.id, nombre: inv.nombre, cupos: inv.cupos,
+        tipoEtiqueta: etiquetaTipo(tipo), dias: diasTexto(tipo)
+      });
     }
   }
 
@@ -602,10 +948,57 @@ function doGet(e) {
     renderLista();
   }
 
-  function enviarInvitacion(nombre, cupos) {
-    var url  = buildInviteUrl(nombre, cupos);
-    var msg  = buildWaMsg(nombre, cupos, url);
+  function enviarInvitacion(nombre, cupos, tipo) {
+    var url = buildInviteUrl(nombre, cupos, tipo);
+    var msg = buildWaMsg(nombre, cupos, tipo, url);
     window.open('https://wa.me/' + WA_PHONE + '?text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  /* Alterna entre Tipo 1 y Tipo 2 para una invitación ya creada */
+  function cambiarTipo(id) {
+    var list = getInvitados();
+    var item = list.find(function (i) { return i.id === id; });
+    if (!item) return;
+
+    var actual = getTipo(item.tipo).id;
+    var nuevo  = actual === 1 ? 2 : 1;
+
+    if (!confirm(
+      'Cambiar "' + item.nombre + '" de ' + etiquetaTipo(actual) + ' a ' + etiquetaTipo(nuevo) + '.\n\n' +
+      'Días nuevos: ' + diasTexto(nuevo) + '\n\n' +
+      'Ojo: el link que ya le enviaste tiene el tipo anterior. ' +
+      'Tendrás que volver a enviarle su invitación.'
+    )) return;
+
+    item.tipo = nuevo;
+    saveInvitados(list);
+    renderLista();
+    syncSheet('tipo', {
+      id: id, nombre: item.nombre,
+      tipoEtiqueta: etiquetaTipo(nuevo), dias: diasTexto(nuevo)
+    });
+  }
+
+  /* ══════════════════════════════
+     FILTROS
+  ══════════════════════════════ */
+  function setFiltro(f) { filtroTipo = f; renderLista(); }
+
+  function renderFiltros(list) {
+    var opciones = [{ v: 'todos', label: 'Todos', n: list.length }];
+    Object.keys(TIPOS).forEach(function (k) {
+      var t = TIPOS[k];
+      opciones.push({
+        v: String(t.id),
+        label: 'Tipo ' + t.id + ' · ' + t.nombre,
+        n: list.filter(function (i) { return getTipo(i.tipo).id === t.id; }).length
+      });
+    });
+
+    document.getElementById('filters').innerHTML = opciones.map(function (o) {
+      return '<button class="filter-chip' + (filtroTipo === o.v ? ' active' : '') + '"' +
+             ' onclick="setFiltro(\'' + o.v + '\')">' + o.label + ' (' + o.n + ')</button>';
+    }).join('');
   }
 
   /* ══════════════════════════════
@@ -617,7 +1010,15 @@ function doGet(e) {
     var countEl   = document.getElementById('list-count');
     var totalsEl  = document.getElementById('totals');
 
-    countEl.textContent = list.length + ' invitado' + (list.length !== 1 ? 's' : '');
+    renderFiltros(list);
+
+    var visibles = filtroTipo === 'todos'
+      ? list
+      : list.filter(function (i) { return getTipo(i.tipo).id === parseInt(filtroTipo, 10); });
+
+    countEl.textContent = filtroTipo === 'todos'
+      ? list.length + ' invitado' + (list.length !== 1 ? 's' : '')
+      : visibles.length + ' de ' + list.length + ' invitados';
 
     if (list.length === 0) {
       container.innerHTML = '<p class="empty-state">Aún no has generado invitaciones</p>';
@@ -625,29 +1026,83 @@ function doGet(e) {
       return;
     }
 
-    container.innerHTML = list.map(function(inv) {
-      var plural = inv.cupos === 1 ? 'lugar' : 'lugares';
-      var icon   = inv.confirmado ? '✅' : '⬜';
-      return '<div class="guest-item' + (inv.confirmado ? ' confirmed' : '') + '">' +
-        '<div class="guest-info">' +
-          '<p class="guest-name">' + escHtml(inv.nombre) + '</p>' +
-          '<p class="guest-meta">' + inv.cupos + ' ' + plural + ' · ' + formatDate(inv.ts) + '</p>' +
-        '</div>' +
-        '<div class="guest-actions">' +
-          '<button class="btn-sm" title="Marcar confirmado" onclick="toggleConfirmado(' + inv.id + ')">' + icon + '</button>' +
-          '<button class="btn-sm wa-sm" onclick="enviarInvitacion(\'' + escJs(inv.nombre) + '\',' + inv.cupos + ')">WA</button>' +
-          '<button class="btn-sm del" onclick="borrarInvitado(' + inv.id + ',\'' + escJs(inv.nombre) + '\')">✕</button>' +
-        '</div>' +
-      '</div>';
+    if (visibles.length === 0) {
+      container.innerHTML = '<p class="empty-state">Ningún invitado con este tipo de invitación</p>';
+    } else {
+      container.innerHTML = visibles.map(function (inv) {
+        var plural = inv.cupos === 1 ? 'lugar' : 'lugares';
+        var icon   = inv.confirmado ? '✅' : '⬜';
+        var t      = getTipo(inv.tipo);
+        return '<div class="guest-item' + (inv.confirmado ? ' confirmed' : '') + '">' +
+          '<div class="guest-info">' +
+            '<div class="guest-name-row">' +
+              '<p class="guest-name">' + escHtml(inv.nombre) + '</p>' +
+              '<button class="badge-tipo t' + t.id + '" title="Clic para cambiar el tipo de invitación" ' +
+                      'onclick="cambiarTipo(' + inv.id + ')">Tipo ' + t.id + '</button>' +
+            '</div>' +
+            '<p class="guest-meta">' + inv.cupos + ' ' + plural + ' · ' + formatDate(inv.ts) + '</p>' +
+            '<p class="guest-days">' + diasCortos(t.id) + '</p>' +
+          '</div>' +
+          '<div class="guest-actions">' +
+            '<button class="btn-sm" title="Marcar confirmado" onclick="toggleConfirmado(' + inv.id + ')">' + icon + '</button>' +
+            '<button class="btn-sm wa-sm" onclick="enviarInvitacion(\'' + escAttrJs(inv.nombre) + '\',' + inv.cupos + ',' + t.id + ')">WA</button>' +
+            '<button class="btn-sm del" onclick="borrarInvitado(' + inv.id + ',\'' + escAttrJs(inv.nombre) + '\')">✕</button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    /* ── Totales: siempre sobre la lista completa, no sobre el filtro ── */
+    var totalLugares     = list.reduce(function (s, i) { return s + i.cupos; }, 0);
+    var totalConfirmados = list.filter(function (i) { return i.confirmado; }).length;
+    document.getElementById('total-invitados').textContent   = list.length;
+    document.getElementById('total-lugares').textContent     = totalLugares;
+    document.getElementById('total-confirmados').textContent = totalConfirmados;
+    document.getElementById('total-pendientes').textContent  = list.length - totalConfirmados;
+
+    /* Lugares por tipo */
+    document.getElementById('totals-tipos').innerHTML = Object.keys(TIPOS).map(function (k) {
+      var t       = TIPOS[k];
+      var delTipo = list.filter(function (i) { return getTipo(i.tipo).id === t.id; });
+      var lugares = delTipo.reduce(function (s, i) { return s + i.cupos; }, 0);
+      return '<div class="total-chip">' +
+          '<span class="total-num">' + lugares + '</span>' +
+          '<p class="total-label">Tipo ' + t.id + ' · ' + t.nombre + '</p>' +
+          '<p class="total-sub">' + delTipo.length + ' invitado' + (delTipo.length !== 1 ? 's' : '') + '</p>' +
+        '</div>';
     }).join('');
 
-    var totalLugares     = list.reduce(function(s,i){ return s + i.cupos; }, 0);
-    var totalConfirmados = list.filter(function(i){ return i.confirmado; }).length;
-    document.getElementById('total-invitados').textContent  = list.length;
-    document.getElementById('total-lugares').textContent    = totalLugares;
-    document.getElementById('total-confirmados').textContent = totalConfirmados;
-    document.getElementById('total-pendientes').textContent = list.length - totalConfirmados;
-    totalsEl.style.display = 'flex';
+    /* Asistencia esperada por evento — lo que sirve para cotizar cada día */
+    document.getElementById('totals-eventos').innerHTML = EVENTOS.map(function (e) {
+      var conEsteEvento = list.filter(function (i) { return incluye(i.tipo, e.id); });
+      var lugares = conEsteEvento.reduce(function (s, i) { return s + i.cupos; }, 0);
+      return '<div class="total-chip ev">' +
+          '<span class="total-num">' + lugares + '</span>' +
+          '<p class="total-label">' + e.emoji + ' ' + e.nombre + '</p>' +
+          '<p class="total-sub">' + e.fecha + '</p>' +
+        '</div>';
+    }).join('');
+
+    totalsEl.style.display = 'block';
+  }
+
+  /* ══════════════════════════════
+     MIGRACIÓN — invitaciones creadas antes de los tipos
+  ══════════════════════════════ */
+  function normalizarLista() {
+    var list    = getInvitados();
+    var legacy  = list.filter(function (i) { return !TIPOS[i.tipo]; });
+    if (legacy.length === 0) return;
+
+    legacy.forEach(function (i) { i.tipo = TIPO_DEFAULT; });
+    saveInvitados(list);
+
+    var n = document.getElementById('notice-migracion');
+    n.innerHTML = '<strong>' + legacy.length + ' invitación' + (legacy.length !== 1 ? 'es' : '') +
+      '</strong> se crearon antes de que existieran los tipos y quedaron como <strong>' +
+      etiquetaTipo(TIPO_DEFAULT) + '</strong> (' + diasTexto(TIPO_DEFAULT) + '). ' +
+      'Revísalas y usa el botón «Tipo» de cada una para corregir las que deban ser Tipo 2.';
+    n.style.display = 'block';
   }
 
   /* ── Enter para generar ── */
@@ -656,6 +1111,13 @@ function doGet(e) {
   });
 
   /* ── Init ── */
+  // El botón de diagnóstico abre /exec en una pestaña: doGet responde con
+  // la versión del script y las hojas que alcanza. Si sale "ok":false, la
+  // implementación está mal configurada y NADA se está guardando.
+  document.getElementById('btn-diag').href = getScriptUrl();
+
+  renderTypePicker();
+  normalizarLista();
   renderLista();
 </script>
 </body>
