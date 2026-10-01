@@ -1204,6 +1204,9 @@
       font-size: clamp(2.8rem, 8vw, 4rem);
       color: #fff;
       margin-bottom: 1rem;
+      /* El rizo de entrada de la G se come el espacio tras el «&»: sin
+         esto «Jatzive & Gabriel» se lee como una sola palabra. */
+      word-spacing: .12em;
     }
 
     .footer-sub {
@@ -2694,6 +2697,8 @@
     </g>
 
     <!-- ── Cristal de hielo, para el "Rompe hielo" del itinerario ──
+         Hoy sin uso: el viernes 12 salió del itinerario. Se conserva,
+         igual que .ag-hielo, por si vuelve.
          Simetría hexagonal como la de verdad: tres ejes cruzados en el
          centro y un par de ramitas en cada brazo. -->
     <g id="cristal">
@@ -3096,9 +3101,9 @@
        quien. Sin parámetro se asume Tipo 1. ── */
     const tipo = p.get('tipo') === '2' ? 2 : 1;
 
-    /* brunch ya no se ofrece, pero se queda aquí: quien confirmó con el
-       viernes antes del cambio lo tiene guardado en su navegador, y sin
-       esta entrada su resumen de confirmación no se podría pintar. */
+    /* brunch ya no se ofrece, pero se queda aquí por si el rompe hielo
+       vuelve. El resumen de confirmación ya no depende de él: filtra
+       los días que salieron del programa (ver mostrarConfirmado). */
     const DIAS = {
       brunch: { emoji: '🥂', chip: 'Vie 12', corto: '12 mar', largo: 'Viernes 12 · Rompe hielo' },
       boda:   { emoji: '💍', chip: 'Sáb 13', corto: '13 mar', largo: 'Sábado 13 · La boda' },
@@ -3220,11 +3225,18 @@
         }
         li.appendChild(top);
 
-        // Días confirmados (las confirmaciones viejas no traen el campo)
-        if (!p.porConfirmar && p.dias && p.dias.length) {
+        // Días confirmados (las confirmaciones viejas no traen el campo).
+        // Solo los que siguen en el programa: quien confirmó antes con el
+        // viernes 12 no debe verlo aquí debajo de una tarjeta que ya no lo
+        // incluye. No se reabre el formulario: la Hoja agrega fila en cada
+        // envío y una segunda confirmación la duplicaría.
+        var vigentes = Array.isArray(p.dias)
+          ? p.dias.filter(function (d) { return incluidos.indexOf(d) !== -1; })
+          : [];
+        if (!p.porConfirmar && vigentes.length) {
           var dias = document.createElement('div');
           dias.className   = 'rsvp-name-dias';
-          dias.textContent = chipsDe(p.dias);
+          dias.textContent = chipsDe(vigentes);
           li.appendChild(dias);
         }
 
