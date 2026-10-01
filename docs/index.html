@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Invitación de boda — Gabriel & Jatzive · 13 de Marzo 2027 · Quinta Santa María, Cuernavaca">
+  <meta name="description" content="Invitación de boda — Jatzive & Gabriel · 13 de Marzo 2027 · Quinta Santa María, Cuernavaca">
   <meta name="theme-color" content="#f4efe3">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Gabriel & Jatzive · Nuestra Boda</title>
+  <title>Jatzive & Gabriel · Nuestra Boda</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,11 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* ── Paleta oficial de la boda ── */
+      /* ── Paleta de la invitación ──
+         Es la del diseño (flores, botones, texto). Los colores que el
+         dress code pide evitar son otros —la paleta de la boda: ivory,
+         terracota, olivo oscuro y champagne— y van escritos directo en
+         sus muestras, sin pasar por aquí. */
       --shadow:       #7a8771;  /* Shadow       — verde salvia oscuro */
       --sage-green:   #a8bd9f;  /* Sage green   — salvia suave        */
       --champagne:    #e2d6bf;  /* Champagne    — beige cálido        */
@@ -26,9 +30,8 @@
       --bridal-rose:  #d18e98;  /* Bridal Rose  — rosa nupcial        */
 
       /* Fondo de las diapositivas. Va aparte del --ivory de la paleta
-         a propósito: aquel documenta el color de la boda (el que ven
-         los invitados en el dress code) y este es una decisión de
-         pantalla. Cambiar uno no debe arrastrar al otro. */
+         a propósito: aquel es un color del diseño y este es una
+         decisión de pantalla. Cambiar uno no debe arrastrar al otro. */
       --light-ivory:  #f0ece4;  /* Ivory satinado — tomado de la tela de referencia */
 
       /* ── Tonos derivados (contraste y acentos) ── */
@@ -611,6 +614,8 @@
     }
 
     /* ── "Rompe hielo" congelado ──
+       Hoy sin uso: el viernes 12 salió del itinerario. Se conserva,
+       junto con el #cristal del sprite, por si el rompe hielo vuelve.
        El degradado de hielo se recorta sobre las letras y un halo frío
        las escarcha. El azul es apagado y algo verdoso, no cian: tiene
        que convivir con la salvia y el marfil de la invitación.
@@ -1082,6 +1087,8 @@
       line-height: 1.65;
       color: var(--brown);
       opacity: .85;
+      /* En teléfono angosto «ideas.» quedaba sola en el segundo renglón */
+      text-wrap: balance;
     }
     .regalos-nota strong { font-weight: 600; color: var(--sage-dark); }
 
@@ -1140,6 +1147,10 @@
       max-width: 540px;
       margin: 0 auto 1.8rem;
       line-height: 1.7;
+      /* Renglones parejos: sin esto, en pantalla ancha «inolvidable.»
+         quedaba sola en el segundo renglón. Donde no se soporta, el
+         navegador corta como siempre y no se pierde nada. */
+      text-wrap: balance;
     }
 
     .rsvp-deadline {
@@ -1829,6 +1840,17 @@
       .rsvp-inputs { grid-template-columns: 1fr; }
       /* Chips de día a ancho completo para que no se aprieten */
       .rsvp-dia { flex: 1 1 100%; justify-content: center; }
+    }
+
+    /* ── Menos de 360 px (iPhone chico con Zoom de pantalla, SE de
+       primera generación) ──
+       Ahí las cuatro muestras del dress code ya no caben en fila con
+       los nombres en una sola línea, y la última bajaba sola a un
+       segundo renglón. El nombre de dos palabras («Olivo oscuro») se
+       parte en dos líneas y la fila se queda entera, como en la paleta.
+       Los de una palabra no cambian: su min-content es la palabra. ── */
+    @media (max-width: 359px) {
+      .sw-name { width: min-content; text-align: center; line-height: 1.4; }
     }
 
     /* ════════════════════════════════
@@ -2724,9 +2746,9 @@
   <p class="hero-tagline fade-in">Con todo nuestro amor, les anunciamos</p>
 
   <div class="fade-in delay-1">
-    <h1 class="hero-name">Gabriel</h1>
-    <span class="hero-amp">&amp;</span>
     <h1 class="hero-name">Jatzive</h1>
+    <span class="hero-amp">&amp;</span>
+    <h1 class="hero-name">Gabriel</h1>
   </div>
 
   <div class="divider fade-in delay-2">
@@ -2753,18 +2775,17 @@
 <section class="s-fotos" id="nosotros">
   <div class="deco bl" aria-hidden="true"><img src="img/ramo.png" width="651" height="355" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
-    <span class="s-tag reveal">Nosotros</span>
     <h2 class="s-title reveal">Hemos vivido muchas <em>aventuras juntos</em></h2>
     <div class="photo-grid reveal">
       <figure class="photo-frame">
         <img src="img/pareja-flores.jpg" width="900" height="1200"
              loading="lazy" decoding="async"
-             alt="Gabriel y Jatzive bajo un arco de buganvilias, en una casa blanca">
+             alt="Jatzive y Gabriel bajo un arco de buganvilias, en una casa blanca">
       </figure>
       <figure class="photo-frame offset">
         <img src="img/pareja-beso.jpg" width="900" height="1200"
              loading="lazy" decoding="async"
-             alt="Gabriel y Jatzive dándose un beso al atardecer, con un pueblo blanco al fondo">
+             alt="Jatzive y Gabriel dándose un beso al atardecer, con un pueblo blanco al fondo">
       </figure>
     </div>
 
@@ -2804,7 +2825,7 @@
 </section>
 
 <!-- ══════════════════════════════════
-     ITINERARIO — 3 días
+     ITINERARIO — sábado 13 y domingo 14
      Los bloques con data-dia se muestran según ?tipo= (ver script)
 ══════════════════════════════════ -->
 <section id="itinerario">
@@ -2814,11 +2835,6 @@
     <h2 class="s-title reveal">Nuestro <em>itinerario</em></h2>
     <!-- Las filas con data-dia se quitan según ?tipo= (ver script) -->
     <ol class="agenda reveal">
-      <li data-dia="brunch">
-        <span class="ag-when"><b>Vie 12</b><i>Marzo</i></span>
-        <span class="ag-what"><svg class="cristal" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#cristal"/></svg><span class="ag-hielo">Rompe hielo</span></span>
-        <span class="ag-time">5:00 PM</span>
-      </li>
       <li data-dia="boda">
         <span class="ag-when"><b>Sáb 13</b><i>Marzo</i></span>
         <span class="ag-what ag-destacado">¡La boda!</span>
@@ -2880,20 +2896,20 @@
 
     <div class="swatches reveal">
       <div class="swatch">
-        <div class="sw-color" style="background:#7a8771;"></div>
-        <span class="sw-name">Shadow</span>
-      </div>
-      <div class="swatch">
-        <div class="sw-color" style="background:#a8bd9f;"></div>
-        <span class="sw-name">Sage green</span>
-      </div>
-      <div class="swatch">
-        <div class="sw-color" style="background:#e2d6bf;"></div>
-        <span class="sw-name">Champagne</span>
-      </div>
-      <div class="swatch">
-        <div class="sw-color" style="background:#f5efdf;"></div>
+        <div class="sw-color" style="background:#f3efe3;"></div>
         <span class="sw-name">Ivory</span>
+      </div>
+      <div class="swatch">
+        <div class="sw-color" style="background:#ae390f;"></div>
+        <span class="sw-name">Terracota</span>
+      </div>
+      <div class="swatch">
+        <div class="sw-color" style="background:#6c7059;"></div>
+        <span class="sw-name">Olivo oscuro</span>
+      </div>
+      <div class="swatch">
+        <div class="sw-color" style="background:#e9e3d5;"></div>
+        <span class="sw-name">Champagne</span>
       </div>
     </div>
   </div>
@@ -2905,7 +2921,6 @@
 <section class="s-regalos" id="regalos">
   <div class="deco br" aria-hidden="true"><img src="img/ramo.png" width="651" height="355" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
-    <span class="s-tag reveal">Con cariño</span>
     <h2 class="s-title reveal">Mesa de <em>regalos</em></h2>
     <div class="mesa reveal">
       <div class="bolsas" role="group" aria-label="Elige una tienda">
@@ -2985,8 +3000,7 @@
     </noscript>
 
     <p class="regalos-nota reveal">
-      Si gustas regalarnos algo, aquí hay algunas ideas; también
-      habrá <strong>sobres para efectivo</strong>.
+      Si gustas regalarnos algo, aquí hay algunas ideas.
     </p>
   </div>
 </section>
@@ -3011,8 +3025,8 @@
     </div>
 
     <p class="rsvp-quote reveal">
-      Para nosotros este es un día muy especial y compartiéndolo
-      contigo, creando momentos inolvidables juntos.
+      Para nosotros este es un día muy especial, compartiéndolo
+      contigo será inolvidable.
     </p>
 
     <p class="rsvp-deadline reveal">Confirma tu asistencia antes del 1 de febrero de 2027</p>
@@ -3043,7 +3057,7 @@
 ══════════════════════════════════ -->
 <footer>
   <div class="deco br" aria-hidden="true"><img src="img/ramo.png" width="651" height="355" alt="" loading="lazy" decoding="async"></div>
-  <p class="footer-names">Gabriel &amp; Jatzive</p>
+  <p class="footer-names">Jatzive &amp; Gabriel</p>
   <p class="footer-sub">13 · Marzo · 2027 · Cuernavaca, Morelos</p>
   <p class="footer-love">Con amor, los esperamos</p>
 </footer>
@@ -3075,22 +3089,27 @@
     const phone  = '525599192118';
 
     /* ── Tipo de invitación ──
-       Tipo 1 → viernes 12, sábado 13 y domingo 14
-       Tipo 2 → solo sábado 13 y domingo 14
-       Sin parámetro se asume Tipo 1 (vista completa). ── */
+       El viernes 12 (rompe hielo) salió del programa, así que hoy los
+       dos tipos abren lo mismo: sábado 13 y domingo 14. Se conservan
+       los dos para que los links ya enviados con ?tipo=1 o ?tipo=2
+       sigan funcionando y la Hoja siga sabiendo con cuál confirmó cada
+       quien. Sin parámetro se asume Tipo 1. ── */
     const tipo = p.get('tipo') === '2' ? 2 : 1;
 
+    /* brunch ya no se ofrece, pero se queda aquí: quien confirmó con el
+       viernes antes del cambio lo tiene guardado en su navegador, y sin
+       esta entrada su resumen de confirmación no se podría pintar. */
     const DIAS = {
       brunch: { emoji: '🥂', chip: 'Vie 12', corto: '12 mar', largo: 'Viernes 12 · Rompe hielo' },
       boda:   { emoji: '💍', chip: 'Sáb 13', corto: '13 mar', largo: 'Sábado 13 · La boda' },
       post:   { emoji: '🌤️', chip: 'Dom 14', corto: '14 mar', largo: 'Domingo 14 · Torna boda' }
     };
     const DIAS_POR_TIPO = {
-      1: ['brunch', 'boda', 'post'],
+      1: ['boda', 'post'],
       2: ['boda', 'post']
     };
     const ETIQUETA_TIPO = {
-      1: 'Completa (12, 13 y 14 de marzo)',
+      1: 'Boda y torna boda (13 y 14 de marzo)',
       2: 'Boda y torna boda (13 y 14 de marzo)'
     };
     const incluidos = DIAS_POR_TIPO[tipo];
@@ -3293,8 +3312,8 @@
       }).join('\n');
 
       var intro = nombre
-        ? '¡Hola! Somos ' + nombre + ' y confirmamos nuestra asistencia a la boda de Gabriel & Jatzive 🎊\n'
-        : '¡Hola! Confirmamos nuestra asistencia a la boda de Gabriel & Jatzive 🎊\n';
+        ? '¡Hola! Somos ' + nombre + ' y confirmamos nuestra asistencia a la boda de Jatzive & Gabriel 🎊\n'
+        : '¡Hola! Confirmamos nuestra asistencia a la boda de Jatzive & Gabriel 🎊\n';
 
       var msg = intro + 'Asistiremos:\n' + lineas +
                 '\n\nInvitación: ' + ETIQUETA_TIPO[tipo] +
