@@ -192,6 +192,12 @@
     .btn-action:hover { background: var(--cream); border-color: var(--rose); }
     .btn-action.wa { background: #25d366; color: #fff; border-color: #25d366; }
     .btn-action.wa:hover { background: #1ebe5d; }
+    .btn-action.sheet { width: 100%; background: #1e8e4e; color: #fff; border-color: #1e8e4e; }
+    .btn-action.sheet:hover { background: #187a42; }
+    .sheet-tabs { list-style: none; display: grid; gap: .4rem; margin-bottom: 1.1rem; font-size: .86rem; }
+    .sheet-tabs strong { font-weight: 600; }
+    .device-note a { color: var(--rose); }
+
     .result-hint { font-size: .78rem; color: var(--gray); margin-top: .8rem; }
     .copied-msg { display: none; font-size: .8rem; color: var(--green); font-weight: 600; margin-top: .5rem; }
 
@@ -360,7 +366,21 @@
 
   <div class="guest-list" id="guest-list"></div>
 
-  <p class="device-note">Esta lista se guarda solo en este teléfono o computadora. Si abres esta página en otro aparato la verás vacía, pero tus invitados siguen guardados en tu hoja de Google.</p>
+  <p class="device-note">Esta lista se guarda solo en este teléfono o computadora. Si abres esta página en otro aparato la verás vacía, pero tus invitados siguen guardados en <a id="lnk-sheet" target="_blank" rel="noopener">tu hoja de Google</a>.</p>
+</section>
+
+<!-- ══════════════════════════════
+     HOJA DE GOOGLE
+══════════════════════════════ -->
+<section class="card">
+  <h2 class="card-title">Tu hoja de Google</h2>
+  <p class="card-lead">Ahí ves quién ya confirmó, en tiempo real y desde cualquier aparato.</p>
+  <ul class="sheet-tabs">
+    <li><strong>Invitados:</strong> todas las invitaciones que creaste.</li>
+    <li><strong>Confirmados:</strong> cada persona que dijo que sí va, con los días que marcó.</li>
+    <li><strong>Por Confirmar:</strong> quienes todavía no están seguros.</li>
+  </ul>
+  <a class="btn-action sheet" id="btn-sheet" target="_blank" rel="noopener">Abrir mi hoja de Google</a>
 </section>
 
 <script>
@@ -374,6 +394,10 @@
   const BASE_URL    = 'https://christopherortiz69.github.io/Gabriel-Jatzive/';
   const STORAGE_KEY = 'gj_invitados';
   const SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbxuvcsiHGlek8ZdCD0VzmMQp0I_BiX08BICA6DynOvlGbkeLRmIQdThCICk86a4c3SQ/exec';
+  /* La hoja donde Apps Script anota todo; la pareja la abre desde aquí */
+  const SHEET_URL   = 'https://docs.google.com/spreadsheets/d/1XfL1BJN7mCIyvMdESDXbjzBKehEkWmfsOskuGDRW284/edit?usp=sharing';
+  document.getElementById('btn-sheet').href = SHEET_URL;
+  document.getElementById('lnk-sheet').href = SHEET_URL;
 
   /* ── Sede: los dos días son en el mismo lugar ── */
   const SEDE = {
