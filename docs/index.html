@@ -192,6 +192,21 @@
       margin: .3rem 0;
     }
 
+    /* Rótulo bajo los nombres: chico y espaciado, en salvia, para que se
+       lea como subtítulo y no compita con la caligrafía ni con la frase
+       rosa de arriba. */
+    .hero-sub {
+      font-size: .8rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--sage-dark);
+      /* En escritorio los nombres van con line-height 1 y la cola de la G
+         de «Gabriel» baja por fuera de su renglón: este margen es para
+         ella. En móvil (line-height 1.25) basta con menos, ver abajo. */
+      margin-top: 1.9rem;
+      padding-left: 6px;   /* compensa el letter-spacing de la última letra */
+    }
+
     .divider {
       display: flex;
       align-items: center;
@@ -520,6 +535,17 @@
       text-transform: uppercase;
       color: var(--sage-dark);
       margin-top: .5rem;
+    }
+
+    /* Frase bajo los contadores: misma voz que la nota de las fotos */
+    .cd-note {
+      text-align: center;
+      margin-top: 2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.8vw, 1.4rem);
+      color: var(--brown);
+      opacity: .82;
     }
 
     /* Botón discreto (mapa). Las tarjetas .d-card se retiraron al
@@ -1717,6 +1743,7 @@
          y vertical para que el trazo completo quepa. */
       .hero-name     { font-size: min(4rem, 17vw); line-height: 1.25; padding: 0 .2em; }
       .hero-amp      { margin: .2rem 0; }
+      .hero-sub      { margin-top: 1rem; font-size: .72rem; letter-spacing: 5px; }
       .divider       { margin: 1.5rem auto; max-width: 250px; }
       .hero-location { font-size: .76rem; }
 
@@ -2754,6 +2781,7 @@
     <h1 class="hero-name">Jatzive</h1>
     <span class="hero-amp">&amp;</span>
     <h1 class="hero-name">Gabriel</h1>
+    <p class="hero-sub">Nuestra boda</p>
   </div>
 
   <div class="divider fade-in delay-2">
@@ -2806,8 +2834,7 @@
 <section class="s-countdown" id="countdown">
   <div class="deco tr sm" aria-hidden="true"><img src="img/ramo.png" width="651" height="355" alt="" loading="lazy" decoding="async"></div>
   <div class="inner">
-    <span class="s-tag reveal">La cuenta regresiva</span>
-    <h2 class="s-title reveal">Faltan pocos días… <em>Comienza</em></h2>
+    <h2 class="s-title reveal">La cuenta regresiva <em>comienza</em></h2>
     <div class="countdown-grid reveal">
       <div class="cd-card">
         <span class="cd-num" id="cd-days">--</span>
@@ -2826,6 +2853,7 @@
         <p class="cd-label">Segundos</p>
       </div>
     </div>
+    <p class="cd-note reveal">Faltan pocos días…</p>
   </div>
 </section>
 
@@ -2852,12 +2880,17 @@
       </li>
       <li class="ag-sub" data-dia="boda">
         <span class="ag-when"></span>
-        <span class="ag-what">Ceremonia civil · ¡A disfrutar!</span>
-        <span class="ag-time">4:00 PM</span>
+        <span class="ag-what">Ceremonia civil</span>
+        <span class="ag-time">3:00 PM</span>
+      </li>
+      <li class="ag-sub" data-dia="boda">
+        <span class="ag-when"></span>
+        <span class="ag-what">¡A disfrutar!</span>
+        <span class="ag-time">3:30 PM</span>
       </li>
       <li data-dia="post">
         <span class="ag-when"><b>Dom 14</b><i>Marzo</i></span>
-        <span class="ag-what">Torna boda</span>
+        <span class="ag-what">Brunch</span>
         <span class="ag-time">11:00 AM</span>
       </li>
     </ol>
@@ -3101,21 +3134,24 @@
        quien. Sin parámetro se asume Tipo 1. ── */
     const tipo = p.get('tipo') === '2' ? 2 : 1;
 
-    /* brunch ya no se ofrece, pero se queda aquí por si el rompe hielo
-       vuelve. El resumen de confirmación ya no depende de él: filtra
+    /* Ojo con los nombres: la clave «brunch» es el viernes 12 (rompe
+       hielo) y el brunch del domingo usa «post». Se dejaron así porque
+       son los valores que ya viajan a la Hoja y a las confirmaciones
+       guardadas. «brunch» ya no se ofrece, pero se queda aquí por si el
+       rompe hielo vuelve. El resumen de confirmación ya no depende de él: filtra
        los días que salieron del programa (ver mostrarConfirmado). */
     const DIAS = {
       brunch: { emoji: '🥂', chip: 'Vie 12', corto: '12 mar', largo: 'Viernes 12 · Rompe hielo' },
       boda:   { emoji: '💍', chip: 'Sáb 13', corto: '13 mar', largo: 'Sábado 13 · La boda' },
-      post:   { emoji: '🌤️', chip: 'Dom 14', corto: '14 mar', largo: 'Domingo 14 · Torna boda' }
+      post:   { emoji: '🌤️', chip: 'Dom 14', corto: '14 mar', largo: 'Domingo 14 · Brunch' }
     };
     const DIAS_POR_TIPO = {
       1: ['boda', 'post'],
       2: ['boda', 'post']
     };
     const ETIQUETA_TIPO = {
-      1: 'Boda y torna boda (13 y 14 de marzo)',
-      2: 'Boda y torna boda (13 y 14 de marzo)'
+      1: 'Boda y brunch (13 y 14 de marzo)',
+      2: 'Boda y brunch (13 y 14 de marzo)'
     };
     const incluidos = DIAS_POR_TIPO[tipo];
 
