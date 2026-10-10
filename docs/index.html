@@ -995,11 +995,16 @@
       text-align: center;
     }
 
+    /* Misma letra y color que «regalos» del título (.s-title em): la
+       pista se lee como parte del título y no como texto de sistema.
+       Cormorant tiene la x muy baja, por eso va más grande que el
+       Raleway de antes para el mismo tamaño aparente. */
     .mesa-hint {
-      font-size: .88rem;
-      line-height: 1.6;
-      color: var(--brown);
-      opacity: .6;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.12rem;
+      line-height: 1.4;
+      color: var(--deep-rose);
     }
 
     .regalo-detalle { width: 100%; }
@@ -1813,7 +1818,7 @@
         border-radius: 11px;
         margin-top: .9rem;
       }
-      .mesa-hint           { font-size: .74rem; line-height: 1.45; }
+      .mesa-hint           { font-size: .95rem; line-height: 1.3; }
       .regalo-tienda-panel { font-size: .88rem; }
       .regalo-etiqueta     { font-size: .5rem; letter-spacing: .6px; margin-right: .25rem; }
       .regalo-num          { font-size: .88rem; }
